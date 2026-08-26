@@ -51,7 +51,8 @@ describe("parseRefuteRequest", () => {
   });
 
   it("rejects a request missing the fallback", () => {
-    const { fallbackRefutation: _omit, ...rest } = good;
+    const rest: Record<string, unknown> = { ...good };
+    delete rest.fallbackRefutation;
     expect(parseRefuteRequest(rest)).toBeNull();
   });
 

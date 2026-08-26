@@ -1,69 +1,71 @@
-import Image from "next/image";
+import PackCard from "@/components/PackCard";
+import { PACKS } from "@/lib/packs";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main
+      id="main"
+      className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-5 pt-14 sm:px-8 sm:pt-20 safe-b"
+    >
+      <header className="rise">
+        <p className="inline-flex items-center gap-2 rounded-full border border-ink-600/70 bg-ink-850/60 px-3 py-1 text-xs font-medium tracking-wide text-ink-300">
+          <span
+            aria-hidden
+            className="size-1.5 rounded-full bg-ember-400"
+          />
+          Certainty-based marking
+        </p>
+        <h1 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight text-ink-50 sm:text-6xl">
+          Confidently
+          <span className="block bg-gradient-to-r from-ember-300 via-ember-400 to-iris-300 bg-clip-text text-transparent">
+            Wrong
+          </span>
+        </h1>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-300 sm:text-lg">
+          Answer questions on material you have not studied, and say how sure you
+          are. You get no feedback until the end. Then you see the beliefs you were
+          certain about and wrong about — and only those get corrected.
+        </p>
+      </header>
+
+      <section className="mt-10 sm:mt-14" aria-labelledby="packs-heading">
+        <h2
+          id="packs-heading"
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-400"
+        >
+          Pick a pack
+        </h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {PACKS.map((pack) => (
+            <PackCard key={pack.id} pack={pack} />
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </section>
+
+      <section className="mt-12 grid gap-3 sm:mt-16 sm:grid-cols-5">
+        {[
+          ["Pick", "Choose a pack"],
+          ["Probe", "Answer plus certainty, no feedback"],
+          ["Reveal", "Quadrants, calibration, score"],
+          ["Repair", "Refutations, only where you were sure"],
+          ["Recheck", "Reworded variants of the misses"],
+        ].map(([name, detail], i) => (
+          <div
+            key={name}
+            className="glass rounded-2xl px-4 py-3.5"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <p className="tnum text-xs font-semibold text-iris-300">
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-ink-50">{name}</p>
+            <p className="mt-0.5 text-xs leading-snug text-ink-400">{detail}</p>
+          </div>
+        ))}
+      </section>
+
+      <footer className="mt-auto pt-14 text-xs leading-relaxed text-ink-400">
+        Nothing is stored on a server. Your answers live in this browser only.
+      </footer>
+    </main>
   );
 }
