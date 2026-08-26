@@ -73,23 +73,23 @@ function Cell({
 
   if (dominant) {
     return (
-      <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border-2 border-ember-500/70 bg-ember-900/50 p-6 sm:p-8">
+      <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border-2 border-[#273447] bg-[#273447] p-6 shadow-[0_14px_30px_rgba(39,52,71,.2)] sm:p-8">
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-12 -top-16 size-52 rounded-full bg-ember-500/25 blur-3xl"
+          className="pointer-events-none absolute -right-12 -top-16 size-52 rounded-full bg-ember-400/30 blur-3xl"
         />
         <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full border border-ember-400/70 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ember-300">
+          <span className="inline-flex items-center gap-2 rounded-full border border-ember-300/80 bg-ember-400/15 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ember-300">
             <span aria-hidden>{copy.mark}</span> Confidently wrong
           </span>
           <p className="tnum mt-5 text-6xl font-semibold leading-none text-ember-300 sm:text-7xl">
             {n}
           </p>
-          <p className="mt-4 text-lg font-semibold leading-snug text-ink-50 sm:text-xl">
+          <p className="mt-4 text-lg font-semibold leading-snug text-ink-950 sm:text-xl">
             {copy.title(n)}
           </p>
         </div>
-        <p className="relative mt-5 text-sm leading-relaxed text-ember-300/90">
+        <p className="relative mt-5 max-w-[28rem] text-sm leading-relaxed text-ink-900">
           {copy.note}
         </p>
       </div>

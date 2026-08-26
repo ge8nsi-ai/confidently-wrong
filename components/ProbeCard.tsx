@@ -35,7 +35,7 @@ export default function ProbeCard({
     .join(" ")}`;
 
   return (
-    <article className="rise glass rounded-3xl p-5 sm:p-8">
+    <article className="rise glass rounded-[2rem] p-4 sm:p-7">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <p className="tnum text-xs font-semibold uppercase tracking-[0.18em] text-ink-400">
           {round === "recheck" ? "Recheck · " : ""}
@@ -58,9 +58,11 @@ export default function ProbeCard({
         />
       </div>
 
-      <h1 className="mt-6 text-xl font-semibold leading-snug text-ink-50 sm:text-[1.65rem]">
+      <div className="mt-5 rounded-[1.5rem] bg-[#f3d8cf] px-5 py-6 sm:px-7 sm:py-8">
+      <h1 className="text-xl font-semibold leading-snug text-ink-50 sm:text-[1.65rem]">
         {item.stem}
       </h1>
+      </div>
 
       <div
         role="radiogroup"
@@ -76,7 +78,7 @@ export default function ProbeCard({
               role="radio"
               aria-checked={selected}
               onClick={() => setChosen(option.id)}
-              className={`flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-left transition ${
+              className={`flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-left transition shadow-sm ${
                 selected
                   ? "border-iris-400 bg-iris-900/60 text-ink-50"
                   : "border-ink-600/60 bg-ink-850/50 text-ink-200 hover:border-ink-400/70 hover:bg-ink-800/60"
@@ -120,7 +122,7 @@ export default function ProbeCard({
         type="button"
         disabled={!ready}
         onClick={() => ready && onSubmit(chosen, conf)}
-        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-white disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-400"
+        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 shadow-[0_8px_0_#d6c1bb] transition hover:-translate-y-0.5 hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-400 disabled:shadow-none"
       >
         {position === total ? "Finish round" : "Next question"}
       </button>

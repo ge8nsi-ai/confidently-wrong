@@ -1,36 +1,31 @@
 import Link from "next/link";
 import type { Pack } from "@/lib/types";
 
-const ACCENTS: Record<string, string> = {
-  seasons: "from-ember-500/25 to-transparent",
-  selection: "from-mint-400/20 to-transparent",
-  chance: "from-iris-400/25 to-transparent",
+const SCENES: Record<string, { sky: string; sun: string; ridge: string; foreground: string }> = {
+  seasons: { sky: "bg-[#f5bfaa]", sun: "bg-[#fff0d2]", ridge: "bg-[#8fa9ac]", foreground: "bg-[#34465f]" },
+  selection: { sky: "bg-[#e8b1a7]", sun: "bg-[#f4d485]", ridge: "bg-[#d96f69]", foreground: "bg-[#45566d]" },
+  chance: { sky: "bg-[#aebfce]", sun: "bg-[#f8dfb8]", ridge: "bg-[#e98b78]", foreground: "bg-[#314158]" },
 };
 
 export default function PackCard({ pack }: { pack: Pack }) {
   return (
     <Link
       href={`/study/${pack.id}`}
-      className="group glass relative flex flex-col overflow-hidden rounded-3xl p-6 transition duration-300 hover:-translate-y-1 hover:border-iris-400/60 sm:p-7"
+      className="group glass relative flex min-h-[25rem] flex-col overflow-hidden rounded-[2rem] p-3 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_55px_rgba(87,67,74,.2)]"
     >
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-x-0 -top-24 h-48 bg-gradient-to-b ${
-          ACCENTS[pack.id] ?? "from-iris-400/20 to-transparent"
-        } opacity-70 blur-2xl transition group-hover:opacity-100`}
-      />
-      <div className="relative flex flex-1 flex-col">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-400">
-          {pack.items.length} questions
-        </p>
-        <h2 className="mt-3 text-2xl font-semibold leading-tight text-ink-50 sm:text-[1.7rem]">
+      <Landscape id={pack.id} />
+      <div className="relative flex flex-1 flex-col px-3 pb-3 pt-5">
+        <div className="flex items-center justify-between text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink-400">
+          <span>Field pack</span><span>{String(pack.items.length).padStart(2, "0")} prompts</span>
+        </div>
+        <h2 className="mt-3 max-w-[15rem] text-2xl font-semibold leading-tight text-ink-50 sm:text-[1.7rem]">
           {pack.title}
         </h2>
         <p className="mt-3 flex-1 text-[0.98rem] leading-relaxed text-ink-300">
           {pack.blurb}
         </p>
-        <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-iris-300">
-          Start probing
+        <span className="mt-6 inline-flex items-center justify-between rounded-2xl bg-ink-50 px-4 py-3 text-sm font-semibold text-ink-950">
+          Begin field study
           <span
             aria-hidden
             className="transition-transform duration-300 group-hover:translate-x-1"
@@ -40,5 +35,21 @@ export default function PackCard({ pack }: { pack: Pack }) {
         </span>
       </div>
     </Link>
+  );
+}
+
+function Landscape({ id }: { id: string }) {
+  const scene = SCENES[id] ?? SCENES.seasons;
+  return (
+    <div aria-hidden className={`relative h-48 overflow-hidden rounded-[1.45rem] ${scene.sky}`}>
+      <span className={`absolute right-7 top-7 size-14 rounded-full ${scene.sun} shadow-[0_0_0_8px_rgba(255,255,255,.16)]`} />
+      <span className={`absolute -bottom-16 -left-10 h-40 w-56 rotate-12 rounded-[50%] ${scene.ridge}`} />
+      <span className="absolute -bottom-12 left-24 h-32 w-56 -rotate-6 rounded-[50%] bg-[#f0c8b5]" />
+      <span className={`absolute -bottom-20 -right-12 h-44 w-72 -rotate-3 rounded-[50%] ${scene.foreground}`} />
+      <span className="absolute bottom-8 left-9 h-20 w-1.5 bg-[#35455b] after:absolute after:-left-4 after:top-2 after:h-8 after:w-9 after:rotate-45 after:border-l-[12px] after:border-r-[12px] after:border-b-[28px] after:border-l-transparent after:border-r-transparent after:border-b-[#35455b]" />
+      <span className="absolute bottom-7 right-12 h-12 w-1 bg-[#35455b] after:absolute after:-left-3 after:top-0 after:border-l-[9px] after:border-r-[9px] after:border-b-[22px] after:border-l-transparent after:border-r-transparent after:border-b-[#35455b]" />
+      <span className="absolute left-8 top-7 size-2 rounded-full bg-white/80" />
+      <span className="absolute left-16 top-12 size-1.5 rounded-full bg-white/70" />
+    </div>
   );
 }

@@ -5,37 +5,37 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Ink scale — deep, slightly blue-cast neutrals. */
-  --color-ink-950: #07080d;
-  --color-ink-900: #0b0d14;
-  --color-ink-850: #10131c;
-  --color-ink-800: #161a25;
-  --color-ink-700: #232838;
-  --color-ink-600: #333a4f;
-  --color-ink-400: #78819c;
-  --color-ink-300: #a4acc9;
-  --color-ink-200: #c6cbdd;
-  --color-ink-50: #f2f4fb;
+  --color-ink-950: #fffaf3;
+  --color-ink-900: #fcf5ed;
+  --color-ink-850: #f8eee7;
+  --color-ink-800: #f1e5df;
+  --color-ink-700: #e8d8d0;
+  --color-ink-600: #d4c1bc;
+  --color-ink-400: #675e65;
+  --color-ink-300: #554d55;
+  --color-ink-200: #514b55;
+  --color-ink-50: #273447;
 
   /* Danger zone: sure and wrong. Warm, dominant. */
-  --color-ember-500: #ff7a45;
-  --color-ember-400: #ff9366;
-  --color-ember-300: #ffb495;
-  --color-ember-900: #3a1509;
+  --color-ember-500: #e98272;
+  --color-ember-400: #f19a85;
+  --color-ember-300: #f7b5a2;
+  --color-ember-900: #f8dfd8;
 
   /* Correct / calm. */
-  --color-mint-400: #4ee0a8;
-  --color-mint-300: #7ceec1;
-  --color-mint-900: #0a2c20;
+  --color-mint-400: #6f9b92;
+  --color-mint-300: #8fb6ad;
+  --color-mint-900: #dceae4;
 
   /* Accent for chrome and links. */
-  --color-iris-400: #8b8bff;
-  --color-iris-300: #adadff;
-  --color-iris-900: #1b1b45;
+  --color-iris-400: #7889a8;
+  --color-iris-300: #91a1bd;
+  --color-iris-900: #e5e9f2;
 }
 
 :root {
-  color-scheme: dark;
-  --page: var(--color-ink-950);
+  color-scheme: light;
+  --page: #efd8d5;
 }
 
 * {
@@ -55,20 +55,48 @@ body {
   background-image:
     radial-gradient(
       68rem 40rem at 12% -12%,
-      color-mix(in oklab, var(--color-iris-400) 16%, transparent),
+      color-mix(in oklab, #b7c9d2 34%, transparent),
       transparent 70%
     ),
     radial-gradient(
       52rem 34rem at 100% 0%,
-      color-mix(in oklab, var(--color-ember-500) 11%, transparent),
+      color-mix(in oklab, #efb0a5 42%, transparent),
       transparent 70%
     ),
     radial-gradient(
       60rem 40rem at 50% 110%,
-      color-mix(in oklab, var(--color-mint-400) 7%, transparent),
+      color-mix(in oklab, #e9c4bc 30%, transparent),
       transparent 70%
     );
   background-attachment: fixed;
+  min-height: 100dvh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* A quiet paper-fibre layer: visible enough to feel tactile, subtle enough to
+   keep charts, labels, and question text crisp. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(116, 87, 86, 0.045) 0, rgba(116, 87, 86, 0.045) 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(91deg, rgba(255, 255, 255, 0.16) 0, rgba(255, 255, 255, 0.16) 1px, transparent 1px, transparent 7px),
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.22) 0 0.7px, transparent 1px),
+    radial-gradient(circle at 72% 64%, rgba(116, 87, 86, 0.1) 0 0.65px, transparent 1px);
+  background-size: auto, auto, 13px 17px, 19px 23px;
+  mix-blend-mode: soft-light;
 }
 
 /* Visible, consistent focus for keyboard users everywhere. */
@@ -80,9 +108,23 @@ body {
 
 @layer utilities {
   .glass {
-    background: color-mix(in oklab, var(--color-ink-850) 82%, transparent);
-    border: 1px solid color-mix(in oklab, var(--color-ink-600) 65%, transparent);
-    backdrop-filter: blur(14px) saturate(130%);
+    position: relative;
+    isolation: isolate;
+    background: color-mix(in oklab, #fffaf3 88%, transparent);
+    border: 1px solid color-mix(in oklab, #d4c1bc 62%, transparent);
+    box-shadow: 0 18px 45px rgba(87, 67, 74, 0.12), 0 3px 8px rgba(87, 67, 74, 0.06);
+    backdrop-filter: blur(14px) saturate(115%);
+  }
+
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0.24;
+    background-image: repeating-linear-gradient(0deg, rgba(116, 87, 86, 0.035) 0, rgba(116, 87, 86, 0.035) 1px, transparent 1px, transparent 5px);
+    mix-blend-mode: multiply;
   }
 
   .safe-b {

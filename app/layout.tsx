@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import AppNavigation from "@/components/AppNavigation";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -35,6 +36,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <AppNavigation />
         {children}
       </body>
     </html>

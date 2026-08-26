@@ -59,7 +59,7 @@ export default function ConfidencePicker({
               role="radio"
               aria-checked={selected}
               onClick={() => onChange(conf)}
-              className={`flex min-h-20 flex-col items-start justify-center rounded-2xl border px-4 py-3.5 text-left transition ${
+              className={`flex min-h-20 flex-col items-start justify-center rounded-2xl border px-4 py-3.5 text-left transition shadow-sm ${
                 selected
                   ? "border-iris-400 bg-iris-900/70 text-ink-50 shadow-[0_0_0_1px_var(--color-iris-400)]"
                   : "border-ink-600/70 bg-ink-850/60 text-ink-200 hover:border-ink-400/70 hover:bg-ink-800/70"

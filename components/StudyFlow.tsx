@@ -190,7 +190,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
               setRepairStep(0);
               setPhase("repair");
             }}
-            className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-white"
+            className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
           >
             {repairSteps.length === 0
               ? "Nothing to repair — continue"
@@ -270,7 +270,7 @@ function RepairView({
         <button
           type="button"
           onClick={onFinish}
-          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-white"
+          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
         >
           Continue
         </button>
@@ -319,7 +319,7 @@ function RepairView({
         <button
           type="button"
           onClick={isLast ? onFinish : onNext}
-          className="flex-1 rounded-2xl bg-ink-50 px-6 py-3.5 text-base font-semibold text-ink-950 transition hover:bg-white"
+          className="flex-1 rounded-2xl bg-ink-50 px-6 py-3.5 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
         >
           {isLast
             ? recheckCount > 0
