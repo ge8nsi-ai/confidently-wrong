@@ -2,13 +2,26 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Conf, Item, Pack, Phase, Refutation, Response } from "./types";
+import type {
+  Conf,
+  Item,
+  Pack,
+  Phase,
+  Refutation,
+  Response,
+  SessionRecord,
+} from "./types";
 import { needsRefutation } from "./scoring";
+import { itemMetaFor } from "./topics";
 import { toVariant } from "./variants";
 
 export function refutationKey(itemId: string, chosenOptionId: string): string {
   return `${itemId}:${chosenOptionId}`;
 }
+
+/** Keeps localStorage from growing without bound. */
+export const MAX_SESSIONS = 50;
+export const MAX_CUSTOM_PACKS = 20;
 
 interface State {
   phase: Phase;
@@ -18,6 +31,10 @@ interface State {
   pendingConf: Conf | null;
   refutations: Record<string, Refutation>;
   loadingRefutations: boolean;
+  /** Set when a pack starts, so the history record can be upserted. */
+  sessionId: string | null;
+  sessions: SessionRecord[];
+  customPacks: Pack[];
 }
 
 interface Actions {
@@ -29,9 +46,13 @@ interface Actions {
   setLoadingRefutations: (loading: boolean) => void;
   beginRecheck: () => void;
   reset: () => void;
+  recordSession: (finished: boolean) => void;
+  saveCustomPack: (pack: Pack) => void;
+  deleteCustomPack: (packId: string) => void;
+  clearHistory: () => void;
 }
 
-const initial: State = {
+const initial: Omit<State, "sessions" | "customPacks"> = {
   phase: "pick",
   pack: null,
   index: 0,
@@ -39,6 +60,7 @@ const initial: State = {
   pendingConf: null,
   refutations: {},
   loadingRefutations: false,
+  sessionId: null,
 };
 
 /**
@@ -49,12 +71,15 @@ export const useStudy = create<State & Actions>()(
   persist(
     (set, get) => ({
       ...initial,
+      sessions: [],
+      customPacks: [],
 
       startPack: (pack) =>
         set({
           ...initial,
           pack,
           phase: "probe",
+          sessionId: `${pack.id}-${Date.now().toString(36)}`,
         }),
 
       setPendingConf: (pendingConf) => set({ pendingConf }),
@@ -83,9 +108,16 @@ export const useStudy = create<State & Actions>()(
               : "done"
             : get().phase,
         });
+
+        // History is written as soon as the probe round ends, so an abandoned
+        // session still shows up on the dashboard.
+        if (finished) get().recordSession(get().phase === "done");
       },
 
-      setPhase: (phase) => set({ phase, index: 0, pendingConf: null }),
+      setPhase: (phase) => {
+        set({ phase, index: 0, pendingConf: null });
+        if (phase === "done") get().recordSession(true);
+      },
 
       setRefutation: (key, refutation) =>
         set((s) => ({ refutations: { ...s.refutations, [key]: refutation } })),
@@ -95,10 +127,67 @@ export const useStudy = create<State & Actions>()(
       beginRecheck: () => set({ phase: "recheck", index: 0, pendingConf: null }),
 
       reset: () => set({ ...initial }),
+
+      /** Upserts the current run into history. Keyed on sessionId. */
+      recordSession: (finished) => {
+        const { pack, responses, sessionId, sessions } = get();
+        if (!pack || !sessionId) return;
+        const probe = probeResponses(responses);
+        if (probe.length === 0) return;
+
+        const existing = sessions.find((s) => s.id === sessionId);
+        const record: SessionRecord = {
+          id: sessionId,
+          packId: pack.id,
+          packTitle: pack.title,
+          origin: pack.origin ?? "builtin",
+          startedAt: existing?.startedAt ?? Date.now(),
+          updatedAt: Date.now(),
+          finished: finished || Boolean(existing?.finished),
+          probe,
+          recheck: recheckResponses(responses),
+          itemMeta: itemMetaFor(pack.items),
+        };
+
+        set({
+          sessions: [
+            record,
+            ...sessions.filter((s) => s.id !== sessionId),
+          ].slice(0, MAX_SESSIONS),
+        });
+      },
+
+      saveCustomPack: (pack) =>
+        set((s) => ({
+          customPacks: [
+            pack,
+            ...s.customPacks.filter((p) => p.id !== pack.id),
+          ].slice(0, MAX_CUSTOM_PACKS),
+        })),
+
+      deleteCustomPack: (packId) =>
+        set((s) => ({
+          customPacks: s.customPacks.filter((p) => p.id !== packId),
+        })),
+
+      clearHistory: () => set({ sessions: [] }),
     }),
     {
       name: "confidently-wrong.v1",
-      version: 1,
+      version: 2,
+      migrate: (persisted, version) => {
+        // v1 predates history and custom packs.
+        const state = (persisted ?? {}) as Partial<State>;
+        if (version < 2) {
+          return {
+            ...state,
+            sessionId: state.sessionId ?? null,
+            sessions: [],
+            customPacks: [],
+          } as unknown as State & Actions;
+        }
+        return persisted as State & Actions;
+      },
     },
   ),
 );

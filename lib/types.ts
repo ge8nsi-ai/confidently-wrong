@@ -18,6 +18,8 @@ export interface Refutation {
 export interface Item {
   id: string;
   conceptId: string;
+  /** Human-readable topic label. Derived from conceptId when absent. */
+  topic?: string;
   stem: string;
   options: Option[];
   sourceNote?: string;
@@ -38,4 +40,29 @@ export interface Pack {
   title: string;
   blurb: string;
   items: Item[];
+  /** Custom packs are generated from the learner's own material. */
+  origin?: "builtin" | "custom";
+  createdAt?: number;
+  sourceName?: string;
+}
+
+/** What a response was about, kept alongside history so topics survive. */
+export interface ItemMeta {
+  conceptId: string;
+  topic: string;
+  stem: string;
+}
+
+/** One completed pass through a pack, stored for the dashboard. */
+export interface SessionRecord {
+  id: string;
+  packId: string;
+  packTitle: string;
+  origin: "builtin" | "custom";
+  startedAt: number;
+  updatedAt: number;
+  finished: boolean;
+  probe: Response[];
+  recheck: Response[];
+  itemMeta: Record<string, ItemMeta>;
 }
