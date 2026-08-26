@@ -46,8 +46,8 @@ export default function QuadrantGrid({ responses }: { responses: Response[] }) {
         Certainty against correctness
       </h2>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <div className="sm:row-span-2">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 sm:grid-rows-3">
+        <div className="sm:row-span-3">
           <Cell quadrant="SURE_WRONG" n={counts.SURE_WRONG} dominant />
         </div>
         <Cell quadrant="SURE_RIGHT" n={counts.SURE_RIGHT} />
