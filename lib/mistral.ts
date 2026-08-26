@@ -13,6 +13,7 @@ export const TTS_MODEL = process.env.MISTRAL_TTS_MODEL ?? "voxtral-mini-tts-late
 export const TRANSCRIBE_MODEL =
   process.env.MISTRAL_TRANSCRIBE_MODEL ?? "voxtral-mini-latest";
 export const TTS_VOICE = process.env.MISTRAL_TTS_VOICE ?? "gb_oliver_neutral";
+export const OCR_MODEL = process.env.MISTRAL_OCR_MODEL ?? "mistral-ocr-latest";
 
 export function hasKey(): boolean {
   return Boolean(process.env.MISTRAL_API_KEY);
@@ -126,4 +127,72 @@ export async function transcribe(
   if (!res.ok) throw new Error(`mistral transcribe ${res.status}`);
   const body = (await res.json()) as { text?: string };
   return (body.text ?? "").trim();
+}
+
+/**
+ * Reads a PDF into markdown with Mistral OCR: upload, take a short-lived signed
+ * URL, then OCR it. The upload is deleted afterwards on a best-effort basis so
+ * study material does not sit in the workspace.
+ */
+export async function ocrDocument(
+  file: Blob,
+  filename: string,
+  opts: { timeoutMs?: number } = {},
+): Promise<string> {
+  const timeoutMs = opts.timeoutMs ?? 60_000;
+
+  const form = new FormData();
+  form.append("purpose", "ocr");
+  form.append("file", file, filename);
+
+  const upload = await withTimeout(timeoutMs, (signal) =>
+    fetch(`${API_BASE}/files`, {
+      method: "POST",
+      signal,
+      headers: { Authorization: `Bearer ${key()}` },
+      body: form,
+    }),
+  );
+  if (!upload.ok) throw new Error(`mistral upload ${upload.status}`);
+  const { id } = (await upload.json()) as { id?: string };
+  if (!id) throw new Error("mistral upload: no file id");
+
+  try {
+    const signed = await withTimeout(timeoutMs, (signal) =>
+      fetch(`${API_BASE}/files/${id}/url?expiry=1`, {
+        signal,
+        headers: { Authorization: `Bearer ${key()}` },
+      }),
+    );
+    if (!signed.ok) throw new Error(`mistral signed url ${signed.status}`);
+    const { url } = (await signed.json()) as { url?: string };
+    if (!url) throw new Error("mistral signed url: missing url");
+
+    const res = await withTimeout(timeoutMs, (signal) =>
+      fetch(`${API_BASE}/ocr`, {
+        method: "POST",
+        signal,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key()}`,
+        },
+        body: JSON.stringify({
+          model: OCR_MODEL,
+          document: { type: "document_url", document_url: url },
+          include_image_base64: false,
+        }),
+      }),
+    );
+    if (!res.ok) throw new Error(`mistral ocr ${res.status}`);
+    const body = (await res.json()) as { pages?: { markdown?: string }[] };
+    return (body.pages ?? [])
+      .map((p) => p.markdown ?? "")
+      .join("\n\n")
+      .trim();
+  } finally {
+    void fetch(`${API_BASE}/files/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${key()}` },
+    }).catch(() => undefined);
+  }
 }
