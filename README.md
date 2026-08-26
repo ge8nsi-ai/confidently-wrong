@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Confidently Wrong
 
-## Getting Started
+A study tool built on **certainty-based marking**. You answer questions on material you have not studied, say how sure you are, and only afterwards find out which beliefs were *confidently wrong*. Those are the only ones that get a personalised refutation.
 
-First, run the development server:
+## The five phases
+
+1. **Pick** — a pack: seasons, natural selection, or chance and evidence.
+2. **Probe** — one question at a time: an answer, then your certainty — guessing, fairly sure, or certain. No feedback at all during this round.
+3. **Reveal** — everything at once: a certainty-against-correctness grid, a calibration curve against the perfectly-calibrated diagonal, your certainty-based-marking score, and how many points more sure than right you were.
+4. **Repair** — refutation cards, one at a time, for the confidently-wrong quadrant only.
+5. **Recheck** — reworded variants of what you missed, second curve over the first.
+
+## Why refutation is gated
+
+A refutation card appears only where certainty was 2 or 3 *and* the answer was wrong. A wrong answer flagged as a guess gets a plain statement of the correct answer instead. This is a hard rule, not a preference: explaining why a belief someone never held is wrong hands them a misconception to remember, and personalised refutation can backfire on learners who were not committed to the error. The gate lives in `lib/scoring.ts`, proven by `lib/store.test.ts`.
+
+## Stack
+
+Next.js (App Router), strict TypeScript, Tailwind, Zustand over `localStorage`, Recharts, Vitest. Mistral `ministral-3b-latest` writes refutations; Voxtral handles read-aloud and spoken answers. No database, no accounts. Every AI path degrades to hand-written fallback text.
+
+## Run it
 
 ```bash
+npm install
+cp .env.example .env.local   # add MISTRAL_API_KEY, or leave it blank
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sources
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Gardner-Medwin, A. R. — certainty-based marking, UCL; in use in summative medical exams since 1994.
+- Butterfield, B., & Metcalfe, J. (2001) — the hypercorrection effect.
+- Richland, Kornell & Kao — the pretesting effect.
+- *Educational Psychology Review* (2026), DOI 10.1007/s10648-026-10116-9 — personalised refutation can backfire.
