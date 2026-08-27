@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import { useRouter } from "next/navigation";
+import BeliefPanel from "./BeliefPanel";
 import CalibrationChart from "./CalibrationChart";
 import PlainExplanation from "./PlainExplanation";
 import ProbeCard from "./ProbeCard";
@@ -25,6 +26,7 @@ import {
   useStudy,
 } from "@/lib/store";
 import { needsRefutation } from "@/lib/scoring";
+import { selectNextItem } from "@/lib/belief";
 import type { Conf, Item, Pack, Refutation, Response } from "@/lib/types";
 
 const PHASE_COPY: Record<string, string> = {
@@ -73,6 +75,19 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
 
   const probe = useMemo(() => probeResponses(responses), [responses]);
   const recheck = useMemo(() => recheckResponses(responses), [responses]);
+
+  /**
+   * The probe order is chosen live rather than fixed: the next question is the one
+   * the belief model can least predict the answer to. Every item is still asked
+   * exactly once, so the store's progress counting is untouched — the fallback to
+   * pack order covers the moment the round is already complete.
+   */
+  const probeItem = useMemo(
+    () =>
+      selectNextItem(pack.items, probe) ??
+      pack.items[Math.min(index, pack.items.length - 1)]!,
+    [index, pack.items, probe],
+  );
 
   const repairSteps = useMemo<RepairStep[]>(() => {
     const missed = missedItems(pack, responses);
@@ -162,12 +177,12 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
 
       {phase === "probe" ? (
         <ProbeCard
-          key={pack.items[index]!.id}
-          item={pack.items[index]!}
+          key={probeItem.id}
+          item={probeItem}
           position={index + 1}
           total={pack.items.length}
           round="probe"
-          onSubmit={onSubmit(pack.items[index]!)}
+          onSubmit={onSubmit(probeItem)}
         />
       ) : null}
 
@@ -183,6 +198,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
           </header>
           <QuadrantGrid responses={probe} />
           <CalibrationChart responses={probe} />
+          <BeliefPanel items={pack.items} responses={probe} />
           <ScorePanel responses={probe} />
           <button
             type="button"
@@ -190,7 +206,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
               setRepairStep(0);
               setPhase("repair");
             }}
-            className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
+            className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] hover:text-ink-50"
           >
             {repairSteps.length === 0
               ? "Nothing to repair — continue"
@@ -270,7 +286,7 @@ function RepairView({
         <button
           type="button"
           onClick={onFinish}
-          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
+          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] hover:text-ink-50"
         >
           Continue
         </button>
@@ -319,7 +335,7 @@ function RepairView({
         <button
           type="button"
           onClick={isLast ? onFinish : onNext}
-          className="flex-1 rounded-2xl bg-ink-50 px-6 py-3.5 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
+          className="flex-1 rounded-2xl bg-ink-50 px-6 py-3.5 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] hover:text-ink-50"
         >
           {isLast
             ? recheckCount > 0

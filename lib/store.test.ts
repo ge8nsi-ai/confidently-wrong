@@ -57,7 +57,7 @@ describe("repair set gating", () => {
 describe("recheck items", () => {
   it("rechecks every missed item, reworded, keeping one correct option", () => {
     const items = recheckItems(seasons, responses);
-    expect(items.map((i) => i.variantOf)).toEqual([
+    expect([...items.map((i) => i.variantOf)].sort()).toEqual([
       "seasons-1",
       "seasons-2",
       "seasons-3",
@@ -68,6 +68,33 @@ describe("recheck items", () => {
       const original = seasons.items.find((i) => i.id === item.variantOf)!;
       expect(item.stem).not.toBe(original.stem);
     }
+  });
+
+  it("puts the beliefs most likely to be genuinely held first", () => {
+    const wrongOption = (id: string) =>
+      seasons.items.find((i) => i.id === id)!.options.find((o) => !o.correct)!.id;
+    const picked: Response[] = [
+      {
+        itemId: "seasons-1",
+        chosenOptionId: wrongOption("seasons-1"),
+        conf: 1,
+        correct: false,
+        round: "probe",
+      },
+      {
+        itemId: "seasons-2",
+        chosenOptionId: wrongOption("seasons-2"),
+        conf: 3,
+        correct: false,
+        round: "probe",
+      },
+    ];
+    // seasons-2 was missed while certain and seasons-1 only guessed, so the
+    // confident miss is rechecked first despite coming later in the pack.
+    expect(recheckItems(seasons, picked).map((i) => i.variantOf)).toEqual([
+      "seasons-2",
+      "seasons-1",
+    ]);
   });
 
   it("returns nothing when there is no pack", () => {

@@ -12,6 +12,7 @@ import type {
   SessionRecord,
 } from "./types";
 import { needsRefutation } from "./scoring";
+import { orderByHeldBelief } from "./belief";
 import { itemMetaFor } from "./topics";
 import { toVariant } from "./variants";
 
@@ -213,7 +214,12 @@ export function missedItems(pack: Pack | null, responses: Response[]): Item[] {
 }
 
 export function recheckItems(pack: Pack | null, responses: Response[]): Item[] {
-  return missedItems(pack, responses).map((item, i) => toVariant(item, i));
+  const missed = missedItems(pack, responses);
+  if (!pack) return [];
+  // Worth-rechecking-first: the beliefs the model is most confident are genuinely
+  // held, rather than whichever miss happened to sit earliest in the pack.
+  const ordered = orderByHeldBelief(missed, pack.items, probeResponses(responses));
+  return ordered.map((item, i) => toVariant(item, i));
 }
 
 /** Wrong probe answers that were held with certainty — the refutation set. */
