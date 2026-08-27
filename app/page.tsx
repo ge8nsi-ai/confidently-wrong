@@ -47,6 +47,26 @@ export default function Home() {
           Your own study
         </h2>
         <Link
+          href="/explain"
+          className="glass group flex items-start gap-4 rounded-2xl px-5 py-4 transition hover:-translate-y-0.5 sm:col-span-2"
+        >
+          <span
+            aria-hidden
+            className="grid size-9 shrink-0 place-items-center rounded-xl bg-ink-50 text-lg text-ink-950"
+          >
+            🎙
+          </span>
+          <span>
+            <span className="block text-sm font-semibold text-ink-50">
+              Explain a topic out loud
+            </span>
+            <span className="mt-0.5 block text-xs leading-snug text-ink-400">
+              Say what you think you know — you get told what was wrong, then quizzed
+              on exactly that, with your own claims as the tempting answers
+            </span>
+          </span>
+        </Link>
+        <Link
           href="/packs/new"
           className="glass group flex items-start gap-4 rounded-2xl px-5 py-4 transition hover:-translate-y-0.5"
         >
