@@ -1,39 +1,25 @@
 import { NextResponse } from "next/server";
 import {
-  GENERATE_SYSTEM_PROMPT,
   MAX_UPLOAD_BYTES,
   MIN_MATERIAL_CHARS,
-  assembleItem,
   clampItemCount,
   clean,
-  generateUserPrompt,
-  isNearDuplicateStem,
   parseFocusList,
   slugify,
   trimMaterial,
-  validateGeneratedItem,
 } from "@/lib/custom-pack";
-import { chatJson, hasKey, ocrDocument } from "@/lib/mistral";
+import { MIN_ITEMS_KEPT, generateItems } from "@/lib/generate";
+import { hasKey, ocrDocument } from "@/lib/mistral";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import type { Item, Pack } from "@/lib/types";
+import type { Pack } from "@/lib/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 120;
+/** Vercel Hobby caps a function at 60s. A real run takes 5-18s. */
+export const maxDuration = 60;
 
 /** Tighter than the other routes: one call here fans out into several model calls. */
 const RATE_LIMIT_PER_MINUTE = 5;
-/**
- * Enough headroom that a wordy item finishes its JSON. A truncated reply is not
- * parseable at all, so a cap that is too tight wastes the whole paid call.
- */
-const MAX_TOKENS_PER_ITEM = 900;
 const MAX_TEXT_BODY_BYTES = 200 * 1024;
-/**
- * A pack ships if at least this many questions survive validation, even when the
- * learner asked for more. A 3B model drops the odd malformed item, and three
- * good questions beat a 502.
- */
-const MIN_ITEMS_KEPT = 3;
 
 /**
  * PUBLIC, UNAUTHENTICATED ENDPOINT THAT SPENDS MONEY.
@@ -133,75 +119,17 @@ export async function POST(request: Request): Promise<Response> {
   const packTitle = title || sourceName.replace(/\.[a-z0-9]+$/i, "") || "Your material";
   const packId = `custom-${slugify(packTitle, "pack")}-${Date.now().toString(36)}`;
 
-  // One completion per question, sequential so each prompt can steer the next
-  // away from concepts already covered. A few spare attempts cover the questions
-  // a small model returns malformed.
-  const items: Item[] = [];
-  const usedConcepts: string[] = [];
-  const usedKeys = new Set<string>();
-  const usedStems: string[] = [];
-  const maxAttempts = count + 3;
-
-  for (
-    let attempt = 0;
-    attempt < maxAttempts && items.length < count;
-    attempt += 1
-  ) {
-    try {
-      const raw = await chatJson(
-        [
-          { role: "system", content: GENERATE_SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: generateUserPrompt(
-              material,
-              items.length + 1,
-              count,
-              usedConcepts,
-              focus[items.length],
-            ),
-          },
-        ],
-        { maxTokens: MAX_TOKENS_PER_ITEM, timeoutMs: 20_000, temperature: 0.4 },
-      );
-
-      const validated = validateGeneratedItem(raw);
-      if (!validated.ok) {
-        console.warn(
-          `generate-pack: attempt ${attempt + 1} rejected — ${validated.reason}`,
-        );
-        continue;
-      }
-      const generated = validated.item;
-
-      // Repeats are skipped while there are attempts to spare. Once dropping one
-      // would leave the pack below the floor, a repeat beats no pack at all —
-      // narrow material genuinely cannot yield many distinct questions.
-      const attemptsLeft = maxAttempts - attempt - 1;
-      const canAffordToSkip = items.length + attemptsLeft >= MIN_ITEMS_KEPT;
-      const repeated =
-        usedKeys.has(generated.topic.toLowerCase()) ||
-        isNearDuplicateStem(generated.stem, usedStems);
-      if (repeated && canAffordToSkip) continue;
-
-      items.push(assembleItem(generated, packId, items.length));
-      usedConcepts.push(`${generated.topic} (asked: ${generated.stem})`);
-      usedKeys.add(generated.topic.toLowerCase());
-      usedStems.push(generated.stem);
-    } catch (error) {
-      // A single failed or malformed question does not sink the pack. The reason
-      // is logged server-side only; the client gets a count, never model detail.
-      console.warn(
-        `generate-pack: attempt ${attempt + 1} failed:`,
-        error instanceof Error ? error.message : error,
-      );
-      continue;
-    }
-  }
+  const { items, attempts } = await generateItems({
+    material,
+    count,
+    packId,
+    focus,
+    onWarn: (message) => console.warn(`generate-pack: ${message}`),
+  });
 
   if (items.length < MIN_ITEMS_KEPT) {
     console.warn(
-      `generate-pack: kept ${items.length} of ${count} after ${maxAttempts} attempts`,
+      `generate-pack: kept ${items.length} of ${count} after ${attempts} attempts`,
     );
     return NextResponse.json(
       {

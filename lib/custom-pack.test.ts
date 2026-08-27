@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  applyMisconceptions,
   assembleItem,
   clampItemCount,
   clean,
@@ -9,6 +10,9 @@ import {
   isNearDuplicateStem,
   parseFocusList,
   parseGeneratedItem,
+  parseMisconceptionList,
+  repairTarget,
+  repairUserPrompt,
   slugify,
   trimMaterial,
   validateGeneratedItem,
@@ -291,5 +295,101 @@ describe("focus points", () => {
 
   it("ignores a focus field that is not a list", () => {
     expect(parseFocusList("not a list")).toEqual([]);
+  });
+});
+
+/**
+ * The repair round exists because of one measured failure, not a hypothetical one:
+ * `ministral-3b-latest` returns three good wrong answers with no `misconception`
+ * key on any of them in roughly two replies out of three.
+ */
+describe("misconception repair", () => {
+  const stripped = {
+    ...good,
+    distractors: good.distractors.map((d) => ({ text: d.text })),
+  };
+
+  it("targets the distractors that came back without a misconception", () => {
+    const target = repairTarget(stripped);
+    expect(target).not.toBeNull();
+    expect(target!.stem).toBe(good.stem);
+    expect(target!.correct).toBe(good.correct);
+    expect(target!.texts).toEqual(["In the stroma", "In the mitochondria", "In the cell wall"]);
+  });
+
+  it("leaves out the distractors that already named one", () => {
+    const target = repairTarget({
+      ...good,
+      distractors: [good.distractors[0], { text: "In the cell wall" }],
+    });
+    expect(target!.texts).toEqual(["In the cell wall"]);
+  });
+
+  it("declines to spend a call when nothing is missing", () => {
+    expect(repairTarget(good)).toBeNull();
+  });
+
+  it("declines to spend a call on a reply with no usable question", () => {
+    expect(repairTarget({ ...stripped, stem: "" })).toBeNull();
+    expect(repairTarget({ ...stripped, distractors: "three of them" })).toBeNull();
+    expect(repairTarget(null)).toBeNull();
+  });
+
+  it("numbers the wrong answers in the prompt so the reply can be matched by order", () => {
+    const prompt = repairUserPrompt(repairTarget(stripped)!);
+    expect(prompt).toContain("1. In the stroma");
+    expect(prompt).toContain("3. In the cell wall");
+    expect(prompt).toContain("Write 3 misconceptions");
+  });
+
+  it("accepts a reply with one usable belief per wrong answer", () => {
+    const filled = parseMisconceptionList(
+      { misconceptions: ["  All of it happens in the **stroma**.  ", "Plants respire, not photosynthesise."] },
+      2,
+    );
+    expect(filled).toEqual([
+      "All of it happens in the stroma.",
+      "Plants respire, not photosynthesise.",
+    ]);
+  });
+
+  it("rejects a short reply rather than filling some slots and not others", () => {
+    expect(parseMisconceptionList({ misconceptions: ["Only one belief here."] }, 3)).toBeNull();
+    expect(parseMisconceptionList({ misconceptions: ["A belief.", "short"] }, 2)).toBeNull();
+    expect(parseMisconceptionList({ misconceptions: "not a list" }, 1)).toBeNull();
+    expect(parseMisconceptionList(null, 1)).toBeNull();
+  });
+
+  it("fills the repaired beliefs in by option text, not by position", () => {
+    const patched = applyMisconceptions(
+      stripped,
+      new Map([
+        ["in the cell wall", "The cell wall carries out photosynthesis."],
+        ["in the stroma", "All of photosynthesis happens in the stroma."],
+        ["in the mitochondria", "Photosynthesis happens in mitochondria."],
+      ]),
+    );
+    const result = validateGeneratedItem(patched);
+    expect(result.ok).toBe(true);
+    expect(result.ok && result.item.distractors).toEqual([
+      { text: "In the stroma", misconception: "All of photosynthesis happens in the stroma." },
+      { text: "In the mitochondria", misconception: "Photosynthesis happens in mitochondria." },
+      { text: "In the cell wall", misconception: "The cell wall carries out photosynthesis." },
+    ]);
+  });
+
+  it("never overwrites a misconception the model did supply", () => {
+    const patched = applyMisconceptions(
+      good,
+      new Map([["in the stroma", "A belief the repair round invented."]]),
+    ) as typeof good;
+    expect(patched.distractors[0]!.misconception).toBe(good.distractors[0]!.misconception);
+  });
+
+  it("is the difference between a kept item and a thrown-away one", () => {
+    expect(validateGeneratedItem(stripped)).toEqual({
+      ok: false,
+      reason: "only 0 usable distractors (unusable misconception)",
+    });
   });
 });

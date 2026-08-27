@@ -125,22 +125,42 @@ export function validateGeneratedItem(value: unknown): ItemRejection {
   }
   const distractors: GeneratedItem["distractors"] = [];
   const seen = new Set([correct.toLowerCase()]);
+  // Why each rejected distractor was dropped, so a shape failure names the fault
+  // rather than only counting it. `npm run eval` histograms these.
+  const dropped: string[] = [];
   for (const entry of raw.distractors) {
-    if (typeof entry !== "object" || entry === null) continue;
+    if (typeof entry !== "object" || entry === null) {
+      dropped.push(typeof entry === "string" ? "plain string" : "not an object");
+      continue;
+    }
     const d = entry as Record<string, unknown>;
     const text = condense(d.text, 240);
     const misconception = condense(d.misconception, 240);
-    if (!text || !misconception) continue;
-    if (misconception.length < 12) continue;
+    if (!text) {
+      dropped.push("unusable text");
+      continue;
+    }
+    if (!misconception) {
+      dropped.push("unusable misconception");
+      continue;
+    }
+    if (misconception.length < 12) {
+      dropped.push("misconception too short");
+      continue;
+    }
     // A distractor that repeats the correct answer would make the item unanswerable.
-    if (seen.has(text.toLowerCase())) continue;
+    if (seen.has(text.toLowerCase())) {
+      dropped.push("repeats another option");
+      continue;
+    }
     seen.add(text.toLowerCase());
     distractors.push({ text, misconception });
   }
   if (distractors.length < 2) {
+    const why = dropped.length > 0 ? ` (${[...new Set(dropped)].join(", ")})` : "";
     return {
       ok: false,
-      reason: `only ${distractors.length} usable distractor${distractors.length === 1 ? "" : "s"}`,
+      reason: `only ${distractors.length} usable distractor${distractors.length === 1 ? "" : "s"}${why}`,
     };
   }
 
@@ -237,7 +257,11 @@ Reply with JSON only, in exactly this shape:
 
 Rules:
 - Exactly three distractors. Each must be clearly wrong but tempting.
+- Every distractor object must carry BOTH keys, "text" and "misconception". A distractor with no misconception is useless and the whole question will be thrown away.
+- The misconception is the false belief itself, stated in the learner's own voice as a claim they would agree with. Never write the correction there, and never explain what is really true there.
 - Be brief. The question is at most 25 words. Every answer is one short sentence of at most 20 words. Never explain your reasoning inside an answer.
+- Keep the correct answer no longer than the wrong ones. An answer that is visibly the longest gives itself away.
+- The question must not contain the correct answer or any phrase from it.
 - Every claim must come from the supplied material. Invent nothing.
 - Plain text only. No markdown, no asterisks, no bold.
 - Reply with the JSON on one line, with no line breaks inside it.
@@ -267,6 +291,105 @@ ${material}
 Write question ${position} of ${total}. Cover an idea distinct from these already-used topics: ${used}.${aim}`;
 }
 
+/**
+ * What a repair call needs from a reply that was rejected for missing misconceptions.
+ *
+ * Ministral 3B has one failure it makes at scale: it writes three genuinely tempting
+ * wrong answers and silently omits the `misconception` key on every one of them.
+ * The question itself is fine, so throwing it away wastes a paid call — the missing
+ * half is worth asking for on its own. Returns null when the reply is too broken
+ * for a second call to rescue.
+ */
+export interface RepairTarget {
+  stem: string;
+  correct: string;
+  /** Only the distractors that came back without a usable misconception. */
+  texts: string[];
+}
+
+export function repairTarget(value: unknown): RepairTarget | null {
+  if (typeof value !== "object" || value === null) return null;
+  const raw = value as Record<string, unknown>;
+  const stem = condense(raw.stem, 300);
+  const correct = condense(raw.correct, 240);
+  if (!stem || !correct || !Array.isArray(raw.distractors)) return null;
+
+  const texts: string[] = [];
+  for (const entry of raw.distractors) {
+    if (typeof entry !== "object" || entry === null) continue;
+    const d = entry as Record<string, unknown>;
+    // A distractor that already named its misconception needs no repair.
+    if (condense(d.misconception, 240)) continue;
+    const text = condense(d.text, 240);
+    if (text) texts.push(text);
+  }
+  return texts.length > 0 ? { stem, correct, texts } : null;
+}
+
+/**
+ * Returns a copy of the reply with repaired misconceptions filled in, keyed on the
+ * option text so a reordered reply still lands on the right distractor.
+ */
+export function applyMisconceptions(
+  value: unknown,
+  filled: Map<string, string>,
+): unknown {
+  if (typeof value !== "object" || value === null) return value;
+  const raw = value as Record<string, unknown>;
+  if (!Array.isArray(raw.distractors)) return value;
+  const distractors = raw.distractors.map((entry) => {
+    if (typeof entry !== "object" || entry === null) return entry;
+    const d = entry as Record<string, unknown>;
+    if (condense(d.misconception, 240)) return entry;
+    const text = condense(d.text, 240);
+    const found = text ? filled.get(text.toLowerCase()) : undefined;
+    return found ? { ...d, misconception: found } : entry;
+  });
+  return { ...raw, distractors };
+}
+
+export const REPAIR_SYSTEM_PROMPT = `You name the false belief behind a wrong answer.
+
+You are given a question, its correct answer, and a numbered list of wrong answers. For each wrong answer, write the false belief that would lead a learner to pick it.
+
+Reply with JSON only, in exactly this shape:
+{"misconceptions":["The false belief behind wrong answer 1","The false belief behind wrong answer 2"]}
+
+Rules:
+- One entry per wrong answer, in the same order, and the same number of entries as there are wrong answers.
+- Write the belief as a statement in the learner's own voice, a claim they would agree with.
+- Never write the correction there, and never say what is actually true.
+- One short sentence each, at most 20 words. Plain text only, no markdown.`;
+
+export function repairUserPrompt(target: RepairTarget): string {
+  const list = target.texts.map((text, i) => `${i + 1}. ${text}`).join("\n");
+  return `QUESTION: ${target.stem}
+CORRECT ANSWER: ${target.correct}
+
+WRONG ANSWERS:
+${list}
+
+Write ${target.texts.length} misconception${target.texts.length === 1 ? "" : "s"}, one for each wrong answer above, in order.`;
+}
+
+/** Validates a repair reply. Returns null unless every slot came back usable. */
+export function parseMisconceptionList(
+  value: unknown,
+  count: number,
+): string[] | null {
+  if (typeof value !== "object" || value === null) return null;
+  const raw = (value as Record<string, unknown>).misconceptions;
+  if (!Array.isArray(raw) || raw.length < count) return null;
+  const out: string[] = [];
+  for (const entry of raw.slice(0, count)) {
+    const text = condense(entry, 240);
+    // Same floor the main validator applies: below this it is a label, not a belief.
+    if (!text || text.length < 12) return null;
+    out.push(text);
+  }
+  return out;
+}
+
 /** Validates a caller-supplied list of points to build questions around. */
 export function parseFocusList(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
@@ -288,7 +411,7 @@ const STOP_WORDS = new Set([
   "with", "you", "your",
 ]);
 
-function contentWords(text: string): Set<string> {
+export function contentWords(text: string): Set<string> {
   return new Set(
     text
       .toLowerCase()
