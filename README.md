@@ -1,34 +1,38 @@
 # Confidently Wrong
 
-A study tool built on **certainty-based marking**. Answer questions on unstudied material, say how sure you are, then learn which beliefs were *confidently wrong*. Those alone get a refutation.
+A study tool built on **certainty-based marking**. Answer on unstudied material, state your certainty, then learn which beliefs were *confidently wrong*. Those alone get refuted.
 
 ## The five phases
 
 1. **Pick** a pack.
-2. **Probe** — answer plus certainty: guessing, fairly sure, certain. No feedback.
-3. **Reveal** — quadrant grid, calibration curve, CBM score.
-4. **Repair** — refutation cards for the confidently-wrong quadrant.
-5. **Recheck** — reworded misses, second curve over the first.
+2. **Probe** — answer plus certainty. No feedback.
+3. **Reveal** — quadrants, calibration, CBM score, belief bars.
+4. **Repair** — refutations for the confidently-wrong quadrant.
+5. **Recheck** — reworded misses, second curve overlaid.
 
 ## Why refutation is gated
 
-Certainty 2 or 3 *and* wrong earns a refutation; a guessed wrong answer gets a plain correction — explaining an unheld belief hands someone a misconception to remember. Gated in `lib/scoring.ts`, tested in `lib/store.test.ts`.
+Certainty 2 or 3 *and* wrong earns a refutation; a guessed wrong answer gets a plain correction — refuting an unheld belief only plants it. `lib/scoring.ts`, tested in `lib/store.test.ts`.
+
+## What it thinks you believe
+
+Certainty is evidence, not just a multiplier: each answer updates a Bayesian posterior over which misconception you hold. Wrong-and-certain moves it hard, a guess barely. It then picks the next question by expected information gain, and orders the recheck. `lib/belief.ts`.
 
 ## Your own material
 
-`/packs/new` turns a PDF or pasted notes into 4–8 questions, each distractor a stated misconception. Uploads are deleted afterwards.
+`/packs/new` turns a PDF or notes into 4–8 questions, each distractor a stated misconception. Uploads are deleted.
 
-`/explain` does it out loud. Say what you think you know; you are told what was sound, what you left out, and what was wrong, then quizzed on those — your own wrong claims become the distractors, and correct answers may only come from the corrections. Typing works where the microphone cannot.
+`/explain` marks a spoken explanation: what was sound, what you left out, what was wrong — then quizzes you on those, your own wrong claims as distractors. Typing works too.
 
-`/dashboard`: weakest topics, lifetime calibration, past runs.
+`/dashboard`: weakest topics, calibration, past runs.
 
 ## Stack
 
-Next.js App Router, strict TypeScript, Tailwind, Zustand over `localStorage`, Recharts, Vitest. Mistral `ministral-3b-latest` writes refutations, critiques, and packs; `mistral-ocr-latest` reads PDFs; Voxtral does speech. No accounts, no database, and a hand-written fallback behind every AI path.
+Next.js App Router, strict TypeScript, Tailwind, Zustand + `localStorage`, Recharts, Vitest. Mistral `ministral-3b-latest` writes refutations, critiques, packs; `mistral-ocr-latest` reads PDFs; Voxtral does speech. No accounts, no database, a fallback behind every AI path.
 
 ```bash
 npm install
-cp .env.example .env.local   # MISTRAL_API_KEY
+cp .env.example .env.local
 npm run dev
 npm test
 ```
