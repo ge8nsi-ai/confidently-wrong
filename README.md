@@ -1,32 +1,34 @@
 # Confidently Wrong
 
-A study tool built on **certainty-based marking**. You answer questions on material you have not studied, say how sure you are, and only then find out which beliefs were *confidently wrong*. Those alone get a personalised refutation.
+A study tool built on **certainty-based marking**. Answer questions on unstudied material, say how sure you are, then learn which beliefs were *confidently wrong*. Those alone get a refutation.
 
 ## The five phases
 
 1. **Pick** a pack.
-2. **Probe** — an answer, then your certainty: guessing, fairly sure, certain. No feedback here.
-3. **Reveal** — certainty-against-correctness grid, calibration curve against the perfect diagonal, CBM score, overconfidence gap.
-4. **Repair** — refutation cards for the confidently-wrong quadrant only.
-5. **Recheck** — reworded variants of the misses, second curve over the first.
+2. **Probe** — answer plus certainty: guessing, fairly sure, certain. No feedback.
+3. **Reveal** — quadrant grid, calibration curve, CBM score.
+4. **Repair** — refutation cards for the confidently-wrong quadrant.
+5. **Recheck** — reworded misses, second curve over the first.
 
 ## Why refutation is gated
 
-A refutation appears only where certainty was 2 or 3 *and* the answer was wrong. A guessed wrong answer gets a plain correction. Explaining why a belief someone never held is wrong hands them a misconception to remember. The gate lives in `lib/scoring.ts`, proven by `lib/store.test.ts`.
+Certainty 2 or 3 *and* wrong earns a refutation; a guessed wrong answer gets a plain correction — explaining an unheld belief hands someone a misconception to remember. Gated in `lib/scoring.ts`, tested in `lib/store.test.ts`.
 
 ## Your own material
 
-`/packs/new` turns a PDF, text file, or pasted notes into 4–8 questions, each distractor built from a stated misconception. Uploads are deleted after text extraction.
+`/packs/new` turns a PDF or pasted notes into 4–8 questions, each distractor a stated misconception. Uploads are deleted afterwards.
 
-`/dashboard` keeps sessions in this browser: topics you miss most, weighted by certainty; calibration across all answers; past runs to repeat.
+`/explain` does it out loud. Say what you think you know; you are told what was sound, what you left out, and what was wrong, then quizzed on those — your own wrong claims become the distractors, and correct answers may only come from the corrections. Typing works where the microphone cannot.
+
+`/dashboard`: weakest topics, lifetime calibration, past runs.
 
 ## Stack
 
-Next.js App Router, strict TypeScript, Tailwind, Zustand over `localStorage`, Recharts, Vitest. Mistral `ministral-3b-latest` writes refutations and packs, `mistral-ocr-latest` reads PDFs, Voxtral does speech. No accounts, no database; every AI path falls back to hand-written text.
+Next.js App Router, strict TypeScript, Tailwind, Zustand over `localStorage`, Recharts, Vitest. Mistral `ministral-3b-latest` writes refutations, critiques, and packs; `mistral-ocr-latest` reads PDFs; Voxtral does speech. No accounts, no database, and a hand-written fallback behind every AI path.
 
 ```bash
 npm install
-cp .env.example .env.local   # add MISTRAL_API_KEY, or leave it blank
+cp .env.example .env.local   # MISTRAL_API_KEY
 npm run dev
 npm test
 ```
