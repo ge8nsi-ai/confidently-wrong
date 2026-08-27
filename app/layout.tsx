@@ -10,10 +10,14 @@ export const metadata: Metadata = {
   title: "Confidently Wrong",
   description:
     "Find the beliefs you have been sure about and wrong about, then fix only those.",
+  icons: {
+    icon: "/generated/confidently-wrong-logo.png",
+    apple: "/generated/confidently-wrong-logo.png",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07080d",
+  themeColor: "#f2eee9",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

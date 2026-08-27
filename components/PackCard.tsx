@@ -11,7 +11,7 @@ export default function PackCard({ pack }: { pack: Pack }) {
   return (
     <Link
       href={`/study/${pack.id}`}
-      className="group glass relative flex min-h-[25rem] flex-col overflow-hidden rounded-[2rem] p-3 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_55px_rgba(87,67,74,.2)]"
+      className="group relative flex min-h-[24rem] flex-col overflow-hidden rounded-[2rem] border border-white/90 bg-white/75 p-3 text-ink-50 shadow-[0_16px_40px_rgba(76,66,72,.1)] backdrop-blur-xl transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_22px_48px_rgba(76,66,72,.15)]"
     >
       <Landscape id={pack.id} />
       <div className="relative flex flex-1 flex-col px-3 pb-3 pt-5">
@@ -21,7 +21,7 @@ export default function PackCard({ pack }: { pack: Pack }) {
         <h2 className="mt-3 max-w-[15rem] text-2xl font-semibold leading-tight text-ink-50 sm:text-[1.7rem]">
           {pack.title}
         </h2>
-        <p className="mt-3 flex-1 text-[0.98rem] leading-relaxed text-ink-300">
+        <p className="mt-3 flex-1 text-[0.98rem] leading-relaxed text-ink-400">
           {pack.blurb}
         </p>
         <span className="mt-6 inline-flex items-center justify-between rounded-2xl bg-ink-50 px-4 py-3 text-sm font-semibold text-ink-950">

@@ -5,37 +5,38 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Ink scale — deep, slightly blue-cast neutrals. */
-  --color-ink-950: #fffaf3;
-  --color-ink-900: #fcf5ed;
-  --color-ink-850: #f8eee7;
-  --color-ink-800: #f1e5df;
-  --color-ink-700: #e8d8d0;
-  --color-ink-600: #d4c1bc;
-  --color-ink-400: #675e65;
-  --color-ink-300: #554d55;
-  --color-ink-200: #514b55;
-  --color-ink-50: #273447;
+  --color-ink-950: #fbfaf7;
+  --color-ink-900: #f7f5f0;
+  --color-ink-850: #f0eee8;
+  --color-ink-800: #e8e5de;
+  --color-ink-700: #ddd9d1;
+  --color-ink-600: #c9c4ba;
+  --color-ink-400: #77777e;
+  --color-ink-300: #5b5c64;
+  --color-ink-200: #3f414a;
+  --color-ink-100: #282a31;
+  --color-ink-50: #181a20;
 
   /* Danger zone: sure and wrong. Warm, dominant. */
-  --color-ember-500: #e98272;
-  --color-ember-400: #f19a85;
-  --color-ember-300: #f7b5a2;
-  --color-ember-900: #f8dfd8;
+  --color-ember-500: #d86f63;
+  --color-ember-400: #e99082;
+  --color-ember-300: #b95850;
+  --color-ember-900: #fde5df;
 
   /* Correct / calm. */
-  --color-mint-400: #6f9b92;
-  --color-mint-300: #8fb6ad;
-  --color-mint-900: #dceae4;
+  --color-mint-400: #77a999;
+  --color-mint-300: #397665;
+  --color-mint-900: #e2f0e9;
 
   /* Accent for chrome and links. */
-  --color-iris-400: #7889a8;
-  --color-iris-300: #91a1bd;
-  --color-iris-900: #e5e9f2;
+  --color-iris-400: #8580b8;
+  --color-iris-300: #625d98;
+  --color-iris-900: #ebe9f7;
 }
 
 :root {
   color-scheme: light;
-  --page: #efd8d5;
+  --page: #f2eee9;
 }
 
 * {
@@ -48,26 +49,17 @@ body {
   color: var(--color-ink-50);
 }
 
+@media (max-width: 639px) {
+  body {
+    padding-bottom: 5.25rem;
+  }
+}
+
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  background-image:
-    radial-gradient(
-      68rem 40rem at 12% -12%,
-      color-mix(in oklab, #b7c9d2 34%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      52rem 34rem at 100% 0%,
-      color-mix(in oklab, #efb0a5 42%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      60rem 40rem at 50% 110%,
-      color-mix(in oklab, #e9c4bc 30%, transparent),
-      transparent 70%
-    );
+  background-image: radial-gradient(45rem 30rem at 5% 0%, #f8dcd5 0%, transparent 72%), radial-gradient(40rem 28rem at 100% 8%, #dfe7f3 0%, transparent 70%), radial-gradient(34rem 26rem at 50% 100%, #e6ecd7 0%, transparent 72%);
   background-attachment: fixed;
   min-height: 100dvh;
 }
@@ -77,8 +69,8 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.18;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
 
@@ -89,7 +81,7 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.22;
+  opacity: 0.08;
   background-image:
     repeating-linear-gradient(0deg, rgba(116, 87, 86, 0.045) 0, rgba(116, 87, 86, 0.045) 1px, transparent 1px, transparent 4px),
     repeating-linear-gradient(91deg, rgba(255, 255, 255, 0.16) 0, rgba(255, 255, 255, 0.16) 1px, transparent 1px, transparent 7px),
@@ -97,6 +89,21 @@ body::after {
     radial-gradient(circle at 72% 64%, rgba(116, 87, 86, 0.1) 0 0.65px, transparent 1px);
   background-size: auto, auto, 13px 17px, 19px 23px;
   mix-blend-mode: soft-light;
+}
+
+.hero-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url("/generated/hero-background-abstract.png") center / cover no-repeat;
+  opacity: 0.07;
+}
+
+.hero-art > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Visible, consistent focus for keyboard users everywhere. */
@@ -110,10 +117,10 @@ body::after {
   .glass {
     position: relative;
     isolation: isolate;
-    background: color-mix(in oklab, #fffaf3 88%, transparent);
-    border: 1px solid color-mix(in oklab, #d4c1bc 62%, transparent);
-    box-shadow: 0 18px 45px rgba(87, 67, 74, 0.12), 0 3px 8px rgba(87, 67, 74, 0.06);
-    backdrop-filter: blur(14px) saturate(115%);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    box-shadow: 0 14px 38px rgba(70, 61, 68, 0.09), 0 2px 8px rgba(70, 61, 68, 0.05);
+    backdrop-filter: blur(22px) saturate(125%);
   }
 
   .glass::before {
@@ -122,7 +129,7 @@ body::after {
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
-    opacity: 0.24;
+    opacity: 0.08;
     background-image: repeating-linear-gradient(0deg, rgba(116, 87, 86, 0.035) 0, rgba(116, 87, 86, 0.035) 1px, transparent 1px, transparent 5px);
     mix-blend-mode: multiply;
   }

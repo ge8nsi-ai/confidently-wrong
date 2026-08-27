@@ -58,8 +58,8 @@ export default function ProbeCard({
         />
       </div>
 
-      <div className="mt-5 rounded-[1.5rem] bg-[#f3d8cf] px-5 py-6 sm:px-7 sm:py-8">
-      <h1 className="text-xl font-semibold leading-snug text-ink-50 sm:text-[1.65rem]">
+      <div className="mt-5 rounded-[1.5rem] border border-white/80 bg-[#e7edf6] px-5 py-6 shadow-[inset_0_1px_0_rgba(255,255,255,.8)] sm:px-7 sm:py-8">
+      <h1 className="text-xl font-semibold leading-snug text-[#252d40] sm:text-[1.65rem]">
         {item.stem}
       </h1>
       </div>
@@ -122,7 +122,7 @@ export default function ProbeCard({
         type="button"
         disabled={!ready}
         onClick={() => ready && onSubmit(chosen, conf)}
-        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 shadow-[0_8px_0_#d6c1bb] transition hover:-translate-y-0.5 hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-400 disabled:shadow-none"
+        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 shadow-[0_6px_0_#c5beb4] transition hover:-translate-y-0.5 hover:bg-[#30384a] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-400 disabled:shadow-none"
       >
         {position === total ? "Finish round" : "Next question"}
       </button>

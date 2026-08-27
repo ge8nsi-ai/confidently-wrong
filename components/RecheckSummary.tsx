@@ -74,7 +74,7 @@ export default function RecheckSummary({
       <button
         type="button"
         onClick={onRestart}
-        className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62]"
+        className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#30384a]"
       >
         Try another pack
       </button>

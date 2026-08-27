@@ -85,11 +85,11 @@ function Cell({
           <p className="tnum mt-5 text-6xl font-semibold leading-none text-ember-300 sm:text-7xl">
             {n}
           </p>
-          <p className="mt-4 text-lg font-semibold leading-snug text-ink-950 sm:text-xl">
+          <p className="mt-4 text-lg font-semibold leading-snug text-white sm:text-xl">
             {copy.title(n)}
           </p>
         </div>
-        <p className="relative mt-5 max-w-[28rem] text-sm leading-relaxed text-ink-900">
+        <p className="relative mt-5 max-w-[28rem] text-sm leading-relaxed text-[#d9deea]">
           {copy.note}
         </p>
       </div>
