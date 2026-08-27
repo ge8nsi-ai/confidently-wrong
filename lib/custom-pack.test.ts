@@ -3,9 +3,15 @@ import {
   assembleItem,
   clampItemCount,
   clean,
+  clipLabel,
+  condense,
+  generateUserPrompt,
+  isNearDuplicateStem,
+  parseFocusList,
   parseGeneratedItem,
   slugify,
   trimMaterial,
+  validateGeneratedItem,
   MAX_MATERIAL_CHARS,
 } from "./custom-pack";
 
@@ -85,9 +91,48 @@ describe("parseGeneratedItem", () => {
     expect(parsed.distractors).toHaveLength(2);
   });
 
-  it("rejects an item with no usable fallback refutation", () => {
-    expect(parseGeneratedItem({ ...good, fallbackRefutation: {} })).toBeNull();
-    expect(parseGeneratedItem({ ...good, fallbackRefutation: undefined })).toBeNull();
+  it("derives the fallback refutation when the model omits it", () => {
+    // The refutation is a standby the repair round rarely reaches, so it is
+    // derived from the first distractor rather than costing a paid question.
+    const parsed = parseGeneratedItem({ ...good, fallbackRefutation: {} })!;
+    expect(parsed.fallbackRefutation.believe).toContain(
+      "All of photosynthesis happens in the stroma.",
+    );
+    expect(parsed.fallbackRefutation.actual).toBe("In the thylakoid membrane");
+    expect(parseGeneratedItem({ ...good, fallbackRefutation: undefined })).not.toBeNull();
+  });
+
+  it("names the reason an item was thrown away", () => {
+    const reasonFor = (patch: Record<string, unknown>) => {
+      const result = validateGeneratedItem({ ...good, ...patch });
+      return result.ok ? "accepted" : result.reason;
+    };
+    expect(reasonFor({ stem: "" })).toBe("unusable stem");
+    expect(reasonFor({ correct: 42 })).toBe("unusable correct answer");
+    expect(reasonFor({ distractors: "three of them" })).toBe("distractors missing");
+    expect(reasonFor({ distractors: [good.distractors[0]] })).toBe(
+      "only 1 usable distractor",
+    );
+    expect(reasonFor({})).toBe("accepted");
+  });
+
+  it("keeps a verbose item by cutting the answer back to a whole sentence", () => {
+    const correct =
+      "The light reactions run in the thylakoid membrane. They split water and build the ATP and NADPH that the Calvin cycle later spends, which is why a chloroplast needs both compartments to do the job at all and cannot manage with only one of them.";
+    const parsed = parseGeneratedItem({ ...good, correct })!;
+    expect(parsed.correct).toBe(
+      "The light reactions run in the thylakoid membrane.",
+    );
+  });
+
+  it("shortens an overlong topic label instead of dropping the item", () => {
+    const parsed = parseGeneratedItem({
+      ...good,
+      topic:
+        "How the axial tilt of the Earth influences seasonal temperatures across both hemispheres",
+    })!;
+    expect(parsed.topic.length).toBeLessThanOrEqual(72);
+    expect(parsed.topic.startsWith("How the axial tilt")).toBe(true);
   });
 
   it("rejects junk", () => {
@@ -129,6 +174,39 @@ describe("assembleItem", () => {
   });
 });
 
+describe("condense", () => {
+  it("leaves a value inside the budget alone", () => {
+    expect(condense("Short enough.", 100)).toBe("Short enough.");
+  });
+
+  it("cuts an overlong value back to its last whole sentence", () => {
+    const text =
+      "The axial tilt is 23.5 degrees. It decides how sunlight lands on each hemisphere. This third sentence is surplus.";
+    expect(condense(text, 70)).toBe("The axial tilt is 23.5 degrees.");
+  });
+
+  it("refuses a run-on with no sentence break to cut on", () => {
+    expect(condense("word ".repeat(60), 100)).toBeNull();
+  });
+
+  it("rejects non-strings and empties like clean does", () => {
+    expect(condense(7, 100)).toBeNull();
+    expect(condense("  ", 100)).toBeNull();
+  });
+});
+
+describe("clipLabel", () => {
+  it("trims a long label on a word boundary without trailing punctuation", () => {
+    expect(
+      clipLabel("How Earth's axial tilt influences seasonal temperatures", 30),
+    ).toBe("How Earth's axial tilt");
+  });
+
+  it("leaves a short label alone", () => {
+    expect(clipLabel("Light reactions", 30)).toBe("Light reactions");
+  });
+});
+
 describe("input guards", () => {
   it("clamps the question count into range", () => {
     expect(clampItemCount(1)).toBe(4);
@@ -146,5 +224,72 @@ describe("input guards", () => {
   it("slugifies titles and falls back when nothing survives", () => {
     expect(slugify("How Summers Work!", "pack")).toBe("how-summers-work");
     expect(slugify("!!!", "pack")).toBe("pack");
+  });
+});
+
+describe("isNearDuplicateStem", () => {
+  const asked = [
+    "Why is the Northern Hemisphere warmer in July than in January?",
+  ];
+
+
+  it("catches the same question asked in different words", () => {
+    expect(
+      isNearDuplicateStem(
+        "Why does the Northern Hemisphere have warmer weather in July than January?",
+        asked,
+      ),
+    ).toBe(true);
+  });
+
+  it("lets a genuinely different question through", () => {
+    expect(
+      isNearDuplicateStem(
+        "Where does the oxygen released by photosynthesis come from?",
+        asked,
+      ),
+    ).toBe(false);
+  });
+
+  it("shared question words alone are not a duplicate", () => {
+    expect(
+      isNearDuplicateStem("What is the role of RuBisCO in the Calvin cycle?", [
+        "What is the function of chlorophyll in a leaf?",
+      ]),
+    ).toBe(false);
+  });
+
+  it("finds nothing to duplicate in an empty history", () => {
+    expect(isNearDuplicateStem("Any question at all?", [])).toBe(false);
+  });
+});
+
+describe("focus points", () => {
+  it("names the point to build the question around when one is given", () => {
+    const prompt = generateUserPrompt("MATERIAL BODY", 2, 5, ["Tilt"], "Perihelion is in January.");
+    expect(prompt).toContain("Write question 2 of 5");
+    expect(prompt).toContain("Base this question on this specific point: Perihelion is in January.");
+  });
+
+  it("leaves the prompt as it was when no point is given", () => {
+    expect(generateUserPrompt("MATERIAL BODY", 1, 4, [])).not.toContain(
+      "Base this question",
+    );
+  });
+
+  it("cleans the focus list and caps it at the maximum pack size", () => {
+    const focus = parseFocusList([
+      "  A **point** worth asking about  ",
+      "short",
+      42,
+      ...Array.from({ length: 12 }, (_, i) => `Another point number ${i}`),
+    ]);
+    expect(focus[0]).toBe("A point worth asking about");
+    expect(focus).not.toContain("short");
+    expect(focus).toHaveLength(8);
+  });
+
+  it("ignores a focus field that is not a list", () => {
+    expect(parseFocusList("not a list")).toEqual([]);
   });
 });

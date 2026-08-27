@@ -7,9 +7,11 @@ import {
   clampItemCount,
   clean,
   generateUserPrompt,
-  parseGeneratedItem,
+  isNearDuplicateStem,
+  parseFocusList,
   slugify,
   trimMaterial,
+  validateGeneratedItem,
 } from "@/lib/custom-pack";
 import { chatJson, hasKey, ocrDocument } from "@/lib/mistral";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
@@ -20,7 +22,11 @@ export const maxDuration = 120;
 
 /** Tighter than the other routes: one call here fans out into several model calls. */
 const RATE_LIMIT_PER_MINUTE = 5;
-const MAX_TOKENS_PER_ITEM = 700;
+/**
+ * Enough headroom that a wordy item finishes its JSON. A truncated reply is not
+ * parseable at all, so a cap that is too tight wastes the whole paid call.
+ */
+const MAX_TOKENS_PER_ITEM = 900;
 const MAX_TEXT_BODY_BYTES = 200 * 1024;
 /**
  * A pack ships if at least this many questions survive validation, even when the
@@ -62,6 +68,8 @@ export async function POST(request: Request): Promise<Response> {
   let title = "";
   let sourceName = "";
   let count = 6;
+  /** Points to build one question each around. Voice mode supplies these. */
+  let focus: string[] = [];
 
   const contentType = request.headers.get("content-type") ?? "";
 
@@ -103,6 +111,7 @@ export async function POST(request: Request): Promise<Response> {
       title = clean(body.title, 80) ?? "";
       sourceName = clean(body.sourceName, 120) ?? "";
       count = clampItemCount(body.count);
+      focus = parseFocusList(body.focus);
     }
   } catch {
     return NextResponse.json(
@@ -130,6 +139,7 @@ export async function POST(request: Request): Promise<Response> {
   const items: Item[] = [];
   const usedConcepts: string[] = [];
   const usedKeys = new Set<string>();
+  const usedStems: string[] = [];
   const maxAttempts = count + 3;
 
   for (
@@ -148,26 +158,51 @@ export async function POST(request: Request): Promise<Response> {
               items.length + 1,
               count,
               usedConcepts,
+              focus[items.length],
             ),
           },
         ],
         { maxTokens: MAX_TOKENS_PER_ITEM, timeoutMs: 20_000, temperature: 0.4 },
       );
 
-      const generated = parseGeneratedItem(raw);
-      if (!generated) continue;
-      if (usedKeys.has(generated.topic.toLowerCase())) continue;
+      const validated = validateGeneratedItem(raw);
+      if (!validated.ok) {
+        console.warn(
+          `generate-pack: attempt ${attempt + 1} rejected — ${validated.reason}`,
+        );
+        continue;
+      }
+      const generated = validated.item;
+
+      // Repeats are skipped while there are attempts to spare. Once dropping one
+      // would leave the pack below the floor, a repeat beats no pack at all —
+      // narrow material genuinely cannot yield many distinct questions.
+      const attemptsLeft = maxAttempts - attempt - 1;
+      const canAffordToSkip = items.length + attemptsLeft >= MIN_ITEMS_KEPT;
+      const repeated =
+        usedKeys.has(generated.topic.toLowerCase()) ||
+        isNearDuplicateStem(generated.stem, usedStems);
+      if (repeated && canAffordToSkip) continue;
 
       items.push(assembleItem(generated, packId, items.length));
-      usedConcepts.push(generated.topic);
+      usedConcepts.push(`${generated.topic} (asked: ${generated.stem})`);
       usedKeys.add(generated.topic.toLowerCase());
-    } catch {
-      // A single failed or malformed question does not sink the pack.
+      usedStems.push(generated.stem);
+    } catch (error) {
+      // A single failed or malformed question does not sink the pack. The reason
+      // is logged server-side only; the client gets a count, never model detail.
+      console.warn(
+        `generate-pack: attempt ${attempt + 1} failed:`,
+        error instanceof Error ? error.message : error,
+      );
       continue;
     }
   }
 
   if (items.length < MIN_ITEMS_KEPT) {
+    console.warn(
+      `generate-pack: kept ${items.length} of ${count} after ${maxAttempts} attempts`,
+    );
     return NextResponse.json(
       {
         error: `Only ${items.length} usable question${items.length === 1 ? "" : "s"} came back. Try material with more explaining in it, or fewer questions.`,
