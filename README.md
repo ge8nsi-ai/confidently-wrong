@@ -2,33 +2,33 @@
 
 **Live:** <https://confidently-wrong-fawn.vercel.app>
 
-A study tool built on **certainty-based marking**: answer unstudied material, state your certainty, and only what you were *confidently wrong* about gets refuted.
+Answer unstudied material, state your certainty; only what you were *confidently wrong* about gets refuted. **Certainty-based marking**.
 
 ## The five phases
 
-**Pick** → **Probe** (answer plus certainty, no feedback) → **Reveal** (quadrants, calibration, CBM score, belief bars) → **Repair** (the confidently-wrong quadrant) → **Recheck** (reworded misses).
+**Pick** → **Probe** (certainty, no feedback) → **Reveal** (quadrants, calibration, CBM score) → **Repair** (the confidently-wrong quadrant) → **Recheck** (reworded misses).
 
 ## Why refutation is gated
 
-Certainty 2 or 3 *and* wrong earns a refutation; a wrong guess gets a plain correction — refuting an unheld belief only plants it. `lib/scoring.ts`.
+Certainty 2 or 3 *and* wrong earns a refutation; a guess gets a plain correction — refuting an unheld belief plants it. `lib/scoring.ts`.
 
 ## What it thinks you believe
 
-Certainty is evidence, not a multiplier: each answer updates a Bayesian posterior over which misconception you hold — certain-and-wrong moves it hard, a guess barely. The next question maximises information gain. `lib/belief.ts`.
+Certainty is evidence, not a multiplier: each answer updates a posterior over which misconception you hold — certain-and-wrong moves it hard, a guess barely. The next question maximises information gain. `lib/belief.ts`.
 
 ## Your own material
 
-`/packs/new` turns a PDF or notes into 4–8 questions, each distractor a named misconception. Uploads are deleted.
+`/packs/new` turns a PDF or notes into 4–8 questions, every distractor a named misconception; uploads deleted.
 
-`/explain` marks a spoken explanation, then quizzes the misses. `/dashboard`: weak topics, calibration, past runs.
+`/explain` marks a spoken explanation, then quizzes the misses. `/dashboard`: weak topics, calibration, runs.
 
 ## Question quality
 
-`lib/quality.ts` fails a stem that leaks its answer, or a correct option that is visibly the longest. Form checks cannot see a false key, so `lib/challenge.ts` answers each question again, blind to the key; disagreement drops it. `npm run eval`: 17 kept, 46 calls, 2 disputed.
+`lib/quality.ts` fails a stem that leaks its answer, or a visibly longest correct option. Form checks cannot see a false key, so `lib/challenge.ts` answers each question again, blind to it. Word overlap cannot see a reworded question, so `lib/similarity.ts` compares stem embeddings, at a threshold swept over 18 labelled pairs. `npm run eval`: 16 kept of 36, 10 dropped as repeats.
 
 ## Stack
 
-Next.js App Router, strict TypeScript, Tailwind, Zustand + `localStorage`, Recharts, Vitest. `ministral-3b-latest` writes refutations and packs, `mistral-ocr-latest` reads PDFs, Voxtral does speech. No database; a fallback behind every AI path.
+Next.js App Router, strict TypeScript, Tailwind, Zustand + `localStorage`, Recharts, Vitest. `ministral-3b-latest` writes refutations and packs, `mistral-ocr-latest` reads PDFs, Voxtral does speech. No database; every AI path has a fallback.
 
 ```bash
 npm install

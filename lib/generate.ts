@@ -15,6 +15,11 @@
  * lib/challenge.ts. That is the only check that can see a well-formed question
  * whose marked answer is simply false.
  *
+ * Repetition is caught in two layers: free word overlap first, then an embedding
+ * of the stem compared against the stems already kept. The second layer exists
+ * because a small model given narrow material rewords its own question, and a
+ * reworded question shares almost no words with the original.
+ *
  * Three gates and up to eleven attempts can outlast the 60s the route gets, so
  * the loop also watches the clock and returns a short pack rather than nothing.
  */
@@ -38,8 +43,9 @@ import {
   disputeReason,
   parseChallenge,
 } from "./challenge";
-import { chatJson } from "./mistral";
+import { chatJson, embed } from "./mistral";
 import { checkItem } from "./quality";
+import { findNearDuplicate } from "./similarity";
 import type { Item } from "./types";
 
 /**
@@ -61,11 +67,14 @@ export const MIN_ITEMS_KEPT = 3;
 /**
  * Spare attempts, to cover the items that come back unusable.
  *
- * Raised from three when the dispute gate went in: it throws out about one in
- * three questions, and with the old budget a pack of six landed on the floor of
- * three. A dropped question should cost a call, not a question.
+ * Raised from three when the dispute gate went in, and from five when the
+ * paraphrase gate followed: on narrow material a small model spends several
+ * attempts circling ground it has already covered, and each repetition layer
+ * turns a wasted question into a wasted call. Eight leaves every source in the
+ * eval finishing above its floor with roughly half the 50s budget unspent, and
+ * the clock guard below is what stops this number from mattering on the route.
  */
-const SPARE_ATTEMPTS = 5;
+const SPARE_ATTEMPTS = 8;
 
 /**
  * How long the whole loop may spend before it stops starting new work.
@@ -83,7 +92,16 @@ const RESERVE_FOR_ATTEMPT_MS = 14_000;
 /** Room for the cheaper second-opinion call, which is one letter of output. */
 const RESERVE_FOR_CHALLENGE_MS = 7_000;
 
-export type RejectionStage = "shape" | "rubric" | "duplicate" | "disputed" | "error";
+/** Room for one embedding of one stem — the cheapest of the three calls. */
+const RESERVE_FOR_EMBED_MS = 3_000;
+
+export type RejectionStage =
+  | "shape"
+  | "rubric"
+  | "duplicate"
+  | "paraphrase"
+  | "disputed"
+  | "error";
 
 export interface Rejection {
   attempt: number;
@@ -105,6 +123,10 @@ export interface GenerationOutcome {
   challengeCalls: number;
   /** Items thrown out because that second answer disagreed with the key. */
   disputed: number;
+  /** Calls spent embedding a stem to compare it against the stems already kept. */
+  embedCalls: number;
+  /** Items thrown out as paraphrases that word overlap did not catch. */
+  paraphrased: number;
   /** True when the loop stopped on the clock rather than on the question count. */
   stoppedEarly: boolean;
 }
@@ -178,12 +200,16 @@ export async function generateItems({
   const usedConcepts: string[] = [];
   const usedKeys = new Set<string>();
   const usedStems: string[] = [];
+  /** One vector per kept stem, in step with usedStems where embedding worked. */
+  const keptVectors: { stem: string; vector: number[] }[] = [];
   const rejections: Rejection[] = [];
   let keptDespiteRubric = 0;
   let repairCalls = 0;
   let repaired = 0;
   let challengeCalls = 0;
   let disputed = 0;
+  let embedCalls = 0;
+  let paraphrased = 0;
   let stoppedEarly = false;
 
   const startedAt = Date.now();
@@ -195,6 +221,19 @@ export async function generateItems({
   const reject = (attempt: number, stage: RejectionStage, reason: string) => {
     rejections.push({ attempt, stage, reason });
     onWarn?.(`attempt ${attempt} rejected at ${stage} — ${reason}`);
+  };
+
+  /**
+   * Marks ground as covered for the next prompt.
+   *
+   * Called for kept questions and for ones rejected as repetition alike: from
+   * the prompt's point of view a reworded question is ground already visited,
+   * and saying so is what stops the model returning to it.
+   */
+  const noteCovered = (topic: string, stem: string) => {
+    usedConcepts.push(`${topic} (asked: ${stem})`);
+    usedKeys.add(topic.toLowerCase());
+    usedStems.push(stem);
   };
 
   for (let attempt = 1; attempt <= maxAttempts && items.length < count; attempt += 1) {
@@ -263,7 +302,41 @@ export async function generateItems({
         isNearDuplicateStem(generated.stem, usedStems);
       if (repeated && canAffordToSkip) {
         reject(attempt, "duplicate", `asks again about ${generated.topic}`);
+        // Rejecting it silently lets the next prompt walk into the same ground.
+        // The eval showed the cost: one source spent six attempts rewording a
+        // single inflation question, because nothing ever told it to stop.
+        noteCovered(generated.topic, generated.stem);
         continue;
+      }
+
+      // Word overlap is free and runs first; this only pays for what it missed.
+      // The vector is kept whether or not it matches, so each stem is embedded
+      // once and later stems compare against it without another call.
+      let stemVector: number[] | null = null;
+      if (count > 1 && canAffordToSkip && timeLeft() > RESERVE_FOR_EMBED_MS) {
+        embedCalls += 1;
+        // A failed embedding leaves the word-overlap verdict standing. The check
+        // discards work, so it must not discard on its own malfunction.
+        const [vector] = await embed([generated.stem], { timeoutMs: 8_000 }).catch(
+          () => [],
+        );
+        stemVector = vector ?? null;
+        if (stemVector) {
+          const at = findNearDuplicate(
+            stemVector,
+            keptVectors.map((k) => k.vector),
+          );
+          if (at !== null) {
+            reject(
+              attempt,
+              "paraphrase",
+              `rewords "${keptVectors[at]!.stem}" as "${generated.stem}"`,
+            );
+            paraphrased += 1;
+            noteCovered(generated.topic, generated.stem);
+            continue;
+          }
+        }
       }
 
       const assembled = assembleItem(generated, packId, items.length);
@@ -291,9 +364,8 @@ export async function generateItems({
 
       items.push(assembled);
       if (wasRepaired) repaired += 1;
-      usedConcepts.push(`${generated.topic} (asked: ${generated.stem})`);
-      usedKeys.add(generated.topic.toLowerCase());
-      usedStems.push(generated.stem);
+      if (stemVector) keptVectors.push({ stem: generated.stem, vector: stemVector });
+      noteCovered(generated.topic, generated.stem);
     } catch (error) {
       // A single failed question does not sink the pack. The reason is kept for the
       // server log and the eval report; the client never sees model detail.
@@ -315,6 +387,8 @@ export async function generateItems({
     repaired,
     challengeCalls,
     disputed,
+    embedCalls,
+    paraphrased,
     stoppedEarly,
   };
 }

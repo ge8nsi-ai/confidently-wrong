@@ -7,12 +7,13 @@
  * kept out of `npm test` — see vitest.eval.config.ts.
  *
  * The number this prints is the honest one: it is computed from the same code path
- * the app runs, with the same three gates, and the rubric is the one the hand-written
+ * the app runs, with the same four gates, and the rubric is the one the hand-written
  * packs are held to in lib/quality.test.ts.
  *
  * The rubric pass rate is now the weaker of the two numbers it reports. What the
- * second opinion disputed is listed in full, because a dispute is a claim about the
- * world and only reading it says whether the gate caught an error or invented one.
+ * second opinion disputed, and what the stem embedding called a reword, are both
+ * listed in full: each is a claim about two pieces of text, and only reading them
+ * says whether the gate caught something or invented it.
  */
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -62,6 +63,8 @@ interface SourceResult {
   repaired: number;
   challengeCalls: number;
   disputed: number;
+  embedCalls: number;
+  paraphrased: number;
   stoppedEarly: boolean;
   elapsedMs: number;
 }
@@ -101,6 +104,8 @@ function writeReport(results: SourceResult[]): string {
   const repairCalls = results.reduce((sum, r) => sum + r.repairCalls, 0);
   const challengeCalls = results.reduce((sum, r) => sum + r.challengeCalls, 0);
   const disputed = results.reduce((sum, r) => sum + r.disputed, 0);
+  const embedCalls = results.reduce((sum, r) => sum + r.embedCalls, 0);
+  const paraphrased = results.reduce((sum, r) => sum + r.paraphrased, 0);
   const elapsed = results.reduce((sum, r) => sum + r.elapsedMs, 0);
 
   const lines: string[] = [
@@ -109,10 +114,11 @@ function writeReport(results: SourceResult[]): string {
     `Run ${new Date().toISOString()} against \`ministral-3b-latest\`.`,
     "",
     `- Sources: ${results.length}`,
-    `- Model calls: ${attempts + repairCalls + challengeCalls} (${attempts} question, ${repairCalls} repair, ${challengeCalls} second opinion)`,
+    `- Model calls: ${attempts + repairCalls + challengeCalls + embedCalls} (${attempts} question, ${repairCalls} repair, ${challengeCalls} second opinion, ${embedCalls} stem embedding)`,
     `- Questions kept: ${all.length}`,
     `- Questions passing the rubric: ${quality.passed} of ${quality.total} (**${pct(quality.passRate)}**)`,
     `- Thrown out by the second opinion: ${disputed} of ${challengeCalls} answered again`,
+    `- Thrown out as a paraphrase word overlap missed: ${paraphrased} of ${embedCalls} embedded`,
     `- Rescued by a misconception repair call: ${results.reduce((s, r) => s + r.repaired, 0)} of ${repairCalls} repair calls`,
     `- Kept despite a rubric failure, to reach the pack floor: ${results.reduce((s, r) => s + r.keptDespiteRubric, 0)}`,
     `- Yield: ${pct(all.length / Math.max(1, attempts))} of calls produced a keepable question`,
@@ -160,6 +166,16 @@ function writeReport(results: SourceResult[]): string {
     lines.push("", "## What the second opinion disputed", "");
     for (const dispute of disputes) {
       lines.push(`- ${dispute.reason}`);
+    }
+  }
+
+  // Same reasoning: a paraphrase claim names two questions, and only reading
+  // both says whether they really ask the same thing.
+  const paraphrases = rejections.filter((r) => r.stage === "paraphrase");
+  if (paraphrases.length > 0) {
+    lines.push("", "## What the stem embedding called a reword", "");
+    for (const paraphrase of paraphrases) {
+      lines.push(`- ${paraphrase.reason}`);
     }
   }
 

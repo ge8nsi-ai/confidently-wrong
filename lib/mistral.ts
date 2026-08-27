@@ -14,6 +14,15 @@ export const TRANSCRIBE_MODEL =
   process.env.MISTRAL_TRANSCRIBE_MODEL ?? "voxtral-mini-latest";
 export const TTS_VOICE = process.env.MISTRAL_TTS_VOICE ?? "gb_oliver_neutral";
 export const OCR_MODEL = process.env.MISTRAL_OCR_MODEL ?? "mistral-ocr-latest";
+export const EMBED_MODEL = process.env.MISTRAL_EMBED_MODEL ?? "mistral-embed";
+
+/**
+ * Bounds on one embedding call. The endpoint that uses it is public, and a
+ * caller could otherwise ask for a vector per paragraph of a 12,000-character
+ * upload.
+ */
+const MAX_EMBED_TEXTS = 24;
+const MAX_EMBED_CHARS = 600;
 
 export function hasKey(): boolean {
   return Boolean(process.env.MISTRAL_API_KEY);
@@ -76,6 +85,56 @@ export async function chatJson(
   const content = body.choices?.[0]?.message?.content;
   if (!content) throw new Error("mistral chat: empty content");
   return JSON.parse(content);
+}
+
+/**
+ * Embeds short texts, in the order given.
+ *
+ * Used to tell a reworded question from a new one: word overlap misses
+ * "why does the Sun's tidal effect feel weaker" against "why does the Sun's
+ * gravity have a smaller tidal effect", which are the same question.
+ */
+export async function embed(
+  texts: string[],
+  opts: { timeoutMs?: number } = {},
+): Promise<number[][]> {
+  const input = texts
+    .slice(0, MAX_EMBED_TEXTS)
+    .map((text) => text.slice(0, MAX_EMBED_CHARS));
+  if (input.length === 0) return [];
+
+  const res = await withTimeout(opts.timeoutMs ?? 10_000, (signal) =>
+    fetch(`${API_BASE}/embeddings`, {
+      method: "POST",
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${key()}`,
+      },
+      body: JSON.stringify({ model: EMBED_MODEL, input }),
+    }),
+  );
+
+  if (!res.ok) throw new Error(`mistral embed ${res.status}`);
+  const body = (await res.json()) as {
+    data?: { index?: number; embedding?: number[] }[];
+  };
+  const rows = body.data ?? [];
+  if (rows.length !== input.length) throw new Error("mistral embed: short reply");
+
+  // The API documents the order but returns an index with each row; trusting the
+  // index rather than the position means a reordered reply cannot silently pair
+  // a vector with the wrong question.
+  const out: number[][] = new Array(input.length);
+  rows.forEach((row, position) => {
+    const at = typeof row.index === "number" ? row.index : position;
+    if (at < 0 || at >= input.length || !Array.isArray(row.embedding)) {
+      throw new Error("mistral embed: unusable row");
+    }
+    out[at] = row.embedding;
+  });
+  if (out.some((vector) => !vector)) throw new Error("mistral embed: missing row");
+  return out;
 }
 
 /** Voxtral text-to-speech. Returns raw MP3 bytes. */
