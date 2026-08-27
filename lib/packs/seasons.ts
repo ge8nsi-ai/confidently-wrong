@@ -14,25 +14,25 @@ export const seasons: Pack = {
       options: [
         {
           id: "a",
-          text: "Earth is closer to the Sun during summer.",
+          text: "Earth moves closer to the Sun during the summer months.",
           correct: false,
           misconception:
             "Seasons are caused by Earth's changing distance from the Sun.",
         },
         {
           id: "b",
-          text: "Earth's axis is tilted, so sunlight strikes your hemisphere at a steeper angle for longer each day.",
+          text: "Earth's axis is tilted, so sunlight strikes your hemisphere more steeply for longer.",
           correct: true,
         },
         {
           id: "c",
-          text: "The Sun burns hotter at certain times of year.",
+          text: "The Sun itself burns hotter at certain times of the year.",
           correct: false,
           misconception: "The Sun's output rises and falls with our seasons.",
         },
         {
           id: "d",
-          text: "Earth spins faster in summer, so days are longer.",
+          text: "Earth spins faster in summer, so the days are longer and warmer.",
           correct: false,
           misconception: "Day length changes because Earth's spin rate changes.",
         },
@@ -250,24 +250,24 @@ export const seasons: Pack = {
       options: [
         {
           id: "a",
-          text: "Land and oceans take weeks to accumulate heat, so peak temperature lags peak sunlight.",
+          text: "Land and oceans take weeks to store heat, so peak warmth lags peak sunlight.",
           correct: true,
         },
         {
           id: "b",
-          text: "Earth keeps moving closer to the Sun after June.",
+          text: "Earth keeps moving closer to the Sun for weeks after June.",
           correct: false,
           misconception: "Temperature tracks decreasing distance to the Sun.",
         },
         {
           id: "c",
-          text: "The tilt keeps increasing until late July.",
+          text: "The axial tilt keeps increasing until late July.",
           correct: false,
           misconception: "Earth's axial tilt changes over the course of a year.",
         },
         {
           id: "d",
-          text: "Thermometers are calibrated to lag the solstice.",
+          text: "Thermometers are calibrated to lag behind the solstice.",
           correct: false,
           misconception: "The lag is a measurement artefact, not physical.",
         },

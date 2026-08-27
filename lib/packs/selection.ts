@@ -20,7 +20,7 @@ export const selection: Pack = {
         },
         {
           id: "b",
-          text: "Darker moths already present survived and reproduced more often, so their share of the population grew.",
+          text: "Darker moths already present survived and bred more often, so their share grew.",
           correct: true,
         },
         {
@@ -32,7 +32,7 @@ export const selection: Pack = {
         },
         {
           id: "d",
-          text: "Soot stained the moths, and the stain was inherited.",
+          text: "Soot stained the moths directly, and the stain was passed to their young.",
           correct: false,
           misconception:
             "Traits acquired during life are passed to offspring.",
@@ -94,7 +94,7 @@ export const selection: Pack = {
       options: [
         {
           id: "a",
-          text: "Random mutations conferring resistance were already present or arose by chance, and the drug removed everything else.",
+          text: "Resistant mutants were already present or arose by chance, and the drug removed the rest.",
           correct: true,
         },
         {
@@ -112,7 +112,7 @@ export const selection: Pack = {
         },
         {
           id: "d",
-          text: "The antibiotic weakened over time on its own.",
+          text: "The antibiotic simply lost its potency over time on its own.",
           correct: false,
           misconception:
             "Resistance is a property of the drug degrading, not of the population changing.",
@@ -214,7 +214,7 @@ export const selection: Pack = {
       options: [
         {
           id: "a",
-          text: "Nothing from the training itself; only the genetic variants the parent already carried.",
+          text: "Nothing from the training itself; only the variants the parent already carried.",
           correct: true,
         },
         {
@@ -226,7 +226,7 @@ export const selection: Pack = {
         },
         {
           id: "c",
-          text: "Nothing at all, since parents pass on no traits.",
+          text: "Nothing at all, since parents pass on no traits to children.",
           correct: false,
           misconception: "Inheritance does not transmit traits.",
         },

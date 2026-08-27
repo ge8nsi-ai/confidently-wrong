@@ -212,12 +212,12 @@ export const chance: Pack = {
       options: [
         {
           id: "a",
-          text: "Some of the improvement is regression to the mean; the coaching effect is unproven without a comparison group.",
+          text: "Some of the rise is regression to the mean; the coaching effect is unproven without a control.",
           correct: true,
         },
         {
           id: "b",
-          text: "The coaching worked, since performance rose after it.",
+          text: "The coaching worked, since branch performance rose right after it.",
           correct: false,
           misconception:
             "Improvement following an intervention demonstrates the intervention caused it.",
