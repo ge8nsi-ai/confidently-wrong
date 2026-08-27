@@ -1,5 +1,7 @@
 # Confidently Wrong
 
+**Live:** <https://confidently-wrong-fawn.vercel.app>
+
 A study tool built on **certainty-based marking**. Answer unstudied material, state your certainty, then see which beliefs were *confidently wrong*. Those alone get refuted.
 
 ## The five phases
@@ -22,7 +24,7 @@ Certainty is evidence, not a multiplier: each answer updates a Bayesian posterio
 
 `/dashboard`: weakest topics, calibration, past runs.
 
-## Are the questions any good?
+## Question quality
 
 `lib/quality.ts` fails a question whose stem leaks its answer or whose correct option is conspicuously the longest — generated or hand-written alike. `npm run eval`: 17 of 17 kept, 24 calls.
 
