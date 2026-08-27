@@ -10,6 +10,13 @@
  * One rejection gets a second chance rather than a discard: a reply whose only
  * fault is missing misconceptions is a good question with its diagnostic half
  * absent, and asking for that half alone costs a fraction of asking again.
+ *
+ * A question that clears both gates is then answered again, blind to the key, by
+ * lib/challenge.ts. That is the only check that can see a well-formed question
+ * whose marked answer is simply false.
+ *
+ * Three gates and up to eleven attempts can outlast the 60s the route gets, so
+ * the loop also watches the clock and returns a short pack rather than nothing.
  */
 
 import {
@@ -24,6 +31,13 @@ import {
   repairUserPrompt,
   validateGeneratedItem,
 } from "./custom-pack";
+import {
+  CHALLENGE_SYSTEM_PROMPT,
+  MAX_TOKENS_PER_CHALLENGE,
+  challengeUserPrompt,
+  disputeReason,
+  parseChallenge,
+} from "./challenge";
 import { chatJson } from "./mistral";
 import { checkItem } from "./quality";
 import type { Item } from "./types";
@@ -44,10 +58,32 @@ export const MAX_TOKENS_PER_REPAIR = 400;
  */
 export const MIN_ITEMS_KEPT = 3;
 
-/** Spare attempts, to cover the items that come back unusable. */
-const SPARE_ATTEMPTS = 3;
+/**
+ * Spare attempts, to cover the items that come back unusable.
+ *
+ * Raised from three when the dispute gate went in: it throws out about one in
+ * three questions, and with the old budget a pack of six landed on the floor of
+ * three. A dropped question should cost a call, not a question.
+ */
+const SPARE_ATTEMPTS = 5;
 
-export type RejectionStage = "shape" | "rubric" | "duplicate" | "error";
+/**
+ * How long the whole loop may spend before it stops starting new work.
+ *
+ * The route it runs in is capped at 60s on Vercel, and a killed function returns
+ * nothing at all — a short pack beats a 504. Three gates and eleven possible
+ * attempts can outlast that, so the loop watches the clock rather than assuming
+ * it will finish.
+ */
+export const DEFAULT_TIME_BUDGET_MS = 50_000;
+
+/** Room to start another question: the generate call itself may take 20s. */
+const RESERVE_FOR_ATTEMPT_MS = 14_000;
+
+/** Room for the cheaper second-opinion call, which is one letter of output. */
+const RESERVE_FOR_CHALLENGE_MS = 7_000;
+
+export type RejectionStage = "shape" | "rubric" | "duplicate" | "disputed" | "error";
 
 export interface Rejection {
   attempt: number;
@@ -65,6 +101,12 @@ export interface GenerationOutcome {
   repairCalls: number;
   /** Items that only exist because a repair call succeeded. */
   repaired: number;
+  /** Extra calls spent answering the question a second time, blind to the key. */
+  challengeCalls: number;
+  /** Items thrown out because that second answer disagreed with the key. */
+  disputed: number;
+  /** True when the loop stopped on the clock rather than on the question count. */
+  stoppedEarly: boolean;
 }
 
 export interface GenerateOptions {
@@ -73,6 +115,8 @@ export interface GenerateOptions {
   packId: string;
   /** One point per question to build around. Voice mode supplies these. */
   focus?: string[];
+  /** Wall clock the loop may use, defaulting to what the route can afford. */
+  timeBudgetMs?: number;
   onWarn?: (message: string) => void;
 }
 
@@ -101,11 +145,33 @@ async function repairMisconceptions(raw: unknown): Promise<unknown | null> {
   return applyMisconceptions(raw, byText);
 }
 
+/**
+ * Answers the assembled question again, blind to which option is marked correct,
+ * and returns why the item should be dropped — or null to keep it.
+ *
+ * Temperature 0: this is a fact check, and a sampled second opinion would make
+ * whether an item ships depend on the dice.
+ */
+async function challenge(item: Item): Promise<string | null> {
+  const reply = await chatJson(
+    [
+      { role: "system", content: CHALLENGE_SYSTEM_PROMPT },
+      { role: "user", content: challengeUserPrompt(item) },
+    ],
+    { maxTokens: MAX_TOKENS_PER_CHALLENGE, timeoutMs: 15_000, temperature: 0 },
+  );
+  const parsed = parseChallenge(reply, item);
+  // An unusable reply is a wasted call, not evidence against the question.
+  if (!parsed) return null;
+  return disputeReason(item, parsed);
+}
+
 export async function generateItems({
   material,
   count,
   packId,
   focus = [],
+  timeBudgetMs = DEFAULT_TIME_BUDGET_MS,
   onWarn,
 }: GenerateOptions): Promise<GenerationOutcome> {
   const items: Item[] = [];
@@ -116,6 +182,12 @@ export async function generateItems({
   let keptDespiteRubric = 0;
   let repairCalls = 0;
   let repaired = 0;
+  let challengeCalls = 0;
+  let disputed = 0;
+  let stoppedEarly = false;
+
+  const startedAt = Date.now();
+  const timeLeft = () => timeBudgetMs - (Date.now() - startedAt);
 
   const maxAttempts = count + SPARE_ATTEMPTS;
   let attempts = 0;
@@ -126,6 +198,14 @@ export async function generateItems({
   };
 
   for (let attempt = 1; attempt <= maxAttempts && items.length < count; attempt += 1) {
+    // Stopping one question short is recoverable; being killed mid-call is not.
+    if (timeLeft() < RESERVE_FOR_ATTEMPT_MS) {
+      stoppedEarly = true;
+      onWarn?.(
+        `stopped after ${items.length} of ${count} questions — ${Math.round((Date.now() - startedAt) / 1000)}s of the time budget used`,
+      );
+      break;
+    }
     attempts = attempt;
     // Once dropping an item would leave the pack below the floor, a flawed
     // question beats no pack: narrow material genuinely cannot always yield more.
@@ -194,6 +274,21 @@ export async function generateItems({
         keptDespiteRubric += 1;
       }
 
+      // Worth paying for only when the answer could change the outcome: at the
+      // floor the item ships either way, so the call would buy nothing.
+      if (canAffordToSkip && timeLeft() > RESERVE_FOR_CHALLENGE_MS) {
+        challengeCalls += 1;
+        // A failed call leaves the item in. Silence is not a dispute.
+        const dispute = await challenge(assembled).catch(() => null);
+        if (dispute) {
+          // The stem travels with the reason: a dispute is a claim about the
+          // world, and it cannot be adjudicated without the question it is about.
+          reject(attempt, "disputed", `${dispute} | asked: ${assembled.stem}`);
+          disputed += 1;
+          continue;
+        }
+      }
+
       items.push(assembled);
       if (wasRepaired) repaired += 1;
       usedConcepts.push(`${generated.topic} (asked: ${generated.stem})`);
@@ -211,5 +306,15 @@ export async function generateItems({
     }
   }
 
-  return { items, attempts, rejections, keptDespiteRubric, repairCalls, repaired };
+  return {
+    items,
+    attempts,
+    rejections,
+    keptDespiteRubric,
+    repairCalls,
+    repaired,
+    challengeCalls,
+    disputed,
+    stoppedEarly,
+  };
 }

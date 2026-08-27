@@ -7,14 +7,18 @@
  * kept out of `npm test` — see vitest.eval.config.ts.
  *
  * The number this prints is the honest one: it is computed from the same code path
- * the app runs, with the same two gates, and the rubric is the one the hand-written
+ * the app runs, with the same three gates, and the rubric is the one the hand-written
  * packs are held to in lib/quality.test.ts.
+ *
+ * The rubric pass rate is now the weaker of the two numbers it reports. What the
+ * second opinion disputed is listed in full, because a dispute is a claim about the
+ * world and only reading it says whether the gate caught an error or invented one.
  */
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { generateItems, type Rejection } from "../lib/generate";
+import { generateItems, DEFAULT_TIME_BUDGET_MS, type Rejection } from "../lib/generate";
 import { checkPack } from "../lib/quality";
 import { trimMaterial } from "../lib/custom-pack";
 import type { Item } from "../lib/types";
@@ -56,6 +60,9 @@ interface SourceResult {
   keptDespiteRubric: number;
   repairCalls: number;
   repaired: number;
+  challengeCalls: number;
+  disputed: number;
+  stoppedEarly: boolean;
   elapsedMs: number;
 }
 
@@ -92,6 +99,8 @@ function writeReport(results: SourceResult[]): string {
   const rejections = results.flatMap((r) => r.rejections);
   const attempts = results.reduce((sum, r) => sum + r.attempts, 0);
   const repairCalls = results.reduce((sum, r) => sum + r.repairCalls, 0);
+  const challengeCalls = results.reduce((sum, r) => sum + r.challengeCalls, 0);
+  const disputed = results.reduce((sum, r) => sum + r.disputed, 0);
   const elapsed = results.reduce((sum, r) => sum + r.elapsedMs, 0);
 
   const lines: string[] = [
@@ -100,12 +109,14 @@ function writeReport(results: SourceResult[]): string {
     `Run ${new Date().toISOString()} against \`ministral-3b-latest\`.`,
     "",
     `- Sources: ${results.length}`,
-    `- Model calls: ${attempts + repairCalls} (${attempts} question, ${repairCalls} repair)`,
+    `- Model calls: ${attempts + repairCalls + challengeCalls} (${attempts} question, ${repairCalls} repair, ${challengeCalls} second opinion)`,
     `- Questions kept: ${all.length}`,
     `- Questions passing the rubric: ${quality.passed} of ${quality.total} (**${pct(quality.passRate)}**)`,
-    `- Rescued by a misconception repair call: ${results.reduce((s, r) => s + r.repaired, 0)} of ${results.reduce((s, r) => s + r.repairCalls, 0)} repair calls`,
+    `- Thrown out by the second opinion: ${disputed} of ${challengeCalls} answered again`,
+    `- Rescued by a misconception repair call: ${results.reduce((s, r) => s + r.repaired, 0)} of ${repairCalls} repair calls`,
     `- Kept despite a rubric failure, to reach the pack floor: ${results.reduce((s, r) => s + r.keptDespiteRubric, 0)}`,
     `- Yield: ${pct(all.length / Math.max(1, attempts))} of calls produced a keepable question`,
+    `- Packs cut short by the ${(DEFAULT_TIME_BUDGET_MS / 1000).toFixed(0)}s time budget: ${results.filter((r) => r.stoppedEarly).length} of ${results.length}`,
     `- Wall clock: ${(elapsed / 1000).toFixed(1)}s`,
     "",
     "## Where attempts were rejected",
@@ -138,6 +149,17 @@ function writeReport(results: SourceResult[]): string {
   } else {
     for (const row of histogram(rubricReasons)) {
       lines.push(`| ${row.key} | ${row.count} |`);
+    }
+  }
+
+  // Listed in full rather than histogrammed: each dispute is its own claim about
+  // the world, and reading them is the only way to tell a caught error from a
+  // second opinion that was simply wrong.
+  const disputes = rejections.filter((r) => r.stage === "disputed");
+  if (disputes.length > 0) {
+    lines.push("", "## What the second opinion disputed", "");
+    for (const dispute of disputes) {
+      lines.push(`- ${dispute.reason}`);
     }
   }
 
