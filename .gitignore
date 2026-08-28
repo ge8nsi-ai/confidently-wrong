@@ -37,6 +37,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# The demo video project: 9 MB of narration audio and rendered stills that the
+# app never serves and a deployment never reads. The video is uploaded to the
+# submission, so tracking its sources here would put the whole of it in every
+# clone of a repo whose own public/ directory is 99 KB.
+/videos/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
