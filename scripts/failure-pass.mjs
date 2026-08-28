@@ -177,7 +177,7 @@ function report(records) {
 }
 
 async function main() {
-  const chromium = loadChromium();
+  const chromium = await loadChromium();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: VIEWPORT });
   const page = await context.newPage();

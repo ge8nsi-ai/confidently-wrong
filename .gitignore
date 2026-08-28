@@ -43,10 +43,12 @@ yarn-error.log*
 # clone of a repo whose own public/ directory is 99 KB.
 /videos/
 
-# Narration takes written straight to the repo root by the TTS tooling while
-# recording. The app's own audio is generated per request and never stored, so
-# an .mp3 here is always scratch.
+# Narration takes and rendered demos written straight to the repo root by the
+# video tooling. The app's own audio is generated per request and never stored,
+# and the finished video is uploaded to the submission rather than cloned with
+# the repo, so media here is always output rather than source.
 /*.mp3
+/*.mp4
 
 # typescript
 *.tsbuildinfo

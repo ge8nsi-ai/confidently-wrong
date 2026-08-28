@@ -1,28 +1,12 @@
 /**
- * Playwright is not a dependency of this app — a browser download is a lot to add
- * for two scripts nothing in the build or `npm test` calls — so it is used from
- * wherever it happens to be installed.
+ * Playwright is not a dependency of this app — see scripts/lib/borrowed.mjs for why,
+ * and where it is looked for.
  */
-import { createRequire } from "node:module";
-import { homedir } from "node:os";
-import path from "node:path";
+import { borrow } from "./borrowed.mjs";
 
-const require = createRequire(import.meta.url);
-
-export function loadChromium() {
-  const candidates = [
-    "playwright",
-    path.join(
-      homedir(),
-      "AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright",
-    ),
-  ];
-  for (const candidate of candidates) {
-    try {
-      return require(candidate).chromium;
-    } catch {
-      continue;
-    }
-  }
-  throw new Error("playwright not found — npm i -D playwright, or npx playwright");
+export async function loadChromium() {
+  const playwright = await borrow("playwright");
+  const chromium = playwright.chromium ?? playwright.default?.chromium;
+  if (!chromium) throw new Error("playwright loaded but exports no chromium");
+  return chromium;
 }

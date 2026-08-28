@@ -680,7 +680,7 @@ function shortfalls(results) {
 }
 
 async function main() {
-  const chromium = loadChromium();
+  const chromium = await loadChromium();
   const axeSource = await readFile(require.resolve("axe-core/axe.min.js"), "utf8");
   const axeVersion = require("axe-core/package.json").version;
   const results = [];
