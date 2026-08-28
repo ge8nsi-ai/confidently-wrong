@@ -97,7 +97,9 @@ body::after {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: url("/generated/hero-background-abstract.png") center / cover no-repeat;
+  /* WebP, not PNG: a CSS background is served raw, so next/image never sees it
+     and the file size is exactly what the visitor downloads. 668KB to 22KB. */
+  background: url("/generated/hero-background-abstract.webp") center / cover no-repeat;
   opacity: 0.07;
 }
 

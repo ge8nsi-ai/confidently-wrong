@@ -10,9 +10,11 @@ export const metadata: Metadata = {
   title: "Confidently Wrong",
   description:
     "Find the beliefs you have been sure about and wrong about, then fix only those.",
+  // Sized for where they are shown. An icon is served raw, so a 1024px source is
+  // 627KB the visitor downloads to draw 32 pixels.
   icons: {
-    icon: "/generated/confidently-wrong-logo.png",
-    apple: "/generated/confidently-wrong-logo.png",
+    icon: "/generated/icon-32.png",
+    apple: "/generated/icon-180.png",
   },
 };
 

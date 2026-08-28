@@ -15,7 +15,7 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 pb-14 pt-6 sm:px-8 sm:pb-20 sm:pt-10 lg:px-10">
         <header className="flex items-center justify-between">
           <Link href="/" className="inline-flex items-center gap-3 text-ink-50">
-            <span className="relative grid size-10 place-items-center overflow-hidden rounded-[0.9rem] bg-[#17243a] shadow-sm"><Image src="/generated/confidently-wrong-logo.png" alt="" fill sizes="40px" className="object-cover" /></span>
+            <span className="relative grid size-10 place-items-center overflow-hidden rounded-[0.9rem] bg-[#17243a] shadow-sm"><Image src="/generated/confidently-wrong-logo.webp" alt="" fill sizes="40px" className="object-cover" /></span>
             <span className="text-sm font-bold tracking-[-0.02em]">Confidently Wrong</span>
           </Link>
           <Link href="/dashboard" className="hidden rounded-full bg-ink-50 px-4 py-2.5 text-xs font-bold text-ink-950 transition hover:bg-[#30384a] hover:text-ink-950 sm:block">Your progress <span aria-hidden>↗</span></Link>
@@ -33,7 +33,7 @@ export default function Home() {
           <div className="relative order-1 mx-auto w-full max-w-[31rem] lg:order-2 lg:max-w-none">
             <div className="absolute -inset-4 rounded-[2.6rem] bg-[#e7c7c1]/60 blur-[1px]" />
             <div className="relative overflow-hidden rounded-[2.25rem] border border-white/80 bg-white/75 p-3 shadow-[0_25px_60px_rgba(81,69,76,.15)] backdrop-blur-xl">
-              <div className="relative aspect-[0.92] overflow-hidden rounded-[1.7rem] bg-[#d7e0ed]"><Image src="/generated/belief-map-hero.png" alt="Illustrated map of ideas and learning paths" fill priority sizes="(max-width: 1024px) 90vw, 42vw" className="object-cover" /></div>
+              <div className="relative aspect-[0.92] overflow-hidden rounded-[1.7rem] bg-[#d7e0ed]"><Image src="/generated/belief-map-hero.webp" alt="Illustrated map of ideas and learning paths" fill priority sizes="(max-width: 1024px) 90vw, 42vw" className="object-cover" /></div>
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-[#20293b]/92 px-4 py-3 text-white shadow-lg"><div className="flex items-center justify-between"><div><p className="text-sm font-bold">Your belief map</p><p className="mt-0.5 text-xs text-[#cad5e6]">4 ideas worth a second look</p></div><span className="grid size-10 place-items-center rounded-full bg-[#f2b2a1] text-sm font-bold text-[#283247]">4</span></div></div>
             </div>
             <span className="absolute -right-2 top-8 rounded-full bg-[#b8d77a] px-3 py-2 text-[0.68rem] font-bold text-[#273247] shadow-md sm:-right-4">small steps, big clarity</span>
