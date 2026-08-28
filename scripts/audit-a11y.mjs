@@ -14,32 +14,13 @@
  */
 import { createRequire } from "node:module";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { homedir } from "node:os";
 import path from "node:path";
+import { loadChromium } from "./lib/chromium.mjs";
 
 const require = createRequire(import.meta.url);
 const BASE = process.env.AUDIT_BASE ?? "http://localhost:3100";
 const OUT = path.join(process.cwd(), "docs", "accessibility.md");
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
-
-/** Playwright is not a dependency of this app; it is used from wherever it is. */
-function loadChromium() {
-  const candidates = [
-    "playwright",
-    path.join(
-      homedir(),
-      "AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright",
-    ),
-  ];
-  for (const candidate of candidates) {
-    try {
-      return require(candidate).chromium;
-    } catch {
-      continue;
-    }
-  }
-  throw new Error("playwright not found — npm i -D playwright, or npx playwright");
-}
 
 const VIEWPORTS = [
   { name: "phone", width: 390, height: 844 },
@@ -492,6 +473,18 @@ async function runViewport(browser, viewport, axeSource, results, noise) {
   await page.waitForTimeout(450);
   await scan(page, axeSource, "Navigation drawer, open", viewport, results);
 
+  // The error message is a colour no happy path renders, so it was going
+  // unmeasured. Rejecting a file is the cheapest way to render it: the size check
+  // is client-side, so nothing is sent and no model is called.
+  await visit("/packs/new");
+  await page.setInputFiles("#material-file", {
+    name: "lecture-notes.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.alloc(9 * 1024 * 1024, 0x20),
+  });
+  await page.getByText(/is over 8MB/).waitFor();
+  await scan(page, axeSource, "New pack, file rejected", viewport, results);
+
   // The phases only exist as store state, so they are reached by playing the
   // pack: first option every time, certainty 3, which is what a confidently
   // wrong learner does and what fills the repair round.
@@ -518,6 +511,12 @@ async function runViewport(browser, viewport, axeSource, results, noise) {
   await answerRound(page, 2);
   await page.waitForTimeout(600);
   await scan(page, axeSource, "Study, recheck summary", viewport, results);
+
+  // The first Dashboard scan is of an empty one. A round has been played by now,
+  // so this pass renders the parts that only exist once there is history: the
+  // weak-topic rows, their "! sure" pills, and the alarm colouring on the counts.
+  await visit("/dashboard");
+  await scan(page, axeSource, "Dashboard, after a round", viewport, results);
 
   await context.close();
 }
@@ -700,8 +699,22 @@ async function main() {
   const heaviest = Math.max(...results.map((r) => r.weight.bytes));
   const all = flatten(results);
   const measured = all.filter((n) => n.measured?.ratio && !exempt(n));
-  const worst = Math.min(...measured.map((n) => n.measured.ratio));
   const short = measured.filter((n) => n.measured.ratio < n.measured.need).length;
+
+  // One "worst" number invites the reader to hold it against 4.5:1, which is the
+  // wrong threshold for a 30px numeral. Report the worst of each requirement.
+  const lowest = (rows) =>
+    rows.length === 0 ? null : Math.min(...rows.map((n) => n.measured.ratio));
+  const worstSmall = lowest(measured.filter((n) => n.measured.need >= 4.5));
+  const worstLarge = lowest(measured.filter((n) => n.measured.need < 4.5));
+  const passing = [
+    worstSmall === null ? null : `${worstSmall.toFixed(2)}:1 where 4.5:1 is required`,
+    worstLarge === null
+      ? null
+      : `${worstLarge.toFixed(2)}:1 where the text is large enough to owe 3:1`,
+  ]
+    .filter(Boolean)
+    .join(", and ");
 
   const lines = [
     "# Accessibility audit",
@@ -718,7 +731,7 @@ async function main() {
     "npm run a11y",
     "```",
     "",
-    `**${total} violations across ${results.length} scans.** ${measured.length} elements axe could not decide were measured from the rendered pixels instead; ${short === 0 ? `the worst is ${worst.toFixed(2)}:1 and none falls short of its threshold` : `${short} fall short of their threshold`}. Heaviest screen: ${(heaviest / 1024).toFixed(0)} KB transferred.`,
+    `**${total} violations across ${results.length} scans.** ${measured.length} elements axe could not decide were measured from the rendered pixels instead; ${short === 0 ? `none falls short of its threshold, the closest being ${passing}` : `${short} fall short of their threshold`}. Heaviest screen: ${(heaviest / 1024).toFixed(0)} KB transferred.`,
     "",
     table(results),
     "",
@@ -745,7 +758,7 @@ async function main() {
   await mkdir(path.dirname(OUT), { recursive: true });
   await writeFile(OUT, lines.join("\n"), "utf8");
   process.stdout.write(
-    `\n${total} violations, ${short} measured shortfalls, worst ${worst.toFixed(2)}:1. Written to ${OUT}\n`,
+    `\n${total} violations, ${short} measured shortfalls, closest ${passing}. Written to ${OUT}\n`,
   );
 }
 
