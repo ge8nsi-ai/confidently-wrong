@@ -1,6 +1,6 @@
 # Accessibility audit
 
-Run 2026-08-28T16:20:12.255Z against the production build (`next build` then `next start`) with axe-core 4.13.0 in headless Chromium, tags wcag2a, wcag2aa, wcag21a, wcag21aa. Every scan waits for the entrance animations to finish first, because a colour sampled mid-fade is the blend of two elements and not what anyone sees.
+Run 2026-08-28T17:16:12.231Z against the production build (`next build` then `next start`) with axe-core 4.13.0 in headless Chromium, tags wcag2a, wcag2aa, wcag21a, wcag21aa. Every scan waits for the entrance animations to finish first, because a colour sampled mid-fade is the blend of two elements and not what anyone sees.
 
 Reproduce with, in two terminals:
 

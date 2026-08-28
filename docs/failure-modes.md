@@ -1,6 +1,6 @@
 # Failure modes
 
-Run 2026-08-28T16:14:44.779Z against the production build at 390x844, by `npm run failures`. Each row is a state the app was pushed into on purpose; the screenshot is of the card as it looked when the message appeared.
+Run 2026-08-28T17:03:14.587Z against the production build at 390x844, by `npm run failures`. Each row is a state the app was pushed into on purpose; the screenshot is of the card as it looked when the message appeared.
 
 | Failure | Trigger | What the visitor sees | Requests | Server |
 | --- | --- | --- | --- | --- |

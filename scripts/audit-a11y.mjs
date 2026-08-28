@@ -11,6 +11,12 @@
  *
  * Usage: PORT=3100 npm start, then `npm run a11y`. Audit the production build,
  * not `next dev`: the dev overlay adds nodes of its own to every page.
+ *
+ * One scan costs money. Reaching the repair screen asks /api/refute for the four
+ * refutations the seasons pack's confidently-wrong answers earn, twice over for the
+ * two viewports, which is the only model call in this file — and the point of the
+ * scan, because a refutation is the longest text the app renders and the screen it
+ * sits on is the darkest.
  */
 import { createRequire } from "node:module";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -497,7 +503,16 @@ async function runViewport(browser, viewport, axeSource, results, noise) {
   await scan(page, axeSource, "Study, reveal", viewport, results);
 
   await page.getByRole("button", { name: /Repair|Nothing to repair/ }).click();
-  await page.waitForTimeout(3500);
+  // The refutations are fetched when this screen mounts, and until they land each
+  // beat is a pulsing skeleton with no text in it. A fixed wait measured skeletons
+  // on some runs and paragraphs on others — four elements' difference, and they are
+  // the four that matter here. "Read this aloud" appears only with a refutation
+  // behind it, so it is the thing to wait for.
+  await page
+    .getByRole("button", { name: "Read this aloud" })
+    .first()
+    .waitFor({ timeout: 40_000 });
+  await page.waitForTimeout(450);
   await scan(page, axeSource, "Study, repair", viewport, results);
 
   for (let guard = 0; guard < 12; guard += 1) {
