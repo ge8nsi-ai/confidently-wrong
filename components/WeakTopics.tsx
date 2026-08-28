@@ -54,7 +54,7 @@ export default function WeakTopics({ topics }: { topics: TopicStat[] }) {
                     <Bar stat={stat} />
                   </div>
                   {stat.sureWrong > 0 ? (
-                    <span className="shrink-0 rounded-full border border-ember-500/70 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-ember-500">
+                    <span className="shrink-0 rounded-full border border-ember-500/70 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-ember-300">
                       ! sure
                     </span>
                   ) : null}

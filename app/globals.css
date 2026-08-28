@@ -23,7 +23,10 @@
   --color-ink-100: #282a31;
   --color-ink-50: #181a20;
 
-  /* Danger zone: sure and wrong. Warm, dominant. */
+  /* Danger zone: sure and wrong. Warm, dominant. A fill, a border and a tint —
+     not small text: on a white card ember-500 measures 3.16:1 and ember-400
+     lighter still, so anything under 24px takes ember-300 (or ember-900 on the
+     navy cell). */
   --color-ember-500: #d86f63;
   --color-ember-400: #e99082;
   /* Refutation body text on the light page. #b95850 measured 4.16:1 on the
@@ -42,7 +45,9 @@
   --color-mint-300: #397665;
   --color-mint-900: #e2f0e9;
 
-  /* Accent for chrome and links. */
+  /* Accent for chrome and links. iris-400 is the swatch and the border; a link in
+     running text is iris-300, because iris-400 measured 3.36:1 on the card the
+     dashboard's "Run it again" sits on. */
   --color-iris-400: #8580b8;
   --color-iris-300: #625d98;
   --color-iris-900: #ebe9f7;

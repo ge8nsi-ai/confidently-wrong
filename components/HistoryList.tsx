@@ -81,7 +81,7 @@ export default function HistoryList({
                       ? `/custom/${s.packId}`
                       : `/study/${s.packId}`
                   }
-                  className="ml-auto font-semibold normal-case tracking-normal text-iris-400 underline decoration-iris-400/40 underline-offset-4 transition hover:text-ink-50"
+                  className="ml-auto font-semibold normal-case tracking-normal text-iris-300 underline decoration-iris-300/40 underline-offset-4 transition hover:text-ink-50"
                 >
                   Run it again
                 </Link>

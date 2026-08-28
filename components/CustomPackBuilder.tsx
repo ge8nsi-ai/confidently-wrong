@@ -111,7 +111,7 @@ export default function CustomPackBuilder() {
                   setFile(null);
                   if (fileInput.current) fileInput.current.value = "";
                 }}
-                className="ml-3 font-semibold text-iris-400 underline underline-offset-4"
+                className="ml-3 font-semibold text-iris-300 underline underline-offset-4"
               >
                 Remove
               </button>
@@ -190,7 +190,7 @@ export default function CustomPackBuilder() {
 
         <p
           aria-live="polite"
-          className={`text-sm leading-relaxed ${status === "error" ? "text-ember-500" : "text-ink-400"}`}
+          className={`text-sm leading-relaxed ${status === "error" ? "text-ember-300" : "text-ink-400"}`}
         >
           {message ||
             "One question at a time, each checked for exactly one correct answer before it is kept."}

@@ -293,7 +293,7 @@ function CritiquePanel({
 
       {critique.errors.length > 0 ? (
         <div className="glass rounded-3xl p-5 sm:p-7">
-          <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-ember-500">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-ember-300">
             Wrong ({critique.errors.length})
           </h3>
           <ul className="mt-4 grid gap-4">
