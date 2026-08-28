@@ -67,8 +67,9 @@ export default function RecheckSummary({
 
       <p className="text-sm leading-relaxed text-ink-300">
         Only the questions you missed came back, reworded, so recognising the
-        original phrasing could not help you. The solid line is the first pass; the
-        dashed line is the recheck.
+        original phrasing could not help you. On the chart, “Before” is the first
+        pass and “After” is the recheck; the straight diagonal is perfect
+        calibration.
       </p>
 
       <button

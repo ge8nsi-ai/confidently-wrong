@@ -106,12 +106,14 @@ export default function CalibrationChart({
                 tickFormatter={(v: number) => `${v}%`}
                 stroke="var(--color-ink-400)"
                 tick={{ fontSize: 11, fill: "var(--color-ink-400)" }}
-                width={44}
+                // Wide enough that the rotated axis label clears the "100%"
+                // tick instead of printing on top of it.
+                width={64}
                 label={{
                   value: "How often you were right",
                   angle: -90,
                   position: "insideLeft",
-                  offset: 14,
+                  offset: 4,
                   style: {
                     textAnchor: "middle",
                     fill: "var(--color-ink-400)",
@@ -189,12 +191,22 @@ export default function CalibrationChart({
       <ul className="mt-3 grid gap-1 text-xs text-ink-400 sm:grid-cols-3">
         {rows.map((r) => (
           <li key={r.stated} className="tnum">
-            {CONF_NAMES[r.stated]}: {r.nBefore ?? 0} answer
-            {(r.nBefore ?? 0) === 1 ? "" : "s"}
-            {r.before !== undefined ? `, ${r.before}% right` : ""}
+            {CONF_NAMES[r.stated]}: {band(r.nBefore, r.before)}
+            {/* With a second round on the axes the breakdown has to describe it
+                too, or it silently reports the first pass twice. */}
+            {hasAfter ? ` → ${band(r.nAfter, r.after)}` : ""}
           </li>
         ))}
       </ul>
     </section>
   );
+}
+
+/** "2 answers, 50% right" for one certainty band of one round. */
+function band(n: number | undefined, percentRight: number | undefined): string {
+  const count = n ?? 0;
+  const answers = `${count} answer${count === 1 ? "" : "s"}`;
+  return percentRight === undefined
+    ? answers
+    : `${answers}, ${percentRight}% right`;
 }

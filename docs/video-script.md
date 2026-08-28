@@ -60,7 +60,7 @@ Overconfidence, then the calibration curve, then the belief bars.
 **0:52–1:14 — Repair, and the gate.** Open the refutation on row 3 (the 99%-accurate
 test). Then scroll to row 7 and show that it got a plain correction instead.
 
-> Repair only touches the confidently-wrong quadrant. This one gets a refutation
+> Only the confidently-wrong quadrant earns a refutation. This one gets one
 > written against the belief it thinks you hold — named, stated, then dismantled. And
 > this one, wrong but a guess, gets a plain explanation. Personalised refutation
 > backfires on a belief you never held: it plants it. That gate is one line of code,
