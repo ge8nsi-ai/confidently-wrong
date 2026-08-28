@@ -12,15 +12,20 @@
  * absent, and asking for that half alone costs a fraction of asking again.
  *
  * A question that clears both gates is then answered again, blind to the key, by
- * lib/challenge.ts. That is the only check that can see a well-formed question
- * whose marked answer is simply false.
+ * lib/challenge.ts, and made to cite itself: lib/grounding.ts requires a verbatim
+ * span of the supplied material that settles it, and locates that span in the
+ * material rather than trusting the model's word for it. The two catch different
+ * things, so both run, in parallel because neither needs the other's answer. The
+ * second opinion catches a marked answer that is false; the citation catches a
+ * question whose premise the source never states, which a second opinion agrees
+ * with precisely because the key reasons soundly from it.
  *
  * Repetition is caught in two layers: free word overlap first, then an embedding
  * of the stem compared against the stems already kept. The second layer exists
  * because a small model given narrow material rewords its own question, and a
  * reworded question shares almost no words with the original.
  *
- * Three gates and up to eleven attempts can outlast the 60s the route gets, so
+ * Five gates and up to eleven attempts can outlast the 60s the route gets, so
  * the loop also watches the clock and returns a short pack rather than nothing.
  */
 
@@ -43,6 +48,16 @@ import {
   disputeReason,
   parseChallenge,
 } from "./challenge";
+import {
+  GROUNDING_SYSTEM_PROMPT,
+  MAX_TOKENS_PER_GROUNDING,
+  groundingUserPrompt,
+  numberFailure,
+  parseGrounding,
+  sourceNoteFrom,
+  verifyGrounding,
+  type GroundingVerdict,
+} from "./grounding";
 import { chatJson, embed } from "./mistral";
 import { checkItem } from "./quality";
 import { findNearDuplicate } from "./similarity";
@@ -89,8 +104,16 @@ export const DEFAULT_TIME_BUDGET_MS = 50_000;
 /** Room to start another question: the generate call itself may take 20s. */
 const RESERVE_FOR_ATTEMPT_MS = 14_000;
 
-/** Room for the cheaper second-opinion call, which is one letter of output. */
-const RESERVE_FOR_CHALLENGE_MS = 7_000;
+/**
+ * Room for the two verification calls, which run together.
+ *
+ * They are independent judgements of the same finished question — one answers it
+ * again, the other makes it cite the material — so neither waits for the other.
+ * Sequentially they cost an attempt's worth of clock: the first eval with the
+ * citation gate in had two of three sources stopping on the time budget rather
+ * than on the question count, which is a worse pack than either check prevents.
+ */
+const RESERVE_FOR_VERIFY_MS = 9_000;
 
 /** Room for one embedding of one stem — the cheapest of the three calls. */
 const RESERVE_FOR_EMBED_MS = 3_000;
@@ -101,6 +124,7 @@ export type RejectionStage =
   | "duplicate"
   | "paraphrase"
   | "disputed"
+  | "ungrounded"
   | "error";
 
 export interface Rejection {
@@ -123,6 +147,17 @@ export interface GenerationOutcome {
   challengeCalls: number;
   /** Items thrown out because that second answer disagreed with the key. */
   disputed: number;
+  /** Extra calls spent asking the model to cite the span that settles the item. */
+  groundingCalls: number;
+  /** Items thrown out because nothing in the material supports them. */
+  ungrounded: number;
+  /** Kept items carrying a verified span from the learner's own material. */
+  cited: number;
+  /**
+   * Items kept without a span because the reply's shape was unusable — too thin
+   * to show, or a paste rather than a located sentence. Not a fault of the item.
+   */
+  unusableCitations: number;
   /** Calls spent embedding a stem to compare it against the stems already kept. */
   embedCalls: number;
   /** Items thrown out as paraphrases that word overlap did not catch. */
@@ -188,6 +223,26 @@ async function challenge(item: Item): Promise<string | null> {
   return disputeReason(item, parsed);
 }
 
+/**
+ * Asks for the span of the material that settles the question, and checks that
+ * the span is really there.
+ *
+ * Temperature 0 for the same reason as the challenge above: whether an item ships
+ * should not depend on the dice. The verdict carries the span when it passes,
+ * because a verified quote is worth more than a verdict — it becomes the line the
+ * learner is shown.
+ */
+async function ground(item: Item, material: string): Promise<GroundingVerdict> {
+  const reply = await chatJson(
+    [
+      { role: "system", content: GROUNDING_SYSTEM_PROMPT },
+      { role: "user", content: groundingUserPrompt(item, material) },
+    ],
+    { maxTokens: MAX_TOKENS_PER_GROUNDING, timeoutMs: 15_000, temperature: 0 },
+  );
+  return verifyGrounding(item, material, parseGrounding(reply));
+}
+
 export async function generateItems({
   material,
   count,
@@ -208,6 +263,10 @@ export async function generateItems({
   let repaired = 0;
   let challengeCalls = 0;
   let disputed = 0;
+  let groundingCalls = 0;
+  let ungrounded = 0;
+  let cited = 0;
+  let unusableCitations = 0;
   let embedCalls = 0;
   let paraphrased = 0;
   let stoppedEarly = false;
@@ -347,12 +406,33 @@ export async function generateItems({
         keptDespiteRubric += 1;
       }
 
-      // Worth paying for only when the answer could change the outcome: at the
-      // floor the item ships either way, so the call would buy nothing.
-      if (canAffordToSkip && timeLeft() > RESERVE_FOR_CHALLENGE_MS) {
+      // The free half of the citation gate: a duration or a distance the material
+      // never mentions is invented, and seeing that costs nothing. Runs before the
+      // paid calls so the commonest fabrication never buys one.
+      const invented = canAffordToSkip ? numberFailure(assembled, material) : null;
+      if (invented) {
+        reject(attempt, "ungrounded", `${invented} | asked: ${assembled.stem}`);
+        ungrounded += 1;
+        noteCovered(generated.topic, generated.stem);
+        continue;
+      }
+
+      // The last two gates, run together: one answers the question again blind to
+      // the key, the other makes it cite the material. Worth paying for only when
+      // the answer could change the outcome — at the floor the item ships either
+      // way, so the calls would buy nothing.
+      let sourceNote: string | undefined;
+      if (canAffordToSkip && timeLeft() > RESERVE_FOR_VERIFY_MS) {
         challengeCalls += 1;
-        // A failed call leaves the item in. Silence is not a dispute.
-        const dispute = await challenge(assembled).catch(() => null);
+        groundingCalls += 1;
+        // A failed call leaves the item in, in both cases: silence is not a
+        // dispute, and an unreachable API is not an unciteable question.
+        const [dispute, cite] = await Promise.all([
+          challenge(assembled).catch(() => null),
+          ground(assembled, material).catch(
+            (): GroundingVerdict => ({ failure: null, quote: null, unusable: null }),
+          ),
+        ]);
         if (dispute) {
           // The stem travels with the reason: a dispute is a claim about the
           // world, and it cannot be adjudicated without the question it is about.
@@ -360,9 +440,25 @@ export async function generateItems({
           disputed += 1;
           continue;
         }
+        if (cite.failure) {
+          reject(attempt, "ungrounded", `${cite.failure} | asked: ${assembled.stem}`);
+          ungrounded += 1;
+          noteCovered(generated.topic, generated.stem);
+          continue;
+        }
+        if (cite.quote) {
+          sourceNote = sourceNoteFrom(cite.quote);
+          cited += 1;
+        } else if (cite.unusable) {
+          // The question stands; only its citation was lost. Logged rather than
+          // silent, because a run where most replies are pastes is a prompt to fix
+          // and would otherwise look like a run where the material had no spans.
+          unusableCitations += 1;
+          onWarn?.(`attempt ${attempt} kept without a citation — ${cite.unusable}`);
+        }
       }
 
-      items.push(assembled);
+      items.push(sourceNote ? { ...assembled, sourceNote } : assembled);
       if (wasRepaired) repaired += 1;
       if (stemVector) keptVectors.push({ stem: generated.stem, vector: stemVector });
       noteCovered(generated.topic, generated.stem);
@@ -387,6 +483,10 @@ export async function generateItems({
     repaired,
     challengeCalls,
     disputed,
+    groundingCalls,
+    ungrounded,
+    cited,
+    unusableCitations,
     embedCalls,
     paraphrased,
     stoppedEarly,

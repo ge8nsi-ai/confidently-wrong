@@ -14,7 +14,11 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import type { Pack } from "@/lib/types";
 
 export const runtime = "nodejs";
-/** Vercel Hobby caps a function at 60s. A real run takes 5-18s. */
+/**
+ * Vercel Hobby caps a function at 60s. The eval in evals/report.md measures a
+ * six-question pack at 27-38s, so lib/generate.ts watches the clock itself and
+ * returns a short pack rather than being killed mid-call.
+ */
 export const maxDuration = 60;
 
 /** Tighter than the other routes: one call here fans out into several model calls. */
@@ -24,12 +28,15 @@ const MAX_TEXT_BODY_BYTES = 200 * 1024;
 /**
  * PUBLIC, UNAUTHENTICATED ENDPOINT THAT SPENDS MONEY.
  *
- * One request runs an OCR pass over an uploaded PDF and then one paid completion
- * per question. Guards: an 8MB upload cap, a 200KB cap on pasted text, material
- * truncated before it reaches the model, a hard max_tokens per item, a hard cap on
- * the number of items, and a per-IP fixed-window limit of 5 requests/minute
- * returning 429. The API key is read server-side from process.env only and is
- * never sent to the client. Uploaded files are deleted from Mistral after OCR.
+ * One request runs an OCR pass over an uploaded PDF and then up to four paid calls
+ * per question: one to write it, one to embed its stem against the ones already
+ * kept, and two to verify it — a blind re-answer and a citation from the source.
+ * Guards: an 8MB upload cap, a 200KB cap on pasted text, material truncated before
+ * it reaches the model, a hard max_tokens on every call, a hard cap on the number
+ * of items, a wall-clock budget inside the loop, and a per-IP fixed-window limit of
+ * 5 requests/minute returning 429. The API key is read server-side from
+ * process.env only and is never sent to the client. Uploaded files are deleted from
+ * Mistral after OCR.
  */
 export async function POST(request: Request): Promise<Response> {
   const limit = rateLimit(clientIp(request.headers), RATE_LIMIT_PER_MINUTE);

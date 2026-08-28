@@ -7,13 +7,14 @@
  * kept out of `npm test` — see vitest.eval.config.ts.
  *
  * The number this prints is the honest one: it is computed from the same code path
- * the app runs, with the same four gates, and the rubric is the one the hand-written
+ * the app runs, with the same five gates, and the rubric is the one the hand-written
  * packs are held to in lib/quality.test.ts.
  *
- * The rubric pass rate is now the weaker of the two numbers it reports. What the
- * second opinion disputed, and what the stem embedding called a reword, are both
- * listed in full: each is a claim about two pieces of text, and only reading them
- * says whether the gate caught something or invented it.
+ * The rubric pass rate is now the weakest of the numbers it reports. What the
+ * second opinion disputed, what the stem embedding called a reword, and what the
+ * citation gate could not find in the source are all listed in full: each is a
+ * claim about two pieces of text, and only reading them says whether the gate
+ * caught something or invented it.
  */
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -63,6 +64,10 @@ interface SourceResult {
   repaired: number;
   challengeCalls: number;
   disputed: number;
+  groundingCalls: number;
+  ungrounded: number;
+  cited: number;
+  unusableCitations: number;
   embedCalls: number;
   paraphrased: number;
   stoppedEarly: boolean;
@@ -104,6 +109,10 @@ function writeReport(results: SourceResult[]): string {
   const repairCalls = results.reduce((sum, r) => sum + r.repairCalls, 0);
   const challengeCalls = results.reduce((sum, r) => sum + r.challengeCalls, 0);
   const disputed = results.reduce((sum, r) => sum + r.disputed, 0);
+  const groundingCalls = results.reduce((sum, r) => sum + r.groundingCalls, 0);
+  const ungrounded = results.reduce((sum, r) => sum + r.ungrounded, 0);
+  const cited = results.reduce((sum, r) => sum + r.cited, 0);
+  const unusableCitations = results.reduce((sum, r) => sum + r.unusableCitations, 0);
   const embedCalls = results.reduce((sum, r) => sum + r.embedCalls, 0);
   const paraphrased = results.reduce((sum, r) => sum + r.paraphrased, 0);
   const elapsed = results.reduce((sum, r) => sum + r.elapsedMs, 0);
@@ -114,10 +123,13 @@ function writeReport(results: SourceResult[]): string {
     `Run ${new Date().toISOString()} against \`ministral-3b-latest\`.`,
     "",
     `- Sources: ${results.length}`,
-    `- Model calls: ${attempts + repairCalls + challengeCalls + embedCalls} (${attempts} question, ${repairCalls} repair, ${challengeCalls} second opinion, ${embedCalls} stem embedding)`,
+    `- Model calls: ${attempts + repairCalls + challengeCalls + groundingCalls + embedCalls} (${attempts} question, ${repairCalls} repair, ${challengeCalls} second opinion, ${groundingCalls} citation, ${embedCalls} stem embedding)`,
     `- Questions kept: ${all.length}`,
     `- Questions passing the rubric: ${quality.passed} of ${quality.total} (**${pct(quality.passRate)}**)`,
     `- Thrown out by the second opinion: ${disputed} of ${challengeCalls} answered again`,
+    `- Thrown out as ungrounded in the source: ${ungrounded}`,
+    `- Kept with a verified span of the source attached: ${cited} of ${all.length}`,
+    `- Kept without one because the reply was too thin or a paste, not because the question was ungrounded: ${unusableCitations}`,
     `- Thrown out as a paraphrase word overlap missed: ${paraphrased} of ${embedCalls} embedded`,
     `- Rescued by a misconception repair call: ${results.reduce((s, r) => s + r.repaired, 0)} of ${repairCalls} repair calls`,
     `- Kept despite a rubric failure, to reach the pack floor: ${results.reduce((s, r) => s + r.keptDespiteRubric, 0)}`,
@@ -179,11 +191,24 @@ function writeReport(results: SourceResult[]): string {
     }
   }
 
-  lines.push("", "## Per source", "", "| source | kept | calls | passing |", "| --- | --- | --- | --- |");
+  // And again: "ungrounded, 3" is worthless on its own. Each of these says a
+  // question asserted something the material does not, and the question is
+  // printed with it so a reader can check the gate rather than believe it.
+  const missing = rejections.filter((r) => r.stage === "ungrounded");
+  if (missing.length > 0) {
+    lines.push("", "## What the citation gate could not find in the source", "");
+    for (const gap of missing) {
+      lines.push(`- ${gap.reason}`);
+    }
+  }
+
+  // Seconds per source, because the route this runs in is killed at 60s and the
+  // aggregate wall clock hides which source came closest to it.
+  lines.push("", "## Per source", "", "| source | kept | calls | passing | seconds |", "| --- | --- | --- | --- | --- |");
   for (const result of results) {
     const own = checkPack(result.items);
     lines.push(
-      `| ${result.name} | ${result.items.length} | ${result.attempts} | ${own.passed}/${own.total} |`,
+      `| ${result.name} | ${result.items.length} | ${result.attempts} | ${own.passed}/${own.total} | ${(result.elapsedMs / 1000).toFixed(1)} |`,
     );
   }
 
