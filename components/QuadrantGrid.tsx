@@ -79,10 +79,13 @@ function Cell({
           className="pointer-events-none absolute -right-12 -top-16 size-52 rounded-full bg-ember-400/30 blur-3xl"
         />
         <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full border border-ember-300/80 bg-ember-400/15 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ember-300">
+          {/* The palette's ember-300 is drawn for the light page; on this navy it
+              measures 2.75:1, and inside the pill's own 15% tint 2.6:1. The pale
+              end of the ramp is 8.1:1 there, the mid 5.3:1 on the bare navy. */}
+          <span className="inline-flex items-center gap-2 rounded-full border border-ember-400/60 bg-ember-400/15 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ember-900">
             <span aria-hidden>{copy.mark}</span> Confidently wrong
           </span>
-          <p className="tnum mt-5 text-6xl font-semibold leading-none text-ember-300 sm:text-7xl">
+          <p className="tnum mt-5 text-6xl font-semibold leading-none text-ember-400 sm:text-7xl">
             {n}
           </p>
           <p className="mt-4 text-lg font-semibold leading-snug text-white sm:text-xl">

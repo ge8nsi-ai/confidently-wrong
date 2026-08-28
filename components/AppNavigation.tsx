@@ -171,7 +171,9 @@ function NavLink({
       <span className={`tnum text-xs font-bold ${active ? "text-ember-400" : "text-ink-400"}`}>{number}</span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-semibold">{title}</span>
-        <span className={`mt-0.5 block text-xs ${active ? "text-ink-400" : "text-ink-400"}`}>{detail}</span>
+        {/* The active row inverts the surface, so the detail line cannot keep the
+            colour it has on a light one: ink-400 on ink-50 measures 3.9:1. */}
+        <span className={`mt-0.5 block text-xs ${active ? "text-ink-600" : "text-ink-400"}`}>{detail}</span>
       </span>
       <span aria-hidden>→</span>
     </Link>

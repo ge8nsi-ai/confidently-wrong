@@ -328,7 +328,7 @@ function RepairView({
           type="button"
           onClick={onBack}
           disabled={step === 0}
-          className="rounded-2xl border border-ink-600/70 px-5 py-3.5 text-sm font-semibold text-ink-200 transition hover:border-ink-400 disabled:opacity-40"
+          className="rounded-2xl border border-ink-600/70 px-5 py-3.5 text-sm font-semibold text-ink-200 transition hover:border-ink-400 disabled:cursor-not-allowed disabled:border-ink-700 disabled:text-ink-400"
         >
           Back
         </button>

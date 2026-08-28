@@ -151,7 +151,15 @@ export default function CalibrationChart({
                 <Legend
                   verticalAlign="top"
                   height={28}
-                  wrapperStyle={{ fontSize: 12, color: "var(--color-ink-300)" }}
+                  wrapperStyle={{ fontSize: 12 }}
+                  // Recharts colours each label with its own series stroke, and
+                  // those strokes are picked to read as lines on a light card,
+                  // not as 12px text: "Before" measured 2.30:1 and "After"
+                  // 2.55:1. The swatch still carries the colour, so the label
+                  // does not have to.
+                  formatter={(value) => (
+                    <span className="text-ink-200">{String(value)}</span>
+                  )}
                 />
               ) : null}
               <Line

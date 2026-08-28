@@ -88,15 +88,27 @@ export default function ProbeCard({
                 aria-hidden
                 className={`mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg border text-xs font-semibold ${
                   selected
-                    ? "border-iris-300 bg-iris-400/20 text-iris-300"
-                    : "border-ink-600 text-ink-400"
+                    ? "border-iris-300 bg-iris-400/25 text-iris-300"
+                    : "border-ink-600 text-ink-300"
                 }`}
               >
-                {selected ? "✓" : LETTERS[i]}
+                {/* The letter stays put when the option is picked. "Read question"
+                    speaks the options as "Option B", and a refutation the learner
+                    reads later refers to what they chose; replacing B with a tick
+                    is the one moment that correspondence is needed and gone. */}
+                {LETTERS[i]}
               </span>
-              <span className="text-[0.98rem] leading-relaxed sm:text-base">
+              <span className="flex-1 text-[0.98rem] leading-relaxed sm:text-base">
                 {option.text}
               </span>
+              {selected ? (
+                <span
+                  aria-hidden
+                  className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-iris-300 text-[0.7rem] font-bold text-white"
+                >
+                  ✓
+                </span>
+              ) : null}
             </button>
           );
         })}
@@ -122,7 +134,7 @@ export default function ProbeCard({
         type="button"
         disabled={!ready}
         onClick={() => ready && onSubmit(chosen, conf)}
-        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 shadow-[0_6px_0_#c5beb4] transition hover:-translate-y-0.5 hover:bg-[#30384a] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-400 disabled:shadow-none"
+        className="mt-6 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 shadow-[0_6px_0_#c5beb4] transition hover:-translate-y-0.5 hover:bg-[#30384a] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-300 disabled:shadow-none"
       >
         {position === total ? "Finish round" : "Next question"}
       </button>

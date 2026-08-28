@@ -11,7 +11,13 @@
   --color-ink-800: #e8e5de;
   --color-ink-700: #ddd9d1;
   --color-ink-600: #c9c4ba;
-  --color-ink-400: #77777e;
+  /* Secondary label text, and the one step on the scale that has to earn its
+     value rather than look right: it is used at 11-13px, so it needs 4.5:1
+     against the page. #77777e read nicely and measured 3.85:1; #6a6a71 held
+     4.65:1 on the flat page but only 4.04:1 where a warm gradient blob darkens
+     a card behind it, which is where the audit caught it. This is 4.77:1 there
+     and 5.48:1 on the page. */
+  --color-ink-400: #5f5f66;
   --color-ink-300: #5b5c64;
   --color-ink-200: #3f414a;
   --color-ink-100: #282a31;
@@ -20,8 +26,16 @@
   /* Danger zone: sure and wrong. Warm, dominant. */
   --color-ember-500: #d86f63;
   --color-ember-400: #e99082;
-  --color-ember-300: #b95850;
+  /* Refutation body text on the light page. #b95850 measured 4.16:1 on the
+     pink-tinted card it is used on; this is 4.76:1 at the worst tint. Never on
+     navy — see the note in QuadrantGrid, which uses ember-900 there. */
+  --color-ember-300: #a33f38;
   --color-ember-900: #fde5df;
+
+  /* Small caps eyebrows and the numerals on the landing page. The warm greys
+     they were picked as (#9e766d, #a77b70) measured 3.19:1 and 3.42:1 on the
+     tints they sit on; this holds 5.03:1 at the worst of them. */
+  --color-clay-300: #7b524a;
 
   /* Correct / calm. */
   --color-mint-400: #77a999;

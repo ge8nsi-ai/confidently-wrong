@@ -240,7 +240,7 @@ export default function VoiceExplain() {
           type="button"
           onClick={mark}
           disabled={!longEnough || busy}
-          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:opacity-40"
+          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-300"
         >
           {stage === "marking" ? "Marking…" : "Mark my explanation"}
         </button>
@@ -334,7 +334,7 @@ function CritiquePanel({
           type="button"
           onClick={onQuiz}
           disabled={quizzing}
-          className="mt-4 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:opacity-40"
+          className="mt-4 w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-300"
         >
           {quizzing ? "Writing questions…" : "Quiz me on this"}
         </button>

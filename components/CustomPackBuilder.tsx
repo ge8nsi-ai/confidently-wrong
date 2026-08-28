@@ -183,7 +183,7 @@ export default function CustomPackBuilder() {
           type="button"
           onClick={generate}
           disabled={!ready}
-          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:opacity-40"
+          className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-300"
         >
           {status === "working" ? "Writing questions…" : "Generate the pack"}
         </button>
