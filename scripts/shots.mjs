@@ -17,8 +17,12 @@ import path from "node:path";
 import { loadChromium } from "./lib/chromium.mjs";
 
 const BASE = process.env.SHOTS_BASE ?? "http://localhost:3100";
-const OUT = path.join(process.cwd(), "shots");
+const OUT = path.resolve(process.cwd(), process.env.SHOTS_OUT ?? "shots");
 const VIEWPORT = { width: 1200, height: 800 };
+// 2x for the submission gallery, where a frame is inspected full-screen. Pass
+// SHOTS_SCALE=1 for README images, which render at a few hundred pixels wide and
+// are cloned with the repo, so a retina copy is bytes nobody looks at.
+const SCALE = Number(process.env.SHOTS_SCALE ?? 2);
 
 /** Answer every question in the current round: option, certainty, next. */
 async function answerRound(page, conf) {
@@ -45,7 +49,7 @@ async function main() {
   const browser = await chromium.launch();
   const context = await browser.newContext({
     viewport: VIEWPORT,
-    deviceScaleFactor: 2,
+    deviceScaleFactor: SCALE,
     reducedMotion: "reduce",
   });
   const page = await context.newPage();
@@ -153,7 +157,7 @@ async function main() {
   await browser.close();
   console.log(
     `\n${n} shots in ${path.relative(process.cwd(), OUT)}, ` +
-      `${VIEWPORT.width * 2}x${VIEWPORT.height * 2} each.`,
+      `${VIEWPORT.width * SCALE}x${VIEWPORT.height * SCALE} each.`,
   );
 }
 
