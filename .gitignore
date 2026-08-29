@@ -62,3 +62,10 @@ next-env.d.ts
 
 # Frame stills the video tooling writes to the repo root while previewing a cut.
 /preview-*/
+
+# Agent scaffolding. CLAUDE.md and AGENTS.md are written by the tooling (next dev
+# re-adds AGENTS.md on every run), and .claude/launch.json is one machine gets the
+# dev server on port 3100. None of it is the app.
+/.claude/
+/CLAUDE.md
+/AGENTS.md
