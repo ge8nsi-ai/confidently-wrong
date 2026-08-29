@@ -69,3 +69,7 @@ next-env.d.ts
 /.claude/
 /CLAUDE.md
 /AGENTS.md
+
+# Submission copy: the Devpost fields and the video runbook. They describe the
+# hackathon entry, not the app, and the finished versions live on the entry.
+/submission/

@@ -12,6 +12,7 @@
 ![Tests](https://img.shields.io/badge/tests-370_passing-2e7d5b)
 ![axe](https://img.shields.io/badge/axe-0_violations_in_22_scans-2e7d5b)
 ![Lighthouse](https://img.shields.io/badge/Lighthouse_a11y-100-2e7d5b)
+![License](https://img.shields.io/badge/license-MIT-777)
 
 <img src="docs/shots/home.jpg" alt="Home screen" width="820">
 
@@ -52,6 +53,8 @@ cp .env.example .env.local
 npm run dev
 npm test
 ```
+
+`npm run a11y` · `failures` · `perf` · `eval` · `shots` regenerate `docs/` and `evals/` against a running build; nothing there is hand-written.
 
 ## Sources
 

@@ -11,7 +11,8 @@
     "eval": "vitest run --config vitest.eval.config.ts",
     "a11y": "node scripts/audit-a11y.mjs",
     "failures": "node scripts/failure-pass.mjs",
-    "perf": "node scripts/lighthouse-pass.mjs"
+    "perf": "node scripts/lighthouse-pass.mjs",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.34.0",
@@ -33,5 +34,12 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.11"
+  },
+  "description": "Certainty-based marking: refutes only the beliefs you held with confidence and got wrong.",
+  "license": "MIT",
+  "homepage": "https://confidently-wrong-fawn.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ge8nsi-ai/confidently-wrong.git"
   }
 }
