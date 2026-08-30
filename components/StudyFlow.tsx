@@ -147,8 +147,17 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
     setLoadingRefutations(false);
   }, [repairSteps, setLoadingRefutations, setRefutation]);
 
+  /**
+   * Refutations are fetched when the reveal screen opens, not when repair does.
+   *
+   * They were only ever needed by the next screen, so they used to be asked for at
+   * the moment the learner arrived there and read as a wait. The probe round is
+   * over by the time reveal renders, so every refutation the repair round will want
+   * is already known: the quadrant chart is the paid calls' cover, and the round
+   * that follows opens with its text already in the store.
+   */
   useEffect(() => {
-    if (phase !== "repair" || fetchedRef.current) return;
+    if ((phase !== "reveal" && phase !== "repair") || fetchedRef.current) return;
     fetchedRef.current = true;
     void fetchRefutations();
   }, [fetchRefutations, phase]);

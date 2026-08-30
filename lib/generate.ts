@@ -27,6 +27,12 @@
  *
  * Five gates and up to eleven attempts can outlast the 60s the route gets, so
  * the loop also watches the clock and returns a short pack rather than nothing.
+ *
+ * The one place the sequence is broken is the wait: the next question is asked
+ * while the current one is being verified. Those two calls have nothing to say to
+ * each other — verification judges a finished question, and the next prompt only
+ * needs the ground already covered, which is known before either runs — so paying
+ * for them one after the other bought nothing but latency.
  */
 
 import {
@@ -277,6 +283,42 @@ export async function generateItems({
   const maxAttempts = count + SPARE_ATTEMPTS;
   let attempts = 0;
 
+  /**
+   * The next question, already being written.
+   *
+   * Started while the current one is verified, so the wall clock per kept item is
+   * the longer of the two calls rather than their sum. Held as a promise rather
+   * than a result because it may never be needed: a full pack discards it, and
+   * anything already paid for is cheaper to drop than to wait for.
+   */
+  let prefetched: Promise<unknown> | null = null;
+
+  const askForItem = (position: number): Promise<unknown> =>
+    chatJson(
+      [
+        { role: "system", content: GENERATE_SYSTEM_PROMPT },
+        {
+          role: "user",
+          content: generateUserPrompt(
+            material,
+            position,
+            count,
+            // Copied: the live array keeps growing while this call is in flight.
+            [...usedConcepts],
+            focus[position - 1],
+          ),
+        },
+      ],
+      { maxTokens: MAX_TOKENS_PER_ITEM, timeoutMs: 20_000, temperature: 0.4 },
+    );
+
+  /** Takes the in-flight question if there is one, otherwise asks for one now. */
+  const nextRaw = (position: number): Promise<unknown> => {
+    const pending = prefetched;
+    prefetched = null;
+    return pending ?? askForItem(position);
+  };
+
   const reject = (attempt: number, stage: RejectionStage, reason: string) => {
     rejections.push({ attempt, stage, reason });
     onWarn?.(`attempt ${attempt} rejected at ${stage} — ${reason}`);
@@ -309,24 +351,11 @@ export async function generateItems({
     // question beats no pack: narrow material genuinely cannot always yield more.
     const attemptsLeft = maxAttempts - attempt;
     const canAffordToSkip = items.length + attemptsLeft >= MIN_ITEMS_KEPT;
+    /** Whether this attempt's ground was already recorded, before the verdicts. */
+    let noted = false;
 
     try {
-      const raw = await chatJson(
-        [
-          { role: "system", content: GENERATE_SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: generateUserPrompt(
-              material,
-              items.length + 1,
-              count,
-              usedConcepts,
-              focus[items.length],
-            ),
-          },
-        ],
-        { maxTokens: MAX_TOKENS_PER_ITEM, timeoutMs: 20_000, temperature: 0.4 },
-      );
+      const raw = await nextRaw(items.length + 1);
 
       let validated = validateGeneratedItem(raw);
       let wasRepaired = false;
@@ -425,6 +454,23 @@ export async function generateItems({
       if (canAffordToSkip && timeLeft() > RESERVE_FOR_VERIFY_MS) {
         challengeCalls += 1;
         groundingCalls += 1;
+        // The next question is asked here, not after the verdicts come back. It is
+        // covered ground either way: this item is noted below whether it is kept or
+        // disputed, so the prompt in flight is the same prompt either outcome would
+        // have produced. Kept unawaited so a verdict of "drop it" costs no wait.
+        noteCovered(generated.topic, generated.stem);
+        noted = true;
+        if (
+          items.length + 1 < count &&
+          attempt < maxAttempts &&
+          timeLeft() > RESERVE_FOR_ATTEMPT_MS + RESERVE_FOR_VERIFY_MS
+        ) {
+          // Rejection is swallowed here and re-thrown on await by the next attempt,
+          // where it is recorded against that attempt like any other failed call.
+          const inflight = askForItem(items.length + 2);
+          inflight.catch(() => undefined);
+          prefetched = inflight;
+        }
         // A failed call leaves the item in, in both cases: silence is not a
         // dispute, and an unreachable API is not an unciteable question.
         const [dispute, cite] = await Promise.all([
@@ -443,7 +489,6 @@ export async function generateItems({
         if (cite.failure) {
           reject(attempt, "ungrounded", `${cite.failure} | asked: ${assembled.stem}`);
           ungrounded += 1;
-          noteCovered(generated.topic, generated.stem);
           continue;
         }
         if (cite.quote) {
@@ -461,7 +506,7 @@ export async function generateItems({
       items.push(sourceNote ? { ...assembled, sourceNote } : assembled);
       if (wasRepaired) repaired += 1;
       if (stemVector) keptVectors.push({ stem: generated.stem, vector: stemVector });
-      noteCovered(generated.topic, generated.stem);
+      if (!noted) noteCovered(generated.topic, generated.stem);
     } catch (error) {
       // A single failed question does not sink the pack. The reason is kept for the
       // server log and the eval report; the client never sees model detail.

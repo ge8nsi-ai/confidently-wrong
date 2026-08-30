@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useStudy } from "@/lib/store";
 import type { Pack } from "@/lib/types";
@@ -15,15 +15,37 @@ export default function CustomPackBuilder() {
   const [file, setFile] = useState<File | null>(null);
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
-  const [count, setCount] = useState(6);
+  const [count, setCount] = useState(4);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const [elapsed, setElapsed] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
+
+  /**
+   * A ticking count of seconds while the pack is being written.
+   *
+   * Each question is a paid call and there is no honest way to make four of them
+   * instant, so the wait is at least made legible: a disabled button with no
+   * moving part reads as a hang, and the commonest response to a hang is a reload
+   * that throws the finished questions away. Held out of the `aria-live` region
+   * below and hidden from the accessibility tree, because a screen reader
+   * announcing a new number every second is worse than no number at all.
+   */
+  useEffect(() => {
+    if (status !== "working") return;
+    const started = Date.now();
+    const timer = setInterval(
+      () => setElapsed(Math.round((Date.now() - started) / 1000)),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [status]);
 
   const ready = (file !== null || text.trim().length >= 200) && status !== "working";
 
   async function generate() {
     setStatus("working");
+    setElapsed(0);
     setMessage("Reading your material…");
 
     try {
@@ -35,8 +57,8 @@ export default function CustomPackBuilder() {
 
       setMessage(
         file
-          ? "Reading the document, then writing questions. This takes a moment."
-          : "Writing questions from your notes. This takes a moment.",
+          ? `Reading the document, then writing ${count} questions. Around a minute.`
+          : `Writing ${count} questions from your notes. Around a minute.`,
       );
 
       const res = await fetch("/api/generate-pack", { method: "POST", body: form });
@@ -172,7 +194,7 @@ export default function CustomPackBuilder() {
             >
               {[4, 5, 6, 7, 8].map((n) => (
                 <option key={n} value={n}>
-                  {n} questions
+                  {n} questions{n === 4 ? " (fastest)" : ""}
                 </option>
               ))}
             </select>
@@ -185,7 +207,17 @@ export default function CustomPackBuilder() {
           disabled={!ready}
           className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#3e4d62] disabled:cursor-not-allowed disabled:bg-ink-700 disabled:text-ink-300"
         >
-          {status === "working" ? "Writing questions…" : "Generate the pack"}
+          {status === "working" ? (
+            <>
+              Writing questions
+              <span className="tnum" aria-hidden="true">
+                {" "}
+                · {elapsed}s
+              </span>
+            </>
+          ) : (
+            "Generate the pack"
+          )}
         </button>
 
         <p

@@ -9,7 +9,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Mistral](https://img.shields.io/badge/Mistral-Ministral_3B_·_Voxtral-fa520f)
-![Tests](https://img.shields.io/badge/tests-370_passing-2e7d5b)
+![Tests](https://img.shields.io/badge/tests-374_passing-2e7d5b)
 ![axe](https://img.shields.io/badge/axe-0_violations_in_22_scans-2e7d5b)
 ![Lighthouse](https://img.shields.io/badge/Lighthouse_a11y-100-2e7d5b)
 ![License](https://img.shields.io/badge/license-MIT-777)
