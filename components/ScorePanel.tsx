@@ -7,15 +7,26 @@ import {
 } from "@/lib/scoring";
 import type { Response } from "@/lib/types";
 
+/**
+ * One sentence naming the gap between certainty and accuracy.
+ *
+ * "Backed your answers as if you would get 78%" was a betting metaphor doing the
+ * work a plain sentence should do: the two numbers are how often the learner was
+ * right and how often their own certainty said they would be, so that is what it
+ * now says.
+ */
 function reading(rs: Response[]): string {
   const over = overconfidence(rs);
   const acc = accuracy(rs);
   if (rs.length === 0) return "Nothing scored yet.";
+  const right = Math.round(acc * 100);
+  const claimed = Math.round((acc + over) * 100);
+  const gap = Math.abs(claimed - right);
   if (over > 0.15)
-    return `You got ${Math.round(acc * 100)}% right but backed your answers as if you would get ${Math.round((acc + over) * 100)}%. The gap, not the wrong answers, is what to work on.`;
+    return `You were right ${right}% of the time. Your certainty said ${claimed}%. Closing that ${gap}-point gap matters more than the wrong answers themselves.`;
   if (over < -0.15)
-    return `You got ${Math.round(acc * 100)}% right while betting as if you would get ${Math.round((acc + over) * 100)}%. You are underclaiming what you know.`;
-  return `You got ${Math.round(acc * 100)}% right and your certainty tracked that closely. Well calibrated.`;
+    return `You were right ${right}% of the time, but your certainty said only ${claimed}%. You know more than you are giving yourself credit for.`;
+  return `You were right ${right}% of the time, and your certainty said about the same. That is well calibrated.`;
 }
 
 export default function ScorePanel({ responses }: { responses: Response[] }) {

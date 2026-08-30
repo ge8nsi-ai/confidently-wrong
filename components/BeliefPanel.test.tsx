@@ -65,11 +65,14 @@ describe("BeliefPanel", () => {
     );
     expect(html).toContain(topicOf(item));
     expect(html).toContain(escaped(wrong.misconception!));
-    expect(html).toContain("bits left");
+    expect(html).toContain("from 1 answer");
+    expect(html).toContain("You seem to believe:");
     // The point of the panel: one certain wrong answer should leave the app
-    // confident the learner does *not* have this right.
-    const sound = /aria-label="Has this right: (\d+) percent"/.exec(html);
-    expect(Number(sound![1])).toBeLessThan(20);
+    // confident the learner does *not* have this right. Either the sound bar is
+    // drawn low, or it fell under the 5% floor and is counted in the line below.
+    const sound = /aria-label="You understand it: (\d+) percent"/.exec(html);
+    if (sound) expect(Number(sound[1])).toBeLessThan(20);
+    else expect(html).toContain("below 5%");
   });
 
   it("says the learner has it right when they answered correctly", () => {
@@ -77,7 +80,7 @@ describe("BeliefPanel", () => {
     const html = renderToStaticMarkup(
       <BeliefPanel items={[item]} responses={rightAt([item], 3)} />,
     );
-    expect(html).toContain("You appear to have this right.");
+    expect(html).toContain("This one looks sound.");
   });
 
   it("shows only the concepts that were actually asked about", () => {
@@ -92,14 +95,24 @@ describe("BeliefPanel", () => {
     }
   });
 
-  it("puts the most uncertain concept first, since that is the one worth reading", () => {
-    // Two concepts: one settled by a certain wrong answer, one left open by a guess.
+  it("leads with a named misconception, not with the concept it knows least about", () => {
+    // Two concepts: one where a certain wrong answer named a belief, one left open
+    // by a guess. Ordering by entropy put the guess first, which is the card with
+    // the least in it.
     const a = pack.items[0]!;
     const b = pack.items.find((i) => i.conceptId !== a.conceptId)!;
     const html = renderToStaticMarkup(
       <BeliefPanel items={[a, b]} responses={[...wrongAt([a], 3), ...wrongAt([b], 1)]} />,
     );
-    expect(html.indexOf(topicOf(b))).toBeLessThan(html.indexOf(topicOf(a)));
+    expect(html.indexOf(topicOf(a))).toBeLessThan(html.indexOf(topicOf(b)));
+  });
+
+  it("says so rather than asserting a belief when one guess is all it has", () => {
+    const item = pack.items[0]!;
+    const html = renderToStaticMarkup(
+      <BeliefPanel items={[item]} responses={wrongAt([item], 1)} />,
+    );
+    expect(html).toContain("Not enough answers here to say yet.");
   });
 
   it("gives every probability bar a label a screen reader can read", () => {
@@ -108,7 +121,10 @@ describe("BeliefPanel", () => {
       <BeliefPanel items={[item]} responses={wrongAt([item], 2)} />,
     );
     const labels = [...html.matchAll(/aria-label="[^"]*: \d+ percent"/g)];
-    expect(labels.length).toBe(item.options.length);
-    expect(html).toContain('role="img"');
+    const bars = [...html.matchAll(/role="img"/g)];
+    expect(labels.length).toBe(bars.length);
+    expect(labels.length).toBeGreaterThan(0);
+    // Anything under 5% is summarised in a line instead of drawn as an empty bar.
+    expect(labels.length).toBeLessThanOrEqual(item.options.length);
   });
 });

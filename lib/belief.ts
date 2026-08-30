@@ -185,7 +185,7 @@ export function beliefStates(
     const hypotheses: Hypothesis[] = keys
       .map((key, i) => ({
         key,
-        label: key === SOUND ? "Has this right" : key,
+        label: key === SOUND ? "You understand it" : key,
         probability: probabilities[i] ?? 0,
       }))
       // Ties keep SOUND first, which is the order hypothesisKeys built.
@@ -205,6 +205,23 @@ export function beliefStates(
 
 export function topBelief(state: BeliefState): Hypothesis | null {
   return state.hypotheses[0] ?? null;
+}
+
+/**
+ * How settled the posterior is, in words rather than bits.
+ *
+ * The panel used to print entropy, which is the honest number and unreadable: "1.86
+ * bits left" tells a learner nothing about whether to trust the row under it. The
+ * leading belief's share is the part they can act on, so it is what gets said, and
+ * the thresholds are only there to keep a 45% leader from being announced as a
+ * finding.
+ */
+export function reading(state: BeliefState): "clear" | "leaning" | "open" {
+  const top = topBelief(state);
+  if (!top || state.observations === 0) return "open";
+  if (top.probability >= 0.7) return "clear";
+  if (top.probability >= 0.5) return "leaning";
+  return "open";
 }
 
 /** One line for the reveal screen. */
