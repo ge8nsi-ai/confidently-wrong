@@ -180,6 +180,23 @@ export interface GenerateOptions {
   focus?: string[];
   /** Wall clock the loop may use, defaulting to what the route can afford. */
   timeBudgetMs?: number;
+  /**
+   * Questions already asked, so a later batch does not ask them again.
+   *
+   * Endless mode calls this loop several times over one piece of material, and each
+   * call starts with an empty memory of what it has covered. Seeding that memory is
+   * what keeps batch four off the ground batch one already took. Only the two
+   * free repetition layers are seeded — the prompt's covered-ground list and the
+   * word-overlap check — because the embeddings of earlier stems are not kept
+   * anywhere, so the paid paraphrase gate still only sees the current batch.
+   */
+  avoid?: { topic: string; stem: string }[];
+  /**
+   * Where item ids start counting, so a later batch does not collide with an
+   * earlier one. Item ids are `${packId}-${n}`, and two items with the same id
+   * would be one item as far as every response, posterior and score is concerned.
+   */
+  indexOffset?: number;
   onWarn?: (message: string) => void;
 }
 
@@ -255,12 +272,16 @@ export async function generateItems({
   packId,
   focus = [],
   timeBudgetMs = DEFAULT_TIME_BUDGET_MS,
+  avoid = [],
+  indexOffset = 0,
   onWarn,
 }: GenerateOptions): Promise<GenerationOutcome> {
   const items: Item[] = [];
-  const usedConcepts: string[] = [];
-  const usedKeys = new Set<string>();
-  const usedStems: string[] = [];
+  const usedConcepts: string[] = avoid.map(
+    (a) => `${a.topic} (asked: ${a.stem})`,
+  );
+  const usedKeys = new Set(avoid.map((a) => a.topic.toLowerCase()));
+  const usedStems: string[] = avoid.map((a) => a.stem);
   /** One vector per kept stem, in step with usedStems where embedding worked. */
   const keptVectors: { stem: string; vector: number[] }[] = [];
   const rejections: Rejection[] = [];
@@ -427,7 +448,7 @@ export async function generateItems({
         }
       }
 
-      const assembled = assembleItem(generated, packId, items.length);
+      const assembled = assembleItem(generated, packId, indexOffset + items.length);
       const graded = checkItem(assembled);
       if (!graded.ok) {
         reject(attempt, "rubric", graded.failures.map((f) => f.check).join(", "));

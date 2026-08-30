@@ -13,6 +13,7 @@ import type {
 } from "./types";
 import { needsRefutation } from "./scoring";
 import { orderByHeldBelief } from "./belief";
+import { clampTarget, isRoundComplete } from "./endless";
 import { itemMetaFor } from "./topics";
 import { toVariant } from "./variants";
 
@@ -51,6 +52,10 @@ interface Actions {
   saveCustomPack: (pack: Pack) => void;
   deleteCustomPack: (packId: string) => void;
   clearHistory: () => void;
+  /** Adds a background batch to an endless pack. Ignores ids already present. */
+  appendItems: (items: Item[]) => void;
+  /** Raises how many questions an endless round will ask before the reveal. */
+  setTarget: (target: number) => void;
 }
 
 const initial: Omit<State, "sessions" | "customPacks"> = {
@@ -97,7 +102,17 @@ export const useStudy = create<State & Actions>()(
         const responses = [...get().responses, response];
         const roundItems = currentRoundItems(get().pack, responses, get().phase);
         const nextIndex = get().index + 1;
-        const finished = nextIndex >= roundItems.length;
+        /**
+         * An endless probe round ends on the target, not on the list.
+         *
+         * Its list is only what has arrived: running out of questions means a batch
+         * is still being written, and treating that as the end of the round would
+         * drop the learner onto the reveal screen three questions into a run of ten.
+         */
+        const endlessProbe = Boolean(get().pack?.endless) && get().phase === "probe";
+        const finished = endlessProbe
+          ? isRoundComplete(get().pack, probeResponses(responses).length)
+          : nextIndex >= roundItems.length;
 
         set({
           responses,
@@ -117,7 +132,9 @@ export const useStudy = create<State & Actions>()(
 
       setPhase: (phase) => {
         set({ phase, index: 0, pendingConf: null });
-        if (phase === "done") get().recordSession(true);
+        // Reveal is where an endless round can be stopped early, so history is
+        // written there too rather than only when a run reaches the end.
+        if (phase === "done" || phase === "reveal") get().recordSession(phase === "done");
       },
 
       setRefutation: (key, refutation) =>
@@ -172,6 +189,38 @@ export const useStudy = create<State & Actions>()(
         })),
 
       clearHistory: () => set({ sessions: [] }),
+
+      /**
+       * Adds a batch of questions to the pack being played.
+       *
+       * Ids already present are dropped rather than merged: a retried request that
+       * lands twice would otherwise put the same question in the round twice, and
+       * every response, posterior and score is keyed by item id.
+       */
+      appendItems: (incoming) =>
+        set((s) => {
+          if (!s.pack || incoming.length === 0) return {};
+          const have = new Set(s.pack.items.map((i) => i.id));
+          const fresh = incoming.filter((i) => !have.has(i.id));
+          if (fresh.length === 0) return {};
+          const pack = { ...s.pack, items: [...s.pack.items, ...fresh] };
+          // The stored copy is updated too, so a reload mid-run does not lose the
+          // questions already paid for.
+          return {
+            pack,
+            customPacks: s.customPacks.map((p) => (p.id === pack.id ? pack : p)),
+          };
+        }),
+
+      setTarget: (target) =>
+        set((s) => {
+          if (!s.pack?.endless) return {};
+          const pack = { ...s.pack, target: clampTarget(target) };
+          return {
+            pack,
+            customPacks: s.customPacks.map((p) => (p.id === pack.id ? pack : p)),
+          };
+        }),
     }),
     {
       name: "confidently-wrong.v1",

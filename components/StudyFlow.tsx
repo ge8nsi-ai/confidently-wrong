@@ -27,6 +27,16 @@ import {
 } from "@/lib/store";
 import { needsRefutation } from "@/lib/scoring";
 import { selectNextItem } from "@/lib/belief";
+import {
+  MAX_BATCH_FAILURES,
+  avoidList,
+  canExtend,
+  extendedTarget,
+  indexOffsetFor,
+  nextBatchSize,
+  progressLabel,
+  targetOf,
+} from "@/lib/endless";
 import type { Conf, Item, Pack, Refutation, Response } from "@/lib/types";
 
 const PHASE_COPY: Record<string, string> = {
@@ -66,6 +76,8 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
   const setPhase = useStudy((s) => s.setPhase);
   const setRefutation = useStudy((s) => s.setRefutation);
   const setLoadingRefutations = useStudy((s) => s.setLoadingRefutations);
+  const appendItems = useStudy((s) => s.appendItems);
+  const setTarget = useStudy((s) => s.setTarget);
   const reset = useStudy((s) => s.reset);
 
   useEffect(() => {
@@ -79,15 +91,18 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
   /**
    * The probe order is chosen live rather than fixed: the next question is the one
    * the belief model can least predict the answer to. Every item is still asked
-   * exactly once, so the store's progress counting is untouched — the fallback to
-   * pack order covers the moment the round is already complete.
+   * exactly once, so the store's progress counting is untouched.
+   *
+   * In an endless pack there may be nothing to fall back to: the list is only what
+   * has arrived, so null here means a batch is still being written, not that the
+   * round is over.
    */
-  const probeItem = useMemo(
-    () =>
-      selectNextItem(pack.items, probe) ??
-      pack.items[Math.min(index, pack.items.length - 1)]!,
-    [index, pack.items, probe],
-  );
+  const probeItem = useMemo(() => {
+    const next = selectNextItem(pack.items, probe);
+    if (next) return next;
+    if (pack.endless) return null;
+    return pack.items[Math.min(index, pack.items.length - 1)]!;
+  }, [index, pack.endless, pack.items, probe]);
 
   const repairSteps = useMemo<RepairStep[]>(() => {
     const missed = missedItems(pack, responses);
@@ -110,8 +125,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
   }, [pack, probe, responses]);
 
   const fetchedRef = useRef(false);
-  const fetchRefutations = useCallback(async () => {
-    const targets = repairSteps.filter((s) => s.kind === "refutation");
+  const fetchRefutations = useCallback(async () => {    const targets = repairSteps.filter((s) => s.kind === "refutation");
     if (targets.length === 0) return;
     setLoadingRefutations(true);
     await Promise.all(
@@ -162,6 +176,65 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
     void fetchRefutations();
   }, [fetchRefutations, phase]);
 
+  /**
+   * The next batch of endless questions, written while the learner answers.
+   *
+   * Kept in a ref rather than in state because it must not re-render anything: the
+   * point of the batch is that the learner never sees it happen. `inFlight` guards
+   * against the effect firing twice for one gap, and `failures` stops the loop
+   * asking again forever when the route is down or rate-limiting.
+   *
+   * Deliberately not aborted on cleanup. This effect re-runs on every answer, so an
+   * abort there would cancel the very batch the answer was buying time for. A batch
+   * that lands late is still wanted, and it is written to the store rather than to
+   * component state, so nothing depends on this component still being mounted.
+   */
+  const batch = useRef({ inFlight: false, failures: 0 });
+  const [batchError, setBatchError] = useState("");
+
+  useEffect(() => {
+    if (phase !== "probe" || !pack.endless || !pack.material) return;
+    const want = nextBatchSize(pack, responses, batch.current);
+    if (want === 0) return;
+
+    batch.current.inFlight = true;
+    void (async () => {
+      try {
+        const res = await fetch("/api/more-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: pack.material,
+            packId: pack.title,
+            count: want,
+            // Everything asked so far, so a later batch does not repeat it.
+            avoid: avoidList(pack.items),
+            indexOffset: indexOffsetFor(pack),
+          }),
+        });
+        const data = (await res.json()) as { items?: Item[]; error?: string };
+        if (!res.ok || !data.items || data.items.length === 0) {
+          batch.current.failures += 1;
+          // Only worth saying once the learner could actually run dry.
+          if (batch.current.failures >= MAX_BATCH_FAILURES) {
+            setBatchError(
+              data.error ??
+                "No more questions could be written from this material. Finish whenever you like.",
+            );
+          }
+          return;
+        }
+        batch.current.failures = 0;
+        setBatchError("");
+        appendItems(data.items);
+      } catch {
+        batch.current.failures += 1;
+      } finally {
+        batch.current.inFlight = false;
+      }
+    })();
+  }, [appendItems, pack, phase, responses]);
+
   const onSubmit = useCallback(
     (item: Item) => (chosenOptionId: string, conf: Conf) =>
       answer(item, chosenOptionId, conf),
@@ -185,14 +258,40 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
       </p>
 
       {phase === "probe" ? (
-        <ProbeCard
-          key={probeItem.id}
-          item={probeItem}
-          position={index + 1}
-          total={pack.items.length}
-          round="probe"
-          onSubmit={onSubmit(probeItem)}
-        />
+        <div className="grid gap-6">
+          {probeItem ? (
+            <ProbeCard
+              key={probeItem.id}
+              item={probeItem}
+              position={pack.endless ? probe.length + 1 : index + 1}
+              total={pack.endless ? targetOf(pack) : pack.items.length}
+              round="probe"
+              onSubmit={onSubmit(probeItem)}
+            />
+          ) : (
+            <div className="rise grid gap-3 rounded-2xl border border-ink-700 p-6">
+              <p className="tnum text-xs font-semibold uppercase tracking-[0.2em] text-ink-400">
+                {progressLabel(pack, probe.length)}
+              </p>
+              <p className="text-base leading-relaxed text-ink-200" aria-live="polite">
+                {batchError
+                  ? batchError
+                  : "Writing the next questions from your material. A few seconds."}
+              </p>
+            </div>
+          )}
+
+          {pack.endless ? (
+            <EndlessControls
+              answered={probe.length}
+              target={targetOf(pack)}
+              canExtend={canExtend(pack)}
+              error={probeItem ? batchError : ""}
+              onExtend={() => setTarget(extendedTarget(pack))}
+              onFinish={() => setPhase("reveal")}
+            />
+          ) : null}
+        </div>
       ) : null}
 
       {phase === "reveal" ? (
@@ -209,6 +308,18 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
           <CalibrationChart responses={probe} />
           <BeliefPanel items={pack.items} responses={probe} />
           <ScorePanel responses={probe} />
+          {pack.endless && canExtend(pack) ? (
+            <button
+              type="button"
+              onClick={() => {
+                setTarget(extendedTarget(pack));
+                setPhase("probe");
+              }}
+              className="w-full rounded-2xl border border-ink-600/70 px-6 py-3.5 text-sm font-semibold text-ink-200 transition hover:border-ink-400"
+            >
+              Answer {extendedTarget(pack) - targetOf(pack)} more before repairing
+            </button>
+          ) : null}
           <button
             type="button"
             onClick={() => {
@@ -261,6 +372,60 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
         />
       ) : null}
     </>
+  );
+}
+
+/**
+ * The two things an endless round needs that a fixed pack does not: a way to stop
+ * whenever the learner has had enough, and a way to ask for more than they first
+ * said. Stopping is always available, because a round with no last question is
+ * otherwise a round you cannot leave.
+ */
+function EndlessControls({
+  answered,
+  target,
+  canExtend: extendable,
+  error,
+  onExtend,
+  onFinish,
+}: {
+  answered: number;
+  target: number;
+  canExtend: boolean;
+  error: string;
+  onExtend: () => void;
+  onFinish: () => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      {error ? (
+        <p className="text-xs leading-relaxed text-amber-300/90" aria-live="polite">
+          {error}
+        </p>
+      ) : null}
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={onFinish}
+          disabled={answered === 0}
+          className="rounded-2xl border border-ink-600/70 px-5 py-3 text-sm font-semibold text-ink-200 transition hover:border-ink-400 disabled:cursor-not-allowed disabled:border-ink-700 disabled:text-ink-400"
+        >
+          Finish and see results
+        </button>
+        {extendable ? (
+          <button
+            type="button"
+            onClick={onExtend}
+            className="rounded-2xl border border-ink-600/70 px-5 py-3 text-sm font-semibold text-ink-200 transition hover:border-ink-400"
+          >
+            Keep going past {target}
+          </button>
+        ) : null}
+      </div>
+      <p className="tnum text-xs leading-relaxed text-ink-400">
+        {answered} answered of {target}. Questions are written while you answer.
+      </p>
+    </div>
   );
 }
 

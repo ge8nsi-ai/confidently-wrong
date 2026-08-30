@@ -44,6 +44,22 @@ export interface Pack {
   origin?: "builtin" | "custom";
   createdAt?: number;
   sourceName?: string;
+  /**
+   * Endless packs grow while they are played: `items` is only what has arrived so
+   * far, and the probe round ends when the learner says so or the target is met
+   * rather than when the list runs out.
+   */
+  endless?: boolean;
+  /** How many questions to ask before the reveal. Raisable mid-round. */
+  target?: number;
+  /**
+   * The material later batches are written from.
+   *
+   * Kept on the pack because the browser is the only place it lives: nothing is
+   * stored server-side, so a request for more questions has to carry the source
+   * with it. Trimmed to MAX_MATERIAL_CHARS before it ever gets here.
+   */
+  material?: string;
 }
 
 /** What a response was about, kept alongside history so topics survive. */

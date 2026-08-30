@@ -8,6 +8,7 @@ import {
   slugify,
   trimMaterial,
 } from "@/lib/custom-pack";
+import { DEFAULT_TARGET, FIRST_BATCH, clampTarget } from "@/lib/endless";
 import { MIN_ITEMS_KEPT, generateItems } from "@/lib/generate";
 import { hasKey, ocrDocument } from "@/lib/mistral";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
@@ -63,6 +64,13 @@ export async function POST(request: Request): Promise<Response> {
   let count = 6;
   /** Points to build one question each around. Voice mode supplies these. */
   let focus: string[] = [];
+  /**
+   * Endless mode asks for a short first batch and keeps the material, so the
+   * learner starts answering in a third of the time and the rest is written in the
+   * background while they do.
+   */
+  let endless = false;
+  let target = DEFAULT_TARGET;
 
   const contentType = request.headers.get("content-type") ?? "";
 
@@ -71,7 +79,9 @@ export async function POST(request: Request): Promise<Response> {
       const form = await request.formData();
       const file = form.get("file");
       title = clean(form.get("title"), 80) ?? "";
-      count = clampItemCount(form.get("count"));
+      endless = form.get("endless") === "true";
+      target = clampTarget(form.get("target"));
+      count = endless ? FIRST_BATCH : clampItemCount(form.get("count"));
 
       if (file instanceof File) {
         if (file.size > MAX_UPLOAD_BYTES) {
@@ -103,7 +113,9 @@ export async function POST(request: Request): Promise<Response> {
       material = typeof body.text === "string" ? body.text : "";
       title = clean(body.title, 80) ?? "";
       sourceName = clean(body.sourceName, 120) ?? "";
-      count = clampItemCount(body.count);
+      endless = body.endless === true;
+      target = clampTarget(body.target);
+      count = endless ? FIRST_BATCH : clampItemCount(body.count);
       focus = parseFocusList(body.focus);
     }
   } catch {
@@ -134,7 +146,7 @@ export async function POST(request: Request): Promise<Response> {
     onWarn: (message) => console.warn(`generate-pack: ${message}`),
   });
 
-  if (items.length < MIN_ITEMS_KEPT) {
+  if (items.length < (endless ? 1 : MIN_ITEMS_KEPT)) {
     console.warn(
       `generate-pack: kept ${items.length} of ${count} after ${attempts} attempts`,
     );
@@ -149,11 +161,14 @@ export async function POST(request: Request): Promise<Response> {
   const pack: Pack = {
     id: packId,
     title: packTitle,
-    blurb: `${items.length} questions generated from your own material.`,
+    blurb: endless
+      ? `Endless questions from your own material. ${target} to start, raise it as you go.`
+      : `${items.length} questions generated from your own material.`,
     items,
     origin: "custom",
     createdAt: Date.now(),
     sourceName: sourceName || undefined,
+    ...(endless ? { endless: true, target, material } : {}),
   };
 
   return NextResponse.json({ pack });

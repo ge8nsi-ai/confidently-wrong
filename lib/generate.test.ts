@@ -203,3 +203,73 @@ describe("generateItems", () => {
     expect(failed[0]!.reason).toContain("upstream timeout");
   });
 });
+
+/**
+ * A background batch is a separate call with no recollection of the last one, so
+ * the two things that make batches add up rather than collide are worth pinning:
+ * the already-asked list reaching the prompt, and item ids continuing to count.
+ */
+describe("generateItems in a later batch", () => {
+  function replyWithVerification() {
+    chatJson.mockImplementation((messages: { role: string; content: string }[]) => {
+      const kind = kindOf(messages);
+      if (kind === "generate") return Promise.resolve(generated(1));
+      return Promise.resolve(verifyReply(kind, messages));
+    });
+  }
+
+  it("tells the model what earlier batches already asked", async () => {
+    replyWithVerification();
+
+    await generateItems({
+      material: MATERIAL,
+      count: 1,
+      packId: "p",
+      avoid: [{ topic: "Calvin cycle", stem: "What does the Calvin cycle do?" }],
+    });
+
+    const prompts = chatJson.mock.calls
+      .filter(([messages]) => kindOf(messages as never) === "generate")
+      .map(([messages]) =>
+        ((messages as { role: string; content: string }[]).find(
+          (m) => m.role === "user",
+        )?.content ?? ""),
+      );
+    expect(prompts[0]).toContain("Calvin cycle");
+    expect(prompts[0]).toContain("What does the Calvin cycle do?");
+  });
+
+  it("rejects a question an earlier batch already asked", async () => {
+    replyWithVerification();
+
+    const outcome = await generateItems({
+      material: MATERIAL,
+      count: 1,
+      packId: "p",
+      avoid: [
+        {
+          topic: "Light reactions",
+          stem: "Where do the light reactions of photosynthesis happen?",
+        },
+      ],
+    });
+
+    // The gate fires on ground an earlier batch covered, which is the part the
+    // avoid list buys. The loop still keeps the item rather than returning an empty
+    // batch once it runs out of attempts to spend on a better one.
+    expect(outcome.rejections.map((r) => r.stage)).toContain("duplicate");
+  });
+
+  it("continues the id numbering so a batch cannot collide with the pack", async () => {
+    replyWithVerification();
+
+    const outcome = await generateItems({
+      material: MATERIAL,
+      count: 1,
+      packId: "p",
+      indexOffset: 7,
+    });
+
+    expect(outcome.items[0]!.id).toBe("p-8");
+  });
+});

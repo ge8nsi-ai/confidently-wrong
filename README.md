@@ -9,7 +9,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Mistral](https://img.shields.io/badge/Mistral-Ministral_3B_·_Voxtral-fa520f)
-![Tests](https://img.shields.io/badge/tests-374_passing-2e7d5b)
+![Tests](https://img.shields.io/badge/tests-408_passing-2e7d5b)
 ![axe](https://img.shields.io/badge/axe-0_violations_in_22_scans-2e7d5b)
 ![Lighthouse](https://img.shields.io/badge/Lighthouse_a11y-100-2e7d5b)
 ![License](https://img.shields.io/badge/license-MIT-777)
@@ -37,7 +37,7 @@ Certainty is evidence, not a multiplier: each answer updates a posterior over wh
 
 ## Your own material
 
-`/packs/new` turns a PDF or notes into 4–8 questions, every distractor a named misconception; uploads deleted. `/explain` marks a spoken explanation, then quizzes the misses. `/dashboard`: weak topics, calibration, runs.
+`/packs/new` turns a PDF or notes into questions, every distractor a named misconception; uploads deleted. Endless mode starts you after three and writes the rest in the background while you answer, so you stop on a number you choose. `/explain` marks a spoken explanation, then quizzes the misses. `/dashboard`: weak topics, calibration, runs.
 
 ## Question quality
 

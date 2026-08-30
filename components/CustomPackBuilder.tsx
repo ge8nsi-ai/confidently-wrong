@@ -3,10 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useStudy } from "@/lib/store";
+import { DEFAULT_TARGET, FIRST_BATCH, MAX_TARGET, TARGET_STEP } from "@/lib/endless";
 import type { Pack } from "@/lib/types";
 
 const MAX_MB = 8;
 type Status = "idle" | "working" | "error";
+type Mode = "fixed" | "endless";
+
+/** The starting targets offered. Raisable mid-round, so these are only a start. */
+const TARGETS = [10, 15, 20, 30, MAX_TARGET];
 
 export default function CustomPackBuilder() {
   const router = useRouter();
@@ -16,6 +21,8 @@ export default function CustomPackBuilder() {
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(4);
+  const [mode, setMode] = useState<Mode>("endless");
+  const [target, setTarget] = useState(DEFAULT_TARGET);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [elapsed, setElapsed] = useState(0);
@@ -54,11 +61,17 @@ export default function CustomPackBuilder() {
       if (text.trim()) form.append("text", text.trim());
       if (title.trim()) form.append("title", title.trim());
       form.append("count", String(count));
+      if (mode === "endless") {
+        form.append("endless", "true");
+        form.append("target", String(target));
+      }
 
       setMessage(
-        file
-          ? `Reading the document, then writing ${count} questions. Around a minute.`
-          : `Writing ${count} questions from your notes. Around a minute.`,
+        mode === "endless"
+          ? `Writing the first ${FIRST_BATCH} questions. The rest are written while you answer.`
+          : file
+            ? `Reading the document, then writing ${count} questions. Around a minute.`
+            : `Writing ${count} questions from your notes. Around a minute.`,
       );
 
       const res = await fetch("/api/generate-pack", { method: "POST", body: form });
@@ -184,22 +197,88 @@ export default function CustomPackBuilder() {
               htmlFor="pack-count"
               className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-400"
             >
-              Questions
+              {mode === "endless" ? "Aim for" : "Questions"}
             </label>
-            <select
-              id="pack-count"
-              value={count}
-              onChange={(e) => setCount(Number(e.target.value))}
-              className="mt-2 w-full rounded-2xl border border-ink-600 bg-ink-950/70 px-4 py-3 text-sm text-ink-50"
-            >
-              {[4, 5, 6, 7, 8].map((n) => (
-                <option key={n} value={n}>
-                  {n} questions{n === 4 ? " (fastest)" : ""}
-                </option>
-              ))}
-            </select>
+            {mode === "endless" ? (
+              <select
+                id="pack-count"
+                value={target}
+                onChange={(e) => setTarget(Number(e.target.value))}
+                className="mt-2 w-full rounded-2xl border border-ink-600 bg-ink-950/70 px-4 py-3 text-sm text-ink-50"
+              >
+                {TARGETS.map((n) => (
+                  <option key={n} value={n}>
+                    {n} questions{n === DEFAULT_TARGET ? " (default)" : ""}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <select
+                id="pack-count"
+                value={count}
+                onChange={(e) => setCount(Number(e.target.value))}
+                className="mt-2 w-full rounded-2xl border border-ink-600 bg-ink-950/70 px-4 py-3 text-sm text-ink-50"
+              >
+                {[4, 5, 6, 7, 8].map((n) => (
+                  <option key={n} value={n}>
+                    {n} questions{n === 4 ? " (fastest)" : ""}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         </div>
+
+        {/*
+          Endless is the default because the fixed path makes the learner wait for
+          every question before answering the first one. Both are kept: a fixed pack
+          is a known quantity, which is what you want when you are being marked.
+        */}
+        <fieldset className="grid gap-2">
+          <legend className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-400">
+            How it runs
+          </legend>
+          <div className="mt-1 grid gap-2 sm:grid-cols-2">
+            {(
+              [
+                {
+                  value: "endless" as Mode,
+                  label: "Endless",
+                  hint: `Start after ${FIRST_BATCH} questions. More are written in the background, and you can add ${TARGET_STEP} at a time or stop whenever you like.`,
+                },
+                {
+                  value: "fixed" as Mode,
+                  label: "Fixed pack",
+                  hint: "Every question is written up front, then the pack is saved and replayable.",
+                },
+              ] as const
+            ).map((option) => (
+              <label
+                key={option.value}
+                className={`cursor-pointer rounded-2xl border px-4 py-3 text-sm transition ${
+                  mode === option.value
+                    ? "border-iris-400 bg-iris-400/10 text-ink-50"
+                    : "border-ink-600 text-ink-300 hover:border-ink-400"
+                }`}
+              >
+                <span className="flex items-center gap-2 font-semibold">
+                  <input
+                    type="radio"
+                    name="pack-mode"
+                    value={option.value}
+                    checked={mode === option.value}
+                    onChange={() => setMode(option.value)}
+                    className="accent-iris-300"
+                  />
+                  {option.label}
+                </span>
+                <span className="mt-1 block text-xs leading-relaxed text-ink-400">
+                  {option.hint}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <button
           type="button"
