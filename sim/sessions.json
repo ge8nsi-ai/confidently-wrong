@@ -1,0 +1,4215 @@
+[
+  {
+    "id": "sim-marcus-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-marcus-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-1-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-5-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-4-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-marcus-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-7-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-priya-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-3-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-priya-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-priya-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-6-v",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-dan-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-4-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-5-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-dan-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-6-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-5-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-dan-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-6-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-3-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-aisha-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-7-v",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-5-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-aisha-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-4-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-aisha-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-2-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-tom-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-3-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-4-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-7-v",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-6-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-tom-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-2-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-6-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-1-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-3-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-4-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-tom-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-6-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-2-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-3-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-leyla-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-7-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-6-v",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-leyla-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-3-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-leyla-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-sam-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-5-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-sam-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-5-v",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-4-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-sam-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-6-v",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-2-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-3-v",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-nadia-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-1-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-5-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-6-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-nadia-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-4-v",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-6-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-1-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-nadia-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-3-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-george-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-2-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-6-v",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-george-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-3-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-5-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-george-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "d",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-6-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-7-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-yuki-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-1-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-yuki-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-1-v",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-yuki-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "c",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-5-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-ben-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "seasons-4-v",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-6-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "seasons-7-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-ben-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "selection-7-v",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-3-v",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "selection-5-v",
+        "chosenOptionId": "d",
+        "conf": 2,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-ben-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "c",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "c",
+        "conf": 1,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-2-v",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-4-v",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "recheck"
+      },
+      {
+        "itemId": "chance-3-v",
+        "chosenOptionId": "d",
+        "conf": 3,
+        "correct": false,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  },
+  {
+    "id": "sim-irina-seasons",
+    "packId": "seasons",
+    "packTitle": "Why summer is hot",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "seasons-1",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-2",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-4",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-5",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-6",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "seasons-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [],
+    "itemMeta": {
+      "seasons-1": {
+        "conceptId": "cause-of-seasons",
+        "topic": "What causes seasons",
+        "stem": "What is the main reason summer is hotter than winter where you live?"
+      },
+      "seasons-2": {
+        "conceptId": "perihelion",
+        "topic": "Distance to the Sun",
+        "stem": "When is Earth actually closest to the Sun?"
+      },
+      "seasons-3": {
+        "conceptId": "hemispheres",
+        "topic": "Opposite hemispheres",
+        "stem": "It is July in London. What season is it in Sydney?"
+      },
+      "seasons-4": {
+        "conceptId": "equator",
+        "topic": "The equator",
+        "stem": "Why does the equator stay warm all year with little seasonal swing?"
+      },
+      "seasons-5": {
+        "conceptId": "sun-overhead",
+        "topic": "Sun directly overhead",
+        "stem": "At noon in midsummer in Paris, where is the Sun?"
+      },
+      "seasons-6": {
+        "conceptId": "sunlight-angle",
+        "topic": "Angle of sunlight",
+        "stem": "Why does light arriving at a shallow angle heat the ground less?"
+      },
+      "seasons-7": {
+        "conceptId": "lag",
+        "topic": "Seasonal lag",
+        "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
+      }
+    }
+  },
+  {
+    "id": "sim-irina-selection",
+    "packId": "selection",
+    "packTitle": "How natural selection works",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "selection-1",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-2",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-3",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-4",
+        "chosenOptionId": "b",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-5",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-6",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "selection-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [],
+    "itemMeta": {
+      "selection-1": {
+        "conceptId": "individual-vs-population",
+        "topic": "Individuals against populations",
+        "stem": "A population of moths becomes darker over many generations as soot covers the trees. What happened?"
+      },
+      "selection-2": {
+        "conceptId": "not-goal-directed",
+        "topic": "Evolution has no goal",
+        "stem": "Which statement about the direction of evolution is accurate?"
+      },
+      "selection-3": {
+        "conceptId": "variation-precedes-need",
+        "topic": "Variation comes first",
+        "stem": "Bacteria in a hospital become resistant to an antibiotic. Where did the resistance come from?"
+      },
+      "selection-4": {
+        "conceptId": "fitness",
+        "topic": "What fitness means",
+        "stem": "In biology, what does it mean for an organism to be 'fitter'?"
+      },
+      "selection-5": {
+        "conceptId": "mutation-randomness",
+        "topic": "Randomness of mutation",
+        "stem": "Which best describes mutations?"
+      },
+      "selection-6": {
+        "conceptId": "use-disuse",
+        "topic": "Use and disuse",
+        "stem": "A weightlifter builds enormous muscles over a decade. What do their children inherit?"
+      },
+      "selection-7": {
+        "conceptId": "species-intent",
+        "topic": "Species do not intend",
+        "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
+      }
+    }
+  },
+  {
+    "id": "sim-irina-chance",
+    "packId": "chance",
+    "packTitle": "Correlation and chance",
+    "origin": "builtin",
+    "startedAt": 1787184000000,
+    "updatedAt": 1787184540000,
+    "finished": true,
+    "probe": [
+      {
+        "itemId": "chance-1",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": false,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-2",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-3",
+        "chosenOptionId": "b",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-4",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-5",
+        "chosenOptionId": "a",
+        "conf": 2,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-6",
+        "chosenOptionId": "a",
+        "conf": 1,
+        "correct": true,
+        "round": "probe"
+      },
+      {
+        "itemId": "chance-7",
+        "chosenOptionId": "a",
+        "conf": 3,
+        "correct": true,
+        "round": "probe"
+      }
+    ],
+    "recheck": [
+      {
+        "itemId": "chance-1-v",
+        "chosenOptionId": "b",
+        "conf": 1,
+        "correct": true,
+        "round": "recheck"
+      }
+    ],
+    "itemMeta": {
+      "chance-1": {
+        "conceptId": "correlation-causation",
+        "topic": "Correlation and causation",
+        "stem": "Towns with more ice-cream sales also have more drownings. What follows?"
+      },
+      "chance-2": {
+        "conceptId": "gamblers-fallacy",
+        "topic": "The gambler's fallacy",
+        "stem": "A fair coin has landed heads six times running. What is the chance the next flip is tails?"
+      },
+      "chance-3": {
+        "conceptId": "base-rate",
+        "topic": "Base rates",
+        "stem": "A test for a disease affecting 1 in 1,000 people is 99% accurate. Someone tests positive. Roughly how likely is it they have the disease?"
+      },
+      "chance-4": {
+        "conceptId": "sample-size",
+        "topic": "Sample size",
+        "stem": "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?"
+      },
+      "chance-5": {
+        "conceptId": "small-sample-extremes",
+        "topic": "Extremes in small samples",
+        "stem": "Which hospitals report the highest rates of unusual outcomes, both very good and very bad?"
+      },
+      "chance-6": {
+        "conceptId": "regression-to-mean",
+        "topic": "Regression to the mean",
+        "stem": "The worst-performing branches get extra coaching and improve the next quarter. What is the safest conclusion?"
+      },
+      "chance-7": {
+        "conceptId": "conjunction",
+        "topic": "The conjunction fallacy",
+        "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
+      }
+    }
+  }
+]

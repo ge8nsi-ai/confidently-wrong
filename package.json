@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "eval": "vitest run --config vitest.eval.config.ts",
+    "sim": "vitest run --config vitest.sim.config.mts",
     "a11y": "node scripts/audit-a11y.mjs",
     "failures": "node scripts/failure-pass.mjs",
     "perf": "node scripts/lighthouse-pass.mjs",

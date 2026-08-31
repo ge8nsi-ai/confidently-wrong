@@ -9,7 +9,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Mistral](https://img.shields.io/badge/Mistral-Ministral_3B_·_Voxtral-fa520f)
-![Tests](https://img.shields.io/badge/tests-408_passing-2e7d5b)
+![Tests](https://img.shields.io/badge/tests-419_passing-2e7d5b)
 ![axe](https://img.shields.io/badge/axe-0_violations_in_22_scans-2e7d5b)
 ![Lighthouse](https://img.shields.io/badge/Lighthouse_a11y-100-2e7d5b)
 ![License](https://img.shields.io/badge/license-MIT-777)
@@ -43,6 +43,10 @@ Certainty is evidence, not a multiplier: each answer updates a posterior over wh
 
 `lib/quality.ts` fails a stem that leaks its answer, or a visibly longest correct option. Form checks cannot see a false key, so `lib/challenge.ts` answers each question blind to it. Word overlap cannot see a reworded question, so `lib/similarity.ts` compares stem embeddings, at a threshold swept over 18 labelled pairs. `npm run eval` on the committed run: 15 questions kept, 15 of 15 with a verified source span, 4 thrown out by the blind second opinion, 4 more as paraphrases the embeddings caught. [Report](evals/report.md)
 
+## Does the targeting work
+
+Recruiting learners was not possible, so `npm run sim` runs twelve personas through three packs, eight draws each: 288 runs, no model calls. The personas answer; the app's own selection, gating, and scoring do everything else. Two honest numbers. The belief model named the exact misconception on 81% of confidently wrong answers, ground truth drawn from the space it searches. And gating declines 23% of the refutation calls while keeping 95% of the corrections. The correction assumption is swept from 0 to 1, and at 0 every policy ties, which is the null. [Report](sim/report.md) · [what it cannot say](sim/README.md)
+
 ## Stack
 
 Next.js App Router, strict TypeScript, Tailwind, Zustand + `localStorage`, Recharts, Vitest. `ministral-3b-latest` writes refutations and packs, `mistral-ocr-latest` reads PDFs, Voxtral does speech. No database; every AI path has a fallback.
@@ -54,7 +58,7 @@ npm run dev
 npm test
 ```
 
-`npm run a11y` · `failures` · `perf` · `eval` · `shots` regenerate `docs/` and `evals/` against a running build; nothing there is hand-written.
+`npm run a11y` · `failures` · `perf` · `eval` · `sim` · `shots` regenerate `docs/` and `evals/` against a running build; nothing there is hand-written.
 
 ## Sources
 

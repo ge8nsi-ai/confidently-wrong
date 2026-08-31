@@ -15,6 +15,9 @@ export default defineConfig({
       "lib/**/*.test.ts",
       "lib/**/*.test.tsx",
       "components/**/*.test.tsx",
+      // The cohort harness's own arithmetic. The cohort run itself is not here: it
+      // writes a report rather than asserting, and lives behind `npm run sim`.
+      "sim/**/*.test.ts",
     ],
   },
 });
