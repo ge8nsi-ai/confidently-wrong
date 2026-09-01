@@ -97,6 +97,40 @@ describe("recheck items", () => {
     ]);
   });
 
+  it("lets history break the tie between two equally weak misses", () => {
+    const wrongOption = (id: string) =>
+      seasons.items.find((i) => i.id === id)!.options.find((o) => !o.correct)!.id;
+    const first = seasons.items.find((i) => i.id === "seasons-1")!;
+    const second = seasons.items.find((i) => i.id === "seasons-2")!;
+    const guessedWrong = (id: string): Response => ({
+      itemId: id,
+      chosenOptionId: wrongOption(id),
+      conf: 1,
+      correct: false,
+      round: "probe",
+    });
+    const picked = [guessedWrong("seasons-1"), guessedWrong("seasons-2")];
+
+    // Both were guesses, so on this session alone the pack order stands.
+    expect(recheckItems(seasons, picked).map((i) => i.variantOf)).toEqual([
+      "seasons-1",
+      "seasons-2",
+    ]);
+
+    // Remembering that the second belief was held before promotes it: the recheck
+    // round is finite attention, and a belief that keeps coming back has earned it.
+    const remembered = second.options.find((o) => o.id === wrongOption("seasons-2"))!
+      .misconception!;
+    const prior = (conceptId: string, keys: string[]) =>
+      conceptId === second.conceptId && conceptId !== first.conceptId
+        ? keys.map((k) => (k === remembered ? 0.6 : 0.4 / (keys.length - 1)))
+        : null;
+    expect(recheckItems(seasons, picked, prior).map((i) => i.variantOf)).toEqual([
+      "seasons-2",
+      "seasons-1",
+    ]);
+  });
+
   it("returns nothing when there is no pack", () => {
     expect(recheckItems(null, responses)).toEqual([]);
     expect(missedItems(null, responses)).toEqual([]);

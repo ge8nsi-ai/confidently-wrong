@@ -59,7 +59,20 @@ export interface BeliefState {
   entropy: number;
   /** How many answers fed this posterior. */
   observations: number;
+  /** True when an earlier session's reading set the starting distribution. */
+  fromMemory: boolean;
 }
+
+/**
+ * A starting distribution over one concept's candidate beliefs, or null for flat.
+ *
+ * A function rather than a table so this file stays free of history: what a prior
+ * is made of belongs to lib/memory.ts, and what it does to the arithmetic belongs
+ * here. Nothing in the belief model imports history, and every function that takes
+ * one of these treats an absent prior as the flat one it has always used.
+ */
+export type PriorSource = (conceptId: string, keys: string[]) => number[] | null;
+
 
 /**
  * The candidate beliefs for one concept: every misconception its items name, plus
@@ -124,19 +137,27 @@ export function entropyOf(probabilities: number[]): number {
 /**
  * Bayes over the candidate beliefs, one answer at a time.
  *
- * The prior is flat: before anything is asked, a learner who has not studied the
- * material is no more likely to be right than to hold any one misconception, and
- * inventing a prior here would only bake an assumption into the demo.
+ * The prior is flat unless one is supplied: before anything is asked, a learner
+ * nobody has met is no more likely to be right than to hold any one misconception,
+ * and inventing a prior for a stranger would only bake an assumption into the demo.
+ *
+ * A returning learner is not a stranger, which is what `prior` is for. It arrives
+ * already decayed and already capped by lib/memory.ts, so what happens here is only
+ * the substitution: the same update, started somewhere other than the middle. An
+ * unusable prior — wrong length, no mass, a negative weight — is ignored rather
+ * than repaired, because a prior is a convenience and the flat start is always
+ * correct.
  */
 export function posterior(
   keys: string[],
   items: Item[],
   responses: Response[],
+  prior?: number[] | null,
 ): number[] {
-  const flat = keys.map(() => 1 / keys.length);
   if (keys.length === 0) return [];
+  const base = usablePrior(prior, keys.length) ?? keys.map(() => 1 / keys.length);
   const byId = new Map(items.map((i) => [i.id, i]));
-  let weights = flat;
+  let weights = base;
 
   for (const response of responses) {
     const item = byId.get(response.itemId);
@@ -148,11 +169,23 @@ export function posterior(
     const total = updated.reduce((sum, w) => sum + w, 0);
     // Every hypothesis assigning zero to an observed answer would mean the model
     // and the data disagree completely; falling back to the prior is honest.
-    if (total <= 0) return flat;
+    if (total <= 0) return base;
     weights = updated.map((w) => w / total);
   }
 
   return weights;
+}
+
+/** A prior worth using, normalised, or null to fall back to flat. */
+function usablePrior(prior: number[] | null | undefined, length: number): number[] | null {
+  if (!prior || prior.length !== length) return null;
+  let total = 0;
+  for (const w of prior) {
+    if (!Number.isFinite(w) || w < 0) return null;
+    total += w;
+  }
+  if (total <= 0) return null;
+  return prior.map((w) => w / total);
 }
 
 /** How many of these responses are about items belonging to this concept. */
@@ -176,12 +209,14 @@ export function byConcept(items: Item[]): Map<string, Item[]> {
 export function beliefStates(
   items: Item[],
   responses: Response[],
+  prior?: PriorSource,
 ): BeliefState[] {
   const states: BeliefState[] = [];
 
   for (const [conceptId, group] of byConcept(items)) {
     const keys = hypothesisKeys(group);
-    const probabilities = posterior(keys, group, responses);
+    const carried = prior?.(conceptId, keys) ?? null;
+    const probabilities = posterior(keys, group, responses, carried);
     const hypotheses: Hypothesis[] = keys
       .map((key, i) => ({
         key,
@@ -197,6 +232,7 @@ export function beliefStates(
       hypotheses,
       entropy: entropyOf(probabilities),
       observations: countObservations(group, responses),
+      fromMemory: carried !== null,
     });
   }
 
@@ -215,10 +251,14 @@ export function topBelief(state: BeliefState): Hypothesis | null {
  * leading belief's share is the part they can act on, so it is what gets said, and
  * the thresholds are only there to keep a 45% leader from being announced as a
  * finding.
+ *
+ * A concept carried in from an earlier session has a leader worth reading before
+ * anything has been asked about it this time, so `observations` alone no longer
+ * decides whether there is a reading at all.
  */
 export function reading(state: BeliefState): "clear" | "leaning" | "open" {
   const top = topBelief(state);
-  if (!top || state.observations === 0) return "open";
+  if (!top || (state.observations === 0 && !state.fromMemory)) return "open";
   if (top.probability >= 0.7) return "clear";
   if (top.probability >= 0.5) return "leaning";
   return "open";
@@ -227,8 +267,15 @@ export function reading(state: BeliefState): "clear" | "leaning" | "open" {
 /** One line for the reveal screen. */
 export function beliefSentence(state: BeliefState): string {
   const top = topBelief(state);
-  if (!top || state.observations === 0) return "Nothing asked about this yet.";
+  if (!top || (state.observations === 0 && !state.fromMemory)) {
+    return "Nothing asked about this yet.";
+  }
   const pct = Math.round(top.probability * 100);
+  if (state.observations === 0) {
+    return top.key === SOUND
+      ? `Carried from an earlier session: you had this right (${pct}%).`
+      : `Carried from an earlier session: ${top.label} (${pct}%)`;
+  }
   if (top.key === SOUND) {
     return `Most likely you have this right (${pct}%).`;
   }
@@ -275,10 +322,15 @@ const GAIN_EPSILON = 1e-9;
  *
  * Returns null once nothing is left. Callers that want the plain fixed order can
  * simply not call this — nothing else in the flow depends on it.
+ *
+ * With a prior in hand this is where cross-session memory earns its place: a
+ * concept an earlier session settled is already predictable, so its questions score
+ * low and the round opens on the ones it did not settle.
  */
 export function selectNextItem(
   items: Item[],
   responses: Response[],
+  prior?: PriorSource,
 ): Item | null {
   const answered = new Set(responses.map((r) => r.itemId));
   const remaining = items.filter((i) => !answered.has(i.id));
@@ -290,7 +342,12 @@ export function selectNextItem(
     const keys = hypothesisKeys(group);
     cache.set(conceptId, {
       keys,
-      probabilities: posterior(keys, group, responses),
+      probabilities: posterior(
+        keys,
+        group,
+        responses,
+        prior?.(conceptId, keys) ?? null,
+      ),
     });
   }
 
@@ -314,13 +371,17 @@ export function selectNextItem(
  * Recomputed after every real answer in the live flow; this helper exists for the
  * tests and for anywhere a whole ordering is wanted at once.
  */
-export function informativeOrder(items: Item[], responses: Response[]): Item[] {
+export function informativeOrder(
+  items: Item[],
+  responses: Response[],
+  prior?: PriorSource,
+): Item[] {
   const order: Item[] = [];
   const seen = new Set(responses.map((r) => r.itemId));
   let remaining = items.filter((i) => !seen.has(i.id));
 
   while (remaining.length > 0) {
-    const next = selectNextItem(remaining, responses);
+    const next = selectNextItem(remaining, responses, prior);
     if (!next) break;
     order.push(next);
     remaining = remaining.filter((i) => i.id !== next.id);
@@ -337,6 +398,7 @@ export function heldBeliefStrength(
   item: Item,
   items: Item[],
   responses: Response[],
+  prior?: PriorSource,
 ): number {
   const response = responses.find((r) => r.itemId === item.id);
   if (!response) return 0;
@@ -348,7 +410,9 @@ export function heldBeliefStrength(
   const keys = hypothesisKeys(group);
   const at = keys.indexOf(key);
   if (at < 0) return 0;
-  return posterior(keys, group, responses)[at] ?? 0;
+  return (
+    posterior(keys, group, responses, prior?.(item.conceptId, keys) ?? null)[at] ?? 0
+  );
 }
 
 /**
@@ -356,14 +420,20 @@ export function heldBeliefStrength(
  *
  * The recheck round is finite attention, so it is spent on the beliefs most likely
  * to be genuine rather than on whichever miss happened to come first in the pack.
+ * A belief the learner has held before outranks one they have only held once, which
+ * is the prior arriving at the one place in the flow where attention is rationed.
  */
 export function orderByHeldBelief(
   missed: Item[],
   items: Item[],
   responses: Response[],
+  prior?: PriorSource,
 ): Item[] {
   const strength = new Map(
-    missed.map((item) => [item.id, heldBeliefStrength(item, items, responses)]),
+    missed.map((item) => [
+      item.id,
+      heldBeliefStrength(item, items, responses, prior),
+    ]),
   );
   // Sorting a copy keeps the caller's array intact, and the pack-order tie-break
   // keeps the list stable while the round is being played.

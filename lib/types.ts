@@ -69,6 +69,22 @@ export interface ItemMeta {
   stem: string;
 }
 
+/**
+ * What the belief model concluded about one concept when a session ended.
+ *
+ * Stored so the next session can start from it rather than from a flat prior. The
+ * responses alone cannot recover this: they record which option was picked, not
+ * which belief the posterior settled on, and the option ids of a pack generated
+ * from someone's notes mean nothing a month later.
+ */
+export interface BeliefNote {
+  conceptId: string;
+  /** The misconception statement, or SOUND from lib/belief.ts. */
+  key: string;
+  /** The posterior mass it held. */
+  p: number;
+}
+
 /** One completed pass through a pack, stored for the dashboard. */
 export interface SessionRecord {
   id: string;
@@ -81,4 +97,11 @@ export interface SessionRecord {
   probe: Response[];
   recheck: Response[];
   itemMeta: Record<string, ItemMeta>;
+  /**
+   * The belief model's reading at the end of the run, one note per concept it
+   * could say something about. Optional because records written before
+   * lib/memory.ts existed do not have it, and those fall back to the coarser
+   * evidence in `probe`.
+   */
+  beliefs?: BeliefNote[];
 }

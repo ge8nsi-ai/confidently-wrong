@@ -5,6 +5,7 @@ import {
   topBelief,
   type BeliefState,
   type Hypothesis,
+  type PriorSource,
 } from "@/lib/belief";
 import type { Item, Response } from "@/lib/types";
 
@@ -20,12 +21,16 @@ import type { Item, Response } from "@/lib/types";
 export default function BeliefPanel({
   items,
   responses,
+  prior,
 }: {
   items: Item[];
   responses: Response[];
+  prior?: PriorSource;
 }) {
-  const states = beliefStates(items, responses)
-    .filter((s) => s.observations > 0)
+  const states = beliefStates(items, responses, prior)
+    // A concept carried in from an earlier session belongs here before it has been
+    // asked about again: that reading is the whole point of remembering it.
+    .filter((s) => s.observations > 0 || s.fromMemory)
     .sort(byWorthReading);
 
   if (states.length === 0) return null;
@@ -76,6 +81,15 @@ function byWorthReading(a: BeliefState, b: BeliefState): number {
 /** The sentence a card leads with, which is the only line most people will read. */
 function verdict(state: BeliefState, top: Hypothesis): string {
   const sound = top.key === SOUND;
+  // A row that exists only because an earlier session left a note has a reading
+  // worth showing and nothing from today behind it, so it says which it is. Naming
+  // a remembered belief as though it had just been observed would be a lie the
+  // learner could catch, since they know they have not been asked yet.
+  if (state.observations === 0) {
+    return sound
+      ? "You had this right last time. Nothing asked about it yet today."
+      : "Carried from an earlier session, you believed:";
+  }
   switch (reading(state)) {
     case "clear":
       return sound ? "This one looks sound." : "You seem to believe:";
@@ -86,6 +100,13 @@ function verdict(state: BeliefState, top: Hypothesis): string {
     default:
       return "Not enough answers here to say yet. The likeliest reading so far:";
   }
+}
+
+/** Where the row's evidence came from, since it is no longer only this session. */
+function evidenceLabel(state: BeliefState): string {
+  if (state.observations === 0) return "from an earlier session";
+  const answers = `from ${state.observations} answer${state.observations === 1 ? "" : "s"}`;
+  return state.fromMemory ? `${answers} and your history` : answers;
 }
 
 function BeliefRow({ state }: { state: BeliefState }) {
@@ -99,9 +120,7 @@ function BeliefRow({ state }: { state: BeliefState }) {
     <li className="glass rounded-2xl px-5 py-4">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <p className="text-sm font-semibold text-ink-50">{state.topic}</p>
-        <p className="tnum text-xs text-ink-400">
-          from {state.observations} answer{state.observations === 1 ? "" : "s"}
-        </p>
+        <p className="tnum text-xs text-ink-400">{evidenceLabel(state)}</p>
       </div>
 
       <p className="mt-2 text-sm leading-relaxed text-ink-200">

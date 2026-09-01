@@ -128,3 +128,55 @@ describe("BeliefPanel", () => {
     expect(labels.length).toBeLessThanOrEqual(item.options.length);
   });
 });
+
+describe("BeliefPanel with a belief carried from an earlier session", () => {
+  const item = pack.items[0]!;
+  const held = item.options.find((o) => o.misconception)!.misconception!;
+
+  /** The shape lib/memory.ts hands over: flat, plus mass on the remembered belief. */
+  function leaningOn(key: string) {
+    return (_conceptId: string, keys: string[]) =>
+      keys.map((k) => (k === key ? 0.55 : 0.45 / (keys.length - 1)));
+  }
+
+  it("shows the row before anything has been asked about it again", () => {
+    const html = renderToStaticMarkup(
+      <BeliefPanel items={[item]} responses={[]} prior={leaningOn(held)} />,
+    );
+    // Naming it as though it had just been observed would be a claim the learner
+    // knows is false, since they have not answered anything yet.
+    expect(html).toContain("Carried from an earlier session, you believed:");
+    expect(html).toContain(escaped(held));
+    expect(html).toContain("from an earlier session");
+  });
+
+  it("renders nothing when history has nothing to say either", () => {
+    const html = renderToStaticMarkup(
+      <BeliefPanel items={pack.items} responses={[]} prior={() => null} />,
+    );
+    expect(html).toBe("");
+  });
+
+  it("says when today's answer was weighed against history rather than alone", () => {
+    const html = renderToStaticMarkup(
+      <BeliefPanel
+        items={[item]}
+        responses={wrongAt([item], 3)}
+        prior={leaningOn(held)}
+      />,
+    );
+    expect(html).toContain("from 1 answer and your history");
+  });
+
+  it("puts a remembered misconception above a concept answered correctly today", () => {
+    const other = pack.items.find((i) => i.conceptId !== item.conceptId)!;
+    const html = renderToStaticMarkup(
+      <BeliefPanel
+        items={[other, item]}
+        responses={rightAt([other], 3)}
+        prior={leaningOn(held)}
+      />,
+    );
+    expect(html.indexOf(topicOf(item))).toBeLessThan(html.indexOf(topicOf(other)));
+  });
+});

@@ -26,7 +26,8 @@ import {
   useStudy,
 } from "@/lib/store";
 import { needsRefutation } from "@/lib/scoring";
-import { selectNextItem } from "@/lib/belief";
+import { selectNextItem, type PriorSource } from "@/lib/belief";
+import { priorFrom, recall, recallSentence } from "@/lib/memory";
 import {
   MAX_BATCH_FAILURES,
   avoidList,
@@ -47,10 +48,23 @@ const PHASE_COPY: Record<string, string> = {
   done: "Session complete.",
 };
 
+/**
+ * One clock for every "how long ago" this flow shows.
+ *
+ * Read when the module loads rather than during render, for two reasons. A component
+ * that reads the wall clock while rendering answers differently on every re-render,
+ * and the decayed weight of a remembered belief has to agree with the sentence that
+ * explains it. The coarsest thing either of them ever says is "3 weeks ago", so a
+ * clock a few minutes stale changes nothing.
+ */
+const LOADED_AT = Date.now();
+
 interface RepairStep {
   item: Item;
   response: Response;
   kind: "refutation" | "plain";
+  /** "You held this belief three weeks ago too", when history says so. */
+  recall: string | null;
 }
 
 export default function StudyFlow({ pack }: { pack: Pack }) {
@@ -71,6 +85,8 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
   const responses = useStudy((s) => s.responses);
   const refutations = useStudy((s) => s.refutations);
   const loadingRefutations = useStudy((s) => s.loadingRefutations);
+  const sessions = useStudy((s) => s.sessions);
+  const sessionId = useStudy((s) => s.sessionId);
   const startPack = useStudy((s) => s.startPack);
   const answer = useStudy((s) => s.answer);
   const setPhase = useStudy((s) => s.setPhase);
@@ -89,6 +105,23 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
   const recheck = useMemo(() => recheckResponses(responses), [responses]);
 
   /**
+   * What earlier sessions concluded about these concepts.
+   *
+   * The run being played is excluded, so a session never primes itself. History is
+   * read once here and used for three things: where the probe round starts, which
+   * misses are rechecked first, and whether a repaired belief can be named as one
+   * the learner has held before.
+   */
+  const recalled = useMemo(
+    () => recall(sessions, { exclude: sessionId, now: LOADED_AT }),
+    [sessionId, sessions],
+  );
+  const prior = useMemo<PriorSource>(
+    () => (conceptId, keys) => priorFrom(recalled.get(conceptId), keys),
+    [recalled],
+  );
+
+  /**
    * The probe order is chosen live rather than fixed: the next question is the one
    * the belief model can least predict the answer to. Every item is still asked
    * exactly once, so the store's progress counting is untouched.
@@ -98,11 +131,11 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
    * round is over.
    */
   const probeItem = useMemo(() => {
-    const next = selectNextItem(pack.items, probe);
+    const next = selectNextItem(pack.items, probe, prior);
     if (next) return next;
     if (pack.endless) return null;
     return pack.items[Math.min(index, pack.items.length - 1)]!;
-  }, [index, pack.endless, pack.items, probe]);
+  }, [index, pack.endless, pack.items, prior, probe]);
 
   const repairSteps = useMemo<RepairStep[]>(() => {
     const missed = missedItems(pack, responses);
@@ -111,21 +144,30 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
     for (const item of missed) {
       const response = byId.get(item.id);
       if (!response) continue;
+      const key = item.options
+        .find((o) => o.id === response.chosenOptionId)
+        ?.misconception?.trim();
       steps.push({
         item,
         response,
         // The gating rule: a personalised refutation only for beliefs actually held.
         kind: needsRefutation(response) ? "refutation" : "plain",
+        // Stated by the app, from its own records. The model is never told what
+        // happened in an earlier session, because it cannot check it.
+        recall: key
+          ? recallSentence(recalled.get(item.conceptId), key, LOADED_AT)
+          : null,
       });
     }
     return [
       ...steps.filter((s) => s.kind === "refutation"),
       ...steps.filter((s) => s.kind === "plain"),
     ];
-  }, [pack, probe, responses]);
+  }, [pack, probe, recalled, responses]);
 
   const fetchedRef = useRef(false);
-  const fetchRefutations = useCallback(async () => {    const targets = repairSteps.filter((s) => s.kind === "refutation");
+  const fetchRefutations = useCallback(async () => {
+    const targets = repairSteps.filter((s) => s.kind === "refutation");
     if (targets.length === 0) return;
     setLoadingRefutations(true);
     await Promise.all(
@@ -249,7 +291,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
     );
   }
 
-  const recheckList = recheckItems(pack, responses);
+  const recheckList = recheckItems(pack, responses, prior);
 
   return (
     <>
@@ -306,7 +348,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
           </header>
           <QuadrantGrid responses={probe} />
           <CalibrationChart responses={probe} />
-          <BeliefPanel items={pack.items} responses={probe} />
+          <BeliefPanel items={pack.items} responses={probe} prior={prior} />
           <ScorePanel responses={probe} />
           {pack.endless && canExtend(pack) ? (
             <button
@@ -329,7 +371,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
             className="w-full rounded-2xl bg-ink-50 px-6 py-4 text-base font-semibold text-ink-950 transition hover:bg-[#30384a]"
           >
             {repairSteps.length === 0
-              ? "Nothing to repair — continue"
+              ? "Nothing to repair, continue"
               : `Repair ${repairSteps.length} belief${repairSteps.length === 1 ? "" : "s"}`}
           </button>
         </div>
@@ -483,6 +525,16 @@ function RepairView({
             ? "A belief you held with certainty"
             : "A gap you already knew you had"}
         </h1>
+        {/*
+          Said by the app from its own stored records, not by the model. A model
+          asked to remember July would invent it, and being wrong about what the
+          learner used to believe is worse than saying nothing.
+        */}
+        {current.recall ? (
+          <p className="mt-3 text-sm leading-relaxed text-amber-300/90">
+            {current.recall}
+          </p>
+        ) : null}
       </header>
 
       {current.kind === "refutation" ? (

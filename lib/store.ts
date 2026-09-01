@@ -12,8 +12,9 @@ import type {
   SessionRecord,
 } from "./types";
 import { needsRefutation } from "./scoring";
-import { orderByHeldBelief } from "./belief";
+import { orderByHeldBelief, type PriorSource } from "./belief";
 import { clampTarget, isRoundComplete } from "./endless";
+import { beliefNotes } from "./memory";
 import { itemMetaFor } from "./topics";
 import { toVariant } from "./variants";
 
@@ -165,6 +166,10 @@ export const useStudy = create<State & Actions>()(
           probe,
           recheck: recheckResponses(responses),
           itemMeta: itemMetaFor(pack.items),
+          // What the belief model concluded, for the next session to start from.
+          // Written on every upsert rather than only at the end, so a run abandoned
+          // after the reveal still leaves what it learned behind.
+          beliefs: beliefNotes(pack.items, probe),
         };
 
         set({
@@ -262,12 +267,21 @@ export function missedItems(pack: Pack | null, responses: Response[]): Item[] {
   return pack.items.filter((i) => wrong.has(i.id));
 }
 
-export function recheckItems(pack: Pack | null, responses: Response[]): Item[] {
+export function recheckItems(
+  pack: Pack | null,
+  responses: Response[],
+  prior?: PriorSource,
+): Item[] {
   const missed = missedItems(pack, responses);
   if (!pack) return [];
   // Worth-rechecking-first: the beliefs the model is most confident are genuinely
   // held, rather than whichever miss happened to sit earliest in the pack.
-  const ordered = orderByHeldBelief(missed, pack.items, probeResponses(responses));
+  const ordered = orderByHeldBelief(
+    missed,
+    pack.items,
+    probeResponses(responses),
+    prior,
+  );
   return ordered.map((item, i) => toVariant(item, i));
 }
 
@@ -283,7 +297,9 @@ function currentRoundItems(
 ): Item[] {
   if (!pack) return [];
   if (phase === "recheck") {
-    // The recheck list is fixed by the probe round, so it is stable mid-round.
+    // The recheck list is fixed by the probe round, so it is stable mid-round. No
+    // prior is passed because only the length is read here, and a prior reorders
+    // the list without changing what is in it.
     return recheckItems(pack, responses);
   }
   return pack.items;
