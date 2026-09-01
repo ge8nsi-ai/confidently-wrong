@@ -14,12 +14,37 @@ import type {
 import { needsRefutation } from "./scoring";
 import { orderByHeldBelief, type PriorSource } from "./belief";
 import { clampTarget, isRoundComplete } from "./endless";
+import { STYLES, type Style } from "./escalation";
 import { beliefNotes } from "./memory";
 import { itemMetaFor } from "./topics";
 import { toVariant } from "./variants";
 
-export function refutationKey(itemId: string, chosenOptionId: string): string {
-  return `${itemId}:${chosenOptionId}`;
+/**
+ * Where one explanation of one wrong answer is stored.
+ *
+ * The first attempt keeps the two-part key it has always had, so refutations already
+ * sitting in localStorage still resolve after escalation shipped. Later styles get a
+ * slot of their own rather than overwriting: the point of a second attempt is that
+ * the learner can still see it is not the first one repeated.
+ */
+export function refutationKey(
+  itemId: string,
+  chosenOptionId: string,
+  style: Style = "direct",
+): string {
+  return style === "direct"
+    ? `${itemId}:${chosenOptionId}`
+    : `${itemId}:${chosenOptionId}:${style}`;
+}
+
+/** How many explanations of this wrong answer the learner has already read. */
+export function attemptsMade(
+  refutations: Record<string, Refutation>,
+  itemId: string,
+  chosenOptionId: string,
+): number {
+  return STYLES.filter((style) => refutations[refutationKey(itemId, chosenOptionId, style)])
+    .length;
 }
 
 /** Keeps localStorage from growing without bound. */

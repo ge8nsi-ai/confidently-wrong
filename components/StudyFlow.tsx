@@ -405,6 +405,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
 
       {phase === "done" || (phase === "recheck" && recheckList.length === 0) ? (
         <RecheckSummary
+          items={pack.items}
           before={probe}
           after={recheck}
           onRestart={() => {

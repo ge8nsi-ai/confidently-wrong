@@ -1,19 +1,23 @@
 "use client";
 
 import CalibrationChart from "./CalibrationChart";
+import EscalationSection from "./EscalationSection";
 import {
   accuracy,
   cbmScore,
   countByQuadrant,
   overconfidence,
 } from "@/lib/scoring";
-import type { Response } from "@/lib/types";
+import type { Item, Response } from "@/lib/types";
 
 export default function RecheckSummary({
+  items,
   before,
   after,
   onRestart,
 }: {
+  /** The pack, so a belief that survived can be matched back to its question. */
+  items: Item[];
   before: Response[];
   after: Response[];
   onRestart: () => void;
@@ -71,6 +75,8 @@ export default function RecheckSummary({
         pass and “After” is the recheck; the straight diagonal is perfect
         calibration.
       </p>
+
+      <EscalationSection items={items} probe={before} recheck={after} />
 
       <button
         type="button"

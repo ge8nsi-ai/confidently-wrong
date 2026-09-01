@@ -3,9 +3,9 @@ import { chatJson, hasKey } from "@/lib/mistral";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import {
   MAX_BODY_BYTES,
-  REFUTE_SYSTEM_PROMPT,
   parseRefutation,
   parseRefuteRequest,
+  refuteSystemPrompt,
   refuteUserPrompt,
 } from "@/lib/refutation";
 import type { Refutation } from "@/lib/types";
@@ -15,7 +15,13 @@ export const runtime = "nodejs";
 const RATE_LIMIT_PER_MINUTE = 20;
 const MAX_TOKENS = 400;
 
-/** In-process cache keyed `${itemId}:${chosenOptionId}`. */
+/**
+ * In-process cache keyed `${itemId}:${chosenOptionId}:${style}`.
+ *
+ * The style is part of the key because a second attempt on the same wrong answer is
+ * meant to read differently. Leaving it out would serve the explanation that had
+ * already failed, which is the one thing an escalation must not do.
+ */
 const cache = new Map<string, Refutation>();
 
 /**
@@ -58,14 +64,29 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
 
-  const key = `${req.itemId}:${req.chosenOptionId}`;
+  const key = `${req.itemId}:${req.chosenOptionId}:${req.style}`;
   const cached = cache.get(key);
   if (cached) {
     return NextResponse.json({ refutation: cached, source: "cache" });
   }
 
-  // Any failure path returns 200 with the hand-written fallback so the UI never breaks.
+  /**
+   * A second attempt has no fallback to fall back to.
+   *
+   * The hand-written fallback is the text the first attempt already showed, so
+   * serving it here would put a "here is a different approach" label on the
+   * explanation that is known to have failed. Reporting that no second explanation
+   * is available is worse for the demo and true, and the client turns it into the
+   * hand-off to a person rather than a retry.
+   */
+  const noSecondAttempt = req.style !== "direct";
+  const giveUp = () =>
+    NextResponse.json({ refutation: null, source: "unavailable" });
+
+  // Any failure path returns 200 so the UI never breaks: with the hand-written
+  // fallback on a first attempt, and with nothing at all on a later one.
   if (!hasKey()) {
+    if (noSecondAttempt) return giveUp();
     return NextResponse.json({
       refutation: req.fallbackRefutation,
       source: "fallback",
@@ -75,7 +96,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const json = await chatJson(
       [
-        { role: "system", content: REFUTE_SYSTEM_PROMPT },
+        { role: "system", content: refuteSystemPrompt(req.style) },
         { role: "user", content: refuteUserPrompt(req) },
       ],
       { maxTokens: MAX_TOKENS, timeoutMs: 12_000 },
@@ -85,6 +106,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     cache.set(key, refutation);
     return NextResponse.json({ refutation, source: "model" });
   } catch {
+    if (noSecondAttempt) return giveUp();
     return NextResponse.json({
       refutation: req.fallbackRefutation,
       source: "fallback",

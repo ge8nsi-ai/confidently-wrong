@@ -1,3 +1,4 @@
+import { STYLE_DIRECTIVE, STYLES, type Style } from "./escalation";
 import type { Refutation } from "./types";
 
 export const MAX_BODY_BYTES = 4 * 1024;
@@ -10,6 +11,11 @@ export interface RefuteRequest {
   misconception: string;
   correctOptionText: string;
   fallbackRefutation: Refutation;
+  /**
+   * How to frame the explanation. Absent means the first attempt, which is the only
+   * kind of request the route received before escalation existed.
+   */
+  style: Style;
 }
 
 function str(v: unknown, max: number): string | null {
@@ -17,6 +23,13 @@ function str(v: unknown, max: number): string | null {
   const t = v.trim();
   if (t.length === 0 || t.length > max) return null;
   return t;
+}
+
+/** An unrecognised style falls back to the first one rather than failing the call. */
+function parseStyle(v: unknown): Style {
+  return typeof v === "string" && (STYLES as readonly string[]).includes(v)
+    ? (v as Style)
+    : STYLES[0]!;
 }
 
 export function parseRefutation(value: unknown): Refutation | null {
@@ -58,14 +71,31 @@ export function parseRefuteRequest(value: unknown): RefuteRequest | null {
     misconception,
     correctOptionText,
     fallbackRefutation,
+    style: parseStyle(v.style),
   };
 }
 
-export const REFUTE_SYSTEM_PROMPT = `You write short refutation texts for a learner who answered a question wrongly while feeling certain. You get the question, the specific wrong option they chose, and the misconception it represents. Return JSON with exactly three fields.
+const BASE_SYSTEM_PROMPT = `You write short refutation texts for a learner who answered a question wrongly while feeling certain. You get the question, the specific wrong option they chose, and the misconception it represents. Return JSON with exactly three fields.
 believe: state the belief they hold, in second person, in one sentence, charitably - no mockery.
 wrong: the single clearest reason it is false. Prefer one concrete, checkable fact over a general argument.
 actual: the correct model in two sentences, phrased so it explains the same observation their wrong belief was trying to explain.
 Never exceed two sentences per field. Never add caveats or encouragement. Never mention that you are an AI.`;
+
+/** Kept as a named export because the first attempt's prompt is unchanged. */
+export const REFUTE_SYSTEM_PROMPT = BASE_SYSTEM_PROMPT;
+
+/**
+ * The prompt for one attempt.
+ *
+ * A later style adds a directive rather than replacing the prompt, so every
+ * explanation the learner reads has the same three fields and the same limits. What
+ * changes is the route the explanation takes, which is the only thing worth changing
+ * when the previous wording has already failed.
+ */
+export function refuteSystemPrompt(style: Style): string {
+  const directive = STYLE_DIRECTIVE[style];
+  return directive ? `${BASE_SYSTEM_PROMPT}\n${directive}` : BASE_SYSTEM_PROMPT;
+}
 
 export function refuteUserPrompt(req: RefuteRequest): string {
   return [

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  attemptsMade,
   missedItems,
   probeResponses,
   recheckItems,
@@ -148,5 +149,38 @@ describe("helpers", () => {
 
   it("keys refutations by item and chosen option", () => {
     expect(refutationKey("seasons-1", "a")).toBe("seasons-1:a");
+  });
+
+  it("leaves the first attempt's key alone so stored refutations still resolve", () => {
+    expect(refutationKey("seasons-1", "a", "direct")).toBe("seasons-1:a");
+  });
+
+  it("gives a later style its own slot instead of overwriting", () => {
+    expect(refutationKey("seasons-1", "a", "contrast")).toBe(
+      "seasons-1:a:contrast",
+    );
+  });
+
+  it("counts how many explanations of one wrong answer have been read", () => {
+    const refutation = { believe: "b", wrong: "w", actual: "a" };
+    expect(attemptsMade({}, "seasons-1", "a")).toBe(0);
+    expect(
+      attemptsMade({ "seasons-1:a": refutation }, "seasons-1", "a"),
+    ).toBe(1);
+    expect(
+      attemptsMade(
+        { "seasons-1:a": refutation, "seasons-1:a:contrast": refutation },
+        "seasons-1",
+        "a",
+      ),
+    ).toBe(2);
+  });
+
+  it("counts each wrong option separately, since each is its own belief", () => {
+    const refutation = { believe: "b", wrong: "w", actual: "a" };
+    const stored = { "seasons-1:a": refutation };
+    // The recheck answer moved to a different wrong option, which has not been
+    // explained at all, so the ladder starts over rather than resuming.
+    expect(attemptsMade(stored, "seasons-1", "c")).toBe(0);
   });
 });
