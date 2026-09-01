@@ -4,10 +4,22 @@ import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
 import CalibrationChart from "./CalibrationChart";
 import HistoryList from "./HistoryList";
+import StudyPlan from "./StudyPlan";
 import WeakTopics from "./WeakTopics";
 import { lifetimeStats, sortedSessions, summarizeSession } from "@/lib/history";
+import { planSummary, studyPlan } from "@/lib/plan";
 import { allResponses, weakTopics } from "@/lib/topics";
 import { useStudy } from "@/lib/store";
+
+/**
+ * One clock for the whole page, read at module load rather than during render.
+ *
+ * The plan decays remembered beliefs and then says how long ago they were held, so
+ * both have to agree, and a component that reads the wall clock while rendering
+ * answers differently on every re-render. The coarsest thing the page says is
+ * "3 weeks ago", so a clock a few minutes stale changes nothing.
+ */
+const LOADED_AT = Date.now();
 
 export default function Dashboard() {
   const hydrated = useSyncExternalStore(
@@ -23,11 +35,14 @@ export default function Dashboard() {
 
   const view = useMemo(() => {
     const ordered = sortedSessions(sessions);
+    const steps = studyPlan(sessions, { now: LOADED_AT });
     return {
       stats: lifetimeStats(sessions),
       weak: weakTopics(sessions),
       responses: allResponses(sessions),
       summaries: ordered.map(summarizeSession),
+      steps,
+      planSummary: planSummary(steps),
     };
   }, [sessions]);
 
@@ -90,6 +105,8 @@ export default function Dashboard() {
           }
         />
       </section>
+
+      <StudyPlan steps={view.steps} summary={view.planSummary} />
 
       <WeakTopics topics={weak} />
 
