@@ -12,6 +12,11 @@ const BEATS = [
 
 /**
  * A refutation, shown only for answers that were wrong *and* held with certainty.
+ *
+ * When the pack came from the learner's own upload, the card also carries the passage
+ * of that material the explanation was written from. It sits under the three beats
+ * rather than above them, in the same quiet grey PlainExplanation uses for the same
+ * line, because it is there to be checked rather than read.
  */
 export default function RefutationCard({
   stem,
@@ -60,6 +65,14 @@ export default function RefutationCard({
           </div>
         ))}
       </div>
+
+      {refutation && !loading && refutation.sourceNote ? (
+        <div className="border-t border-ink-700/60 bg-ink-950/40 px-5 py-4 sm:px-7">
+          <p className="text-sm leading-relaxed text-ink-400">
+            {refutation.sourceNote}
+          </p>
+        </div>
+      ) : null}
 
       {refutation && !loading ? (
         <footer className="px-5 pb-5 sm:px-7 sm:pb-6">

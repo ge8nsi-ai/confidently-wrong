@@ -15,6 +15,7 @@ import {
   type SurvivingBelief,
 } from "@/lib/escalation";
 import { attemptsMade, refutationKey, useStudy } from "@/lib/store";
+import { refuteBody } from "@/lib/refutation";
 import type { Item, Refutation, Response } from "@/lib/types";
 
 /**
@@ -71,6 +72,9 @@ export default function EscalationSection({
 function SurvivorRow({ survivor }: { survivor: SurvivingBelief }) {
   const refutations = useStudy((s) => s.refutations);
   const setRefutation = useStudy((s) => s.setRefutation);
+  // Read from the store rather than threaded down through RecheckSummary, which has no
+  // other use for it. A second attempt is grounded in the same notes as the first.
+  const material = useStudy((s) => s.pack?.material);
   const [loading, setLoading] = useState(false);
   const [handedOff, setHandedOff] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
@@ -94,17 +98,20 @@ function SurvivorRow({ survivor }: { survivor: SurvivingBelief }) {
       const res = await fetch("/api/refute", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          itemId: item.id,
-          chosenOptionId,
-          stem: item.stem,
-          chosenOptionText: chosen?.text ?? "",
-          // A pack that never named the belief still has the option that states it.
-          misconception: key ?? chosen?.text ?? "",
-          correctOptionText: correct?.text ?? "",
-          fallbackRefutation: item.fallbackRefutation,
-          style,
-        }),
+        body: JSON.stringify(
+          refuteBody({
+            itemId: item.id,
+            chosenOptionId,
+            stem: item.stem,
+            chosenOptionText: chosen?.text ?? "",
+            // A pack that never named the belief still has the option that states it.
+            misconception: key ?? chosen?.text ?? "",
+            correctOptionText: correct?.text ?? "",
+            fallbackRefutation: item.fallbackRefutation,
+            style,
+            material,
+          }),
+        ),
       });
       const data = (await res.json()) as { refutation?: Refutation | null };
       if (data.refutation) {

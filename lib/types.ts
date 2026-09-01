@@ -13,6 +13,14 @@ export interface Refutation {
   believe: string;
   wrong: string;
   actual: string;
+  /**
+   * The line of the learner's own material the explanation was built from, already
+   * formatted for display. Written by the route from the passage it sent the model,
+   * never by the model: parseRefutation keeps three fields and drops everything else,
+   * so a citation cannot be something a reply claimed. Absent for the built-in packs,
+   * which have no material, and absent when nothing in an upload was close enough.
+   */
+  sourceNote?: string;
 }
 
 export interface Item {

@@ -26,6 +26,7 @@ import {
   useStudy,
 } from "@/lib/store";
 import { needsRefutation } from "@/lib/scoring";
+import { refuteBody } from "@/lib/refutation";
 import { selectNextItem, type PriorSource } from "@/lib/belief";
 import { priorFrom, recall, recallSentence } from "@/lib/memory";
 import {
@@ -183,15 +184,22 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
           const res = await fetch("/api/refute", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              itemId: step.item.id,
-              chosenOptionId: step.response.chosenOptionId,
-              stem: step.item.stem,
-              chosenOptionText: chosen?.text ?? "",
-              misconception: chosen?.misconception ?? "",
-              correctOptionText: correct?.text ?? "",
-              fallbackRefutation: fallback,
-            }),
+            // refuteBody picks the passages of the learner's material that speak to
+            // this belief and fits them to the route's 4KB cap. It measured this exact
+            // object, so it is sent as it is rather than spread into a bigger one.
+            body: JSON.stringify(
+              refuteBody({
+                itemId: step.item.id,
+                chosenOptionId: step.response.chosenOptionId,
+                stem: step.item.stem,
+                chosenOptionText: chosen?.text ?? "",
+                misconception: chosen?.misconception ?? "",
+                correctOptionText: correct?.text ?? "",
+                fallbackRefutation: fallback,
+                style: "direct",
+                material: pack.material,
+              }),
+            ),
           });
           const data = (await res.json()) as { refutation?: Refutation };
           setRefutation(key, data.refutation ?? fallback);
@@ -201,7 +209,7 @@ export default function StudyFlow({ pack }: { pack: Pack }) {
       }),
     );
     setLoadingRefutations(false);
-  }, [repairSteps, setLoadingRefutations, setRefutation]);
+  }, [pack.material, repairSteps, setLoadingRefutations, setRefutation]);
 
   /**
    * Refutations are fetched when the reveal screen opens, not when repair does.
