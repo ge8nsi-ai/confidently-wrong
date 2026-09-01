@@ -61,7 +61,7 @@ export async function POST(request: Request): Promise<Response> {
   );
   if (!limit.ok) {
     return NextResponse.json(
-      { error: "Slow down a moment — more questions are still coming." },
+      { error: "Slow down a moment. More questions are still coming." },
       { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
     );
   }
@@ -121,7 +121,7 @@ export async function POST(request: Request): Promise<Response> {
   // an empty list so the client can tell "none this time" from "the route broke".
   if (items.length === 0) {
     console.warn(
-      `more-questions: nothing usable after ${attempts} attempts — ${rejections
+      `more-questions: nothing usable after ${attempts} attempts, ${rejections
         .map((r) => r.stage)
         .join(", ")}`,
     );

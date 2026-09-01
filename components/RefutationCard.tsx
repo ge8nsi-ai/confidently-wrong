@@ -37,7 +37,7 @@ export default function RefutationCard({
     <article className="rise glass overflow-hidden rounded-3xl border-ember-500/40">
       <header className="border-b border-ink-700/70 bg-ember-900/30 px-5 py-4 sm:px-7">
         <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ember-300">
-          You marked this “{CONF_LABEL[conf]}” — and missed it
+          You marked this “{CONF_LABEL[conf]}”, and missed it
         </p>
         <h2 className="mt-2 text-base font-semibold leading-snug text-ink-100 sm:text-lg">
           {stem}

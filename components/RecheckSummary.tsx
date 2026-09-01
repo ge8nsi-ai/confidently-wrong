@@ -34,7 +34,7 @@ export default function RecheckSummary({
         </p>
         <h1 className="mt-3 text-3xl font-semibold leading-tight text-ink-50 sm:text-4xl">
           {after.length === 0
-            ? "Nothing to recheck — you missed nothing."
+            ? "Nothing to recheck. You missed nothing."
             : `${accuracy(after) === 1 ? "All" : `${Math.round(accuracy(after) * 100)}% of`} the reworded questions came back right.`}
         </h1>
       </header>

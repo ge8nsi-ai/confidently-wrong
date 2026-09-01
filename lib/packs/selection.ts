@@ -44,7 +44,7 @@ export const selection: Pack = {
         wrong:
           "An individual moth's wing colour is fixed once it emerges; no moth in the population ever changed shade.",
         actual:
-          "Moths already varied in colour before the soot arrived. Predators removed the pale ones more often, so the dark variants left more offspring and came to dominate — the population shifted while every individual stayed the same.",
+          "Moths already varied in colour before the soot arrived. Predators removed the pale ones more often, so the dark variants left more offspring and came to dominate: the population shifted while every individual stayed the same.",
       },
     },
     {
@@ -124,7 +124,7 @@ export const selection: Pack = {
         wrong:
           "Experiments that freeze bacterial samples before any drug is applied still find resistant cells already in the frozen stock.",
         actual:
-          "Mutation is blind to what would be useful; variation exists first. The antibiotic then kills the susceptible majority, leaving the rare pre-existing resistant cells to repopulate — which is exactly why resistance appears so quickly.",
+          "Mutation is blind to what would be useful; variation exists first. The antibiotic then kills the susceptible majority, leaving the rare pre-existing resistant cells to repopulate, which is exactly why resistance appears so quickly.",
       },
     },
     {
@@ -160,7 +160,7 @@ export const selection: Pack = {
       ],
       fallbackRefutation: {
         believe:
-          "You believe fitness is about strength — the tougher animal wins the struggle.",
+          "You believe fitness is about strength: the tougher animal wins the struggle.",
         wrong:
           "A small drab male bird that mates twice out-reproduces a large dominant one that mates once, and selection tracks the small one.",
         actual:
@@ -284,7 +284,7 @@ export const selection: Pack = {
         wrong:
           "Stretching a limb does not alter the DNA in the cells that make offspring, so there is no route for the gain to be transmitted.",
         actual:
-          "Neck length varied among ancestral giraffes for genetic reasons. Individuals at the longer end fed and mated somewhat more successfully, so each generation started slightly longer-necked — the same observation the stretching story tries to explain, but with a mechanism that exists.",
+          "Neck length varied among ancestral giraffes for genetic reasons. Individuals at the longer end fed and mated somewhat more successfully, so each generation started slightly longer-necked, the same observation the stretching story tries to explain, but with a mechanism that exists.",
       },
     },
   ],

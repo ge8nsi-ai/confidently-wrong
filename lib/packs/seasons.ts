@@ -80,7 +80,7 @@ export const seasons: Pack = {
         believe:
           "You believe Earth reaches its closest point to the Sun during the northern summer.",
         wrong:
-          "Closest approach, called perihelion, falls in the first days of January — northern midwinter.",
+          "Closest approach, called perihelion, falls in the first days of January, northern midwinter.",
         actual:
           "Earth's orbit is a very slightly squashed circle, and the timing of its closest point has nothing to do with our seasons. The tilt of the axis, not the few million kilometres of orbital variation, sets which hemisphere gets summer.",
       },

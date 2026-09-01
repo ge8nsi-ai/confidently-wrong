@@ -48,12 +48,12 @@ export default function VoiceAnswer({
         } else {
           setNote(
             data.text
-              ? "Could not match that to an option — tap one instead."
-              : "Voice input is unavailable right now — tap an option instead.",
+              ? "Could not match that to an option. Tap one instead."
+              : "Voice input is unavailable right now. Tap an option instead.",
           );
         }
       } catch {
-        setNote("Voice input failed — tap an option instead.");
+        setNote("Voice input failed. Tap an option instead.");
       } finally {
         setStatus("idle");
       }
@@ -88,7 +88,7 @@ export default function VoiceAnswer({
       setStatus("recording");
     } catch {
       setStatus("unsupported");
-      setNote("Microphone access was declined — tap an option instead.");
+      setNote("Microphone access was declined. Tap an option instead.");
     }
   }
 

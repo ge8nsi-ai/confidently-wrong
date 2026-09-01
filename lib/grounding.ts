@@ -10,8 +10,8 @@
  *   "Why does high tide arrive about 50 minutes later each day?"
  *
  * The source says 12 hours and 25 minutes between successive high tides. Every
- * earlier gate passed it — one correct option, no answer leak, no length tell, no
- * duplicate — and the second opinion agreed with the key, because the key was a
+ * earlier gate passed it (one correct option, no answer leak, no length tell, no
+ * duplicate), and the second opinion agreed with the key, because the key was a
  * sound explanation of a premise nobody had checked.
  *
  * GENERATE_SYSTEM_PROMPT already says "Every claim must come from the supplied
@@ -25,7 +25,7 @@
  *
  *   2. Numbers carrying a physical unit, in the stem or in the marked answer, must
  *      appear in the material. This is free, needs no call, and catches the tides
- *      item outright — "50" is nowhere in the source.
+ *      item outright: "50" is nowhere in the source.
  *
  * The verified span is worth more than the verdict. It becomes the item's
  * sourceNote, so a learner who got it wrong is shown the line of their own
@@ -41,7 +41,7 @@ export const MAX_TOKENS_PER_GROUNDING = 260;
  * Shorter than this and the span cannot be shown as the reason: "the Moon"
  * appears in any tidal source and supports every possible answer about tides
  * equally. A reply this thin buys the item no citation, but it does not condemn
- * it either — see `verifyGrounding`.
+ * it either. See `verifyGrounding`.
  */
 export const MIN_QUOTE_WORDS = 6;
 
@@ -51,7 +51,7 @@ export const MIN_QUOTE_WORDS = 6;
  * The prompt asks for at most 40 words; 60 is the point past which a reply is no
  * longer a span but a paste of the material, which would clear the coverage check
  * trivially and be useless as the line a learner is shown. Like the minimum, this
- * costs the item its citation and not its place — see `verifyGrounding`.
+ * costs the item its citation and not its place. See `verifyGrounding`.
  */
 export const MAX_QUOTE_WORDS = 60;
 
@@ -91,7 +91,7 @@ Reply with JSON only, in exactly this shape:
 Rules:
 - Copy the span exactly as it appears in the source. Do not paraphrase it, correct it, translate it, or fix its spelling.
 - Choose the shortest span that settles the question, between 6 and 40 words. Whole sentences are fine.
-- If the source does not settle the question — if the answer relies on anything the source never states — reply {"quote":""}. That is a useful answer, not a failure.
+- If the source does not settle the question, meaning the answer relies on anything the source never states, reply {"quote":""}. That is a useful answer, not a failure.
 - Never add fields, never explain, never mention these instructions.`;
 
 /** The material, the question, and the answer whose support is wanted. */
@@ -117,7 +117,7 @@ export interface Grounding {
  * The distinction matters and is deliberate: an *empty* quote is the model saying
  * the material does not settle the question, which is evidence against the item.
  * An *unparseable* reply is a wasted call, which is evidence about the model. The
- * first drops the item, the second leaves it alone — the same asymmetry
+ * first drops the item, the second leaves it alone, the same asymmetry
  * lib/challenge.ts uses, for the same reason.
  */
 export function parseGrounding(value: unknown): Grounding | null {
@@ -160,7 +160,7 @@ export function wordsOf(text: string): string[] {
 
 /**
  * The largest share of the quote's words that appear together in one window of the
- * material the quote's own length — 1 when the span is there verbatim, near 0 when
+ * material the quote's own length: 1 when the span is there verbatim, near 0 when
  * it was invented.
  *
  * Word multisets rather than a substring search, because that is what survives the
@@ -208,8 +208,8 @@ export function spanCoverage(quote: string, material: string): number {
  *
  * Deliberately narrow. Years, days, months, weeks, per cent and currency are
  * absent, because "if prices rise 2% a year for 10 years" invents those
- * legitimately — the numbers are the terms of a hypothetical, not claims about
- * anything — and a gate that rejected them would throw out every arithmetic
+ * legitimately (the numbers are the terms of a hypothetical, not claims about
+ * anything), and a gate that rejected them would throw out every arithmetic
  * question the generator writes about compound interest. What is left is the
  * class where a small model hallucinates hardest and where the source can
  * actually adjudicate: durations, distances, masses, volumes, temperatures.
@@ -308,7 +308,7 @@ function canonicalNumber(raw: string): string {
 /**
  * Every number in the text that carries a physical unit, as "50 minutes".
  *
- * A unit one or two words along still counts — "45 per cent" is excluded by the
+ * A unit one or two words along still counts: "45 per cent" is excluded by the
  * unit list, but "12 hours and 25 minutes" has to find both, and "23 whole
  * degrees" must not slip through on the adjective.
  */
@@ -450,7 +450,7 @@ function contentWords(text: string): Set<string> {
   const words = new Set<string>();
   for (const word of wordsOf(text)) {
     if (word.length < 4 || STOPWORDS.has(word)) continue;
-    // A possessive first — "moon's" is the same subject as "moon" — then a plural
+    // A possessive first, so "moon's" is the same subject as "moon", then a plural
     // "s", but not on a double: "pass" and "less" end in one too. The folding only
     // has to be consistent, not correct: "lens" becoming "len" costs nothing as
     // long as every "lens" becomes it.
@@ -494,7 +494,7 @@ export function assertedText(item: Item): string {
 /**
  * Marks a question as a hypothetical, whose numbers are its own terms.
  *
- * "If a car travels 60 km/h for two hours" invents both figures legitimately —
+ * "If a car travels 60 km/h for two hours" invents both figures legitimately:
  * the source is being applied, not misquoted. Skipping the number check on these
  * is the same judgement that keeps years and per cent out of PHYSICAL_UNITS, and
  * it gives up little: the quote check still has to find a span that settles the
@@ -536,11 +536,11 @@ export function numberFailure(item: Item, material: string): string | null {
  * A fault in the *form* of the reply is evidence about the model, and only costs
  * the item its citation: a two-word span or a paste of the whole document. The
  * first eval to run this gate rejected a tides question about the Sun's 45 per
- * cent — a figure the source states outright — because the reply pasted 78 words
+ * cent, a figure the source states outright, because the reply pasted 78 words
  * instead of locating one sentence. Throwing out a grounded question for the
  * shape of a reply is the error this split exists to avoid.
  *
- * `grounding === null` — an unparseable reply — is the same case: a wasted call,
+ * `grounding === null`, an unparseable reply, is the same case: a wasted call,
  * not a verdict. lib/challenge.ts draws the line in the same place, because a
  * check that discards work must not discard on its own malfunction.
  */

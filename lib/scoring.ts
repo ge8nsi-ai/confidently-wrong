@@ -117,6 +117,6 @@ export function overconfidenceSentence(responses: Response[]): string {
   if (points >= 5)
     return `You were about ${points} points more sure than you were right.`;
   if (points <= -5)
-    return `You were about ${Math.abs(points)} points less sure than you were right — you knew more than you gave yourself credit for.`;
+    return `You were about ${Math.abs(points)} points less sure than you were right. You knew more than you gave yourself credit for.`;
   return "Your confidence matched your accuracy closely.";
 }

@@ -4,7 +4,7 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  /* Ink scale — deep, slightly blue-cast neutrals. */
+  /* Ink scale: deep, slightly blue-cast neutrals. */
   --color-ink-950: #fbfaf7;
   --color-ink-900: #f7f5f0;
   --color-ink-850: #f0eee8;
@@ -23,7 +23,7 @@
   --color-ink-100: #282a31;
   --color-ink-50: #181a20;
 
-  /* Danger zone: sure and wrong. Warm, dominant. A fill, a border and a tint —
+  /* Danger zone: sure and wrong. Warm, dominant. A fill, a border and a tint,
      not small text: on a white card ember-500 measures 3.16:1 and ember-400
      lighter still, so anything under 24px takes ember-300 (or ember-900 on the
      navy cell). */
@@ -31,7 +31,7 @@
   --color-ember-400: #e99082;
   /* Refutation body text on the light page. #b95850 measured 4.16:1 on the
      pink-tinted card it is used on; this is 4.76:1 at the worst tint. Never on
-     navy — see the note in QuadrantGrid, which uses ember-900 there. */
+     navy. See the note in QuadrantGrid, which uses ember-900 there. */
   --color-ember-300: #a33f38;
   --color-ember-900: #fde5df;
 

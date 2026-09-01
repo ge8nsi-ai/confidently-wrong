@@ -2,8 +2,8 @@
  * A model of what the learner believes, inferred from their certainty ratings.
  *
  * Certainty is normally just a scoring multiplier. Here it is evidence. Two people
- * who pick the same wrong answer are in different states — one holds the
- * misconception, the other flipped a mental coin — and the certainty they stated is
+ * who pick the same wrong answer are in different states (one holds the
+ * misconception, the other flipped a mental coin), and the certainty they stated is
  * the only thing that separates them. So each answer is treated as an observation
  * of the pair (option chosen, certainty stated), and a posterior is kept over which
  * belief the learner holds for each concept. That posterior then decides what to ask
@@ -35,7 +35,7 @@ const ACT_ON_BELIEF = 0.75;
 const CONF_WHEN_HELD: Record<Conf, number> = { 1: 0.15, 2: 0.35, 3: 0.5 };
 
 /**
- * P(certainty | the pick followed from no belief at all — a guess).
+ * P(certainty | the pick followed from no belief at all, a guess).
  *
  * Skewed low, and that skew is the whole mechanism: it makes "wrong and certain"
  * strong evidence of a held misconception and "wrong while guessing" almost none.
@@ -105,7 +105,7 @@ function optionForHypothesis(item: Item, key: string): string | null {
  * P(this answer | the learner holds this belief).
  *
  * A belief that is not on offer in this item has nothing to act on, so the learner
- * is modelled as guessing — which is also why an item can only sharpen the beliefs
+ * is modelled as guessing, which is also why an item can only sharpen the beliefs
  * it actually asks about.
  */
 export function likelihood(
@@ -144,7 +144,7 @@ export function entropyOf(probabilities: number[]): number {
  * A returning learner is not a stranger, which is what `prior` is for. It arrives
  * already decayed and already capped by lib/memory.ts, so what happens here is only
  * the substitution: the same update, started somewhere other than the middle. An
- * unusable prior — wrong length, no mass, a negative weight — is ignored rather
+ * unusable prior (wrong length, no mass, a negative weight) is ignored rather
  * than repaired, because a prior is a convenience and the flat start is always
  * correct.
  */
@@ -287,7 +287,7 @@ export function beliefSentence(state: BeliefState): string {
  *
  * Averaged over every answer the learner might give, weighted by how likely the
  * current posterior thinks that answer is. An item whose answer is already
- * predictable scores near zero — asking it again would confirm what is known
+ * predictable scores near zero: asking it again would confirm what is known
  * instead of resolving what is not.
  */
 export function informationGain(
@@ -321,7 +321,7 @@ const GAIN_EPSILON = 1e-9;
  * The unanswered item that would tell us most about the learner right now.
  *
  * Returns null once nothing is left. Callers that want the plain fixed order can
- * simply not call this — nothing else in the flow depends on it.
+ * simply not call this: nothing else in the flow depends on it.
  *
  * With a prior in hand this is where cross-session memory earns its place: a
  * concept an earlier session settled is already predictable, so its questions score

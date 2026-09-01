@@ -4,7 +4,7 @@
  * `npm run eval` generates a pack from each source text in evals/sources, applies
  * the rubric in lib/quality.ts to every question that survives, and prints a pass
  * rate with a breakdown of what did the rejecting. It calls a paid API, so it is
- * kept out of `npm test` — see vitest.eval.config.ts.
+ * kept out of `npm test`. See vitest.eval.config.ts.
  *
  * The number this prints is the honest one: it is computed from the same code path
  * the app runs, with the same five gates, and the rubric is the one the hand-written
@@ -218,7 +218,7 @@ function writeReport(results: SourceResult[]): string {
     lines.push("", "## Questions that shipped with a rubric failure", "");
     for (const report of failing) {
       const item = all.find((i) => i.id === report.itemId)!;
-      lines.push(`- \`${report.itemId}\` — ${report.failures.map((f) => f.detail).join("; ")}`);
+      lines.push(`- \`${report.itemId}\`: ${report.failures.map((f) => f.detail).join("; ")}`);
       lines.push(`  - ${item.stem}`);
     }
   }

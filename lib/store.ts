@@ -272,7 +272,7 @@ export const useStudy = create<State & Actions>()(
   ),
 );
 
-/** Probe responses only — the first pass through the pack. */
+/** Probe responses only, the first pass through the pack. */
 export function probeResponses(responses: Response[]): Response[] {
   return responses.filter((r) => r.round === "probe");
 }
@@ -310,7 +310,7 @@ export function recheckItems(
   return ordered.map((item, i) => toVariant(item, i));
 }
 
-/** Wrong probe answers that were held with certainty — the refutation set. */
+/** Wrong probe answers that were held with certainty, the refutation set. */
 export function sureWrongResponses(responses: Response[]): Response[] {
   return probeResponses(responses).filter(needsRefutation);
 }

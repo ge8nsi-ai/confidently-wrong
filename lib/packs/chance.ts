@@ -53,7 +53,7 @@ export const chance: Pack = {
       options: [
         {
           id: "a",
-          text: "Higher than half — tails is overdue.",
+          text: "Higher than half. Tails is overdue.",
           correct: false,
           misconception:
             "Past independent outcomes change the odds of the next one, so results 'even out'.",
@@ -65,7 +65,7 @@ export const chance: Pack = {
         },
         {
           id: "c",
-          text: "Lower than half — heads is clearly on a run.",
+          text: "Lower than half. Heads is clearly on a run.",
           correct: false,
           misconception: "Streaks are self-sustaining in fair random processes.",
         },
@@ -129,7 +129,7 @@ export const chance: Pack = {
     {
       id: "chance-4",
       conceptId: "sample-size",
-      stem: "Two surveys estimate the same national figure — one polls 40 people, the other 4,000. What should you expect?",
+      stem: "Two surveys estimate the same national figure. One polls 40 people, the other 4,000. What should you expect?",
       options: [
         {
           id: "a",
@@ -253,12 +253,12 @@ export const chance: Pack = {
       options: [
         {
           id: "a",
-          text: "(i) — it can never be less likely than a more specific version of itself.",
+          text: "(i), because it can never be less likely than a more specific version of itself.",
           correct: true,
         },
         {
           id: "b",
-          text: "(ii) — the detail makes it a more convincing description.",
+          text: "(ii), because the detail makes it a more convincing description.",
           correct: false,
           misconception:
             "A more detailed, coherent story is more probable than a general one.",

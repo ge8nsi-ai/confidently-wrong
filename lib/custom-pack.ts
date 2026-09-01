@@ -1,8 +1,8 @@
 /**
  * Custom pack generation: prompts, validation, and assembly.
  *
- * The model is asked for a flat shape — one correct answer plus three wrong ones
- * with named misconceptions — and this file assembles the Item. Structural rules
+ * The model is asked for a flat shape (one correct answer plus three wrong ones
+ * with named misconceptions), and this file assembles the Item. Structural rules
  * (exactly one correct option, misconceptions only on wrong options) are therefore
  * guaranteed by construction rather than by trusting the model to comply.
  */
@@ -39,7 +39,7 @@ export function clean(value: unknown, maxLength: number): string | null {
  *
  * A small model asked to build a question around a long fact writes long prose,
  * and rejecting the item for being twenty characters over wasted a paid call on
- * an otherwise good question. Only sentence boundaries are cut on — a mid-clause
+ * an otherwise good question. Only sentence boundaries are cut on: a mid-clause
  * truncation could turn a true answer into a false one. Nothing salvageable
  * inside the budget still returns null.
  */
@@ -59,7 +59,7 @@ export function condense(value: unknown, maxLength: number): string | null {
 /**
  * Trims a display label on a word boundary.
  *
- * A topic is a heading, not a claim, so cutting it short cannot make it false —
+ * A topic is a heading, not a claim, so cutting it short cannot make it false,
  * unlike an answer, where only whole sentences are safe to keep.
  */
 export function clipLabel(value: unknown, maxLength: number): string | null {
@@ -279,8 +279,8 @@ export function generateUserPrompt(
 ): string {
   const used =
     usedConcepts.length > 0 ? usedConcepts.join("; ") : "none yet";
-  // A caller that already knows which points matter — voice mode, working from a
-  // marked explanation — names one per question, which keeps a small model from
+  // A caller that already knows which points matter (voice mode, working from a
+  // marked explanation) names one per question, which keeps a small model from
   // circling the same idea when the material is narrow.
   const aim = focus
     ? `\nBase this question on this specific point: ${focus}\nAsk about it in your own short words. Do not quote that sentence back.`
@@ -296,7 +296,7 @@ Write question ${position} of ${total}. Cover an idea distinct from these alread
  *
  * Ministral 3B has one failure it makes at scale: it writes three genuinely tempting
  * wrong answers and silently omits the `misconception` key on every one of them.
- * The question itself is fine, so throwing it away wastes a paid call — the missing
+ * The question itself is fine, so throwing it away wastes a paid call: the missing
  * half is worth asking for on its own. Returns null when the reply is too broken
  * for a second call to rescue.
  */

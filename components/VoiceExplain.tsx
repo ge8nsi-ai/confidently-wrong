@@ -13,7 +13,7 @@ type Stage = "speak" | "transcribing" | "marking" | "marked" | "quizzing";
  * Explain a topic out loud, get marked, then get quizzed on the errors.
  *
  * The microphone needs a secure context, so it is offered when available and the
- * textarea is always there as the equal path — over plain http on a LAN the mic
+ * textarea is always there as the equal path: over plain http on a LAN the mic
  * simply never appears and typing still works.
  */
 export default function VoiceExplain() {
@@ -172,7 +172,7 @@ export default function VoiceExplain() {
         </h1>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-300">
           Say what you think you know. You will be told what was sound, what you
-          left out, and which claims were wrong — then quizzed on exactly those,
+          left out, and which claims were wrong, then quizzed on exactly those,
           with your own wrong claims as the tempting answers.
         </p>
       </header>
@@ -211,7 +211,7 @@ export default function VoiceExplain() {
             {recording ? "Stop and transcribe" : "Record your explanation"}
           </button>
           <span className="text-xs text-ink-400">
-            or write it below — both are marked the same way
+            or write it below. Both are marked the same way
           </span>
         </div>
 
@@ -327,7 +327,7 @@ function CritiquePanel({
       <div className="glass rounded-3xl p-5 sm:p-7">
         <p className="text-sm leading-relaxed text-ink-300">
           The quiz is written from the corrections above, with your own wrong claims
-          as the distractors. Answer with your certainty as usual — the repair round
+          as the distractors. Answer with your certainty as usual, and the repair round
           still only fires where you were sure and wrong.
         </p>
         <button

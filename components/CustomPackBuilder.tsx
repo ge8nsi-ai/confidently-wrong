@@ -103,7 +103,7 @@ export default function CustomPackBuilder() {
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-300">
           Attach a PDF or paste your notes. Questions are written from what you
           supply, each wrong answer tied to a misconception a learner would actually
-          hold — so the repair round still only fires where you were sure.
+          hold, so the repair round still only fires where you were sure.
         </p>
       </header>
 

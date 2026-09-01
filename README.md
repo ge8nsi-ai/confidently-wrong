@@ -76,7 +76,7 @@ npm test
 
 ## Sources
 
-- Gardner-Medwin, A. R. — certainty-based marking, UCL; in summative medical exams since 1994.
-- Butterfield, B., & Metcalfe, J. (2001) — hypercorrection.
-- Richland, Kornell & Kao — the pretesting effect.
-- _Educational Psychology Review_ (2026), DOI 10.1007/s10648-026-10116-9 — personalised refutation can backfire.
+- Gardner-Medwin, A. R.: certainty-based marking, UCL; in summative medical exams since 1994.
+- Butterfield, B., & Metcalfe, J. (2001): hypercorrection.
+- Richland, Kornell & Kao: the pretesting effect.
+- _Educational Psychology Review_ (2026), DOI 10.1007/s10648-026-10116-9: personalised refutation can backfire.

@@ -4,7 +4,7 @@
  * opinion must never throw out a good item, and a real disagreement must always
  * throw out a bad one.
  *
- * The fixture is the item that motivated the gate — a real generated question
+ * The fixture is the item that motivated the gate, a real generated question
  * whose marked answer is false, and which passes every check in lib/quality.ts.
  */
 

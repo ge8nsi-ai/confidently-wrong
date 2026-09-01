@@ -4,7 +4,7 @@
  * A fixed pack has to be finished before it can be played, so the learner waits
  * for the whole thing and then answers a length someone else chose. Endless mode
  * inverts that. A short first batch arrives, the learner starts answering, and the
- * next batch is written in the background while they do — so after the first wait
+ * next batch is written in the background while they do, so after the first wait
  * there is no wait at all, and the round ends on a target they can raise as they
  * go rather than on the size of the pack.
  *

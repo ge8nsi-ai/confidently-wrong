@@ -1,6 +1,6 @@
 /**
  * The belief panel is the only place the Bayesian model becomes visible, and it is
- * the one component that had never been rendered anywhere — the posterior was
+ * the one component that had never been rendered anywhere: the posterior was
  * proved correct in lib/belief.test.ts, but nothing checked that the numbers reach
  * the screen.
  *
@@ -19,7 +19,7 @@ const pack = PACKS[0]!;
 
 /**
  * The label the panel will actually print. Built-in items carry no `topic`, so it
- * is derived from the conceptId — asking the model layer for it keeps this test
+ * is derived from the conceptId, and asking the model layer for it keeps this test
  * from asserting a label the panel never shows.
  */
 function topicOf(item: Item): string {

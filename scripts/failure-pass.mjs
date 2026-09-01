@@ -2,7 +2,7 @@
  * Drives the four ways this app is meant to fail and records what a visitor sees.
  *
  * "It degrades gracefully" is a claim. A screenshot of the message, with the
- * status code that produced it and the number of requests it took, is evidence —
+ * status code that produced it and the number of requests it took, is evidence,
  * so this writes docs/failure-modes.md and the images beside it.
  *
  * Nothing here spends money. Two of the four guards are client-side and never
@@ -68,7 +68,7 @@ async function tooShort(page, calls) {
     name: "Three words pasted",
     trigger: 'The word count is under the 200-character floor ("photosynthesis is hard")',
     seen: `${counter.replace(/\s+/g, " ")} The button is disabled${
-      (await button.isDisabled()) ? "" : " — IT IS NOT, which is a bug"
+      (await button.isDisabled()) ? "" : ", but IT IS NOT, which is a bug"
     }.`,
     calls: calls.length,
     status: "no request",
@@ -116,8 +116,8 @@ async function offline(page, context, calls) {
 
 /**
  * The limiter is 5 requests a minute per IP on this route. Five `{}` bodies fill
- * it — the route rejects each at 422 for having no material in it, which happens
- * before any model call — and the sixth request is the one a visitor makes.
+ * it (the route rejects each at 422 for having no material in it, which happens
+ * before any model call), and the sixth request is the one a visitor makes.
  */
 async function rateLimited(page, calls) {
   await fresh(page);
@@ -142,7 +142,7 @@ async function rateLimited(page, calls) {
     trigger: `The limiter's 5 requests a minute are already spent (${filling.join(", ")})`,
     seen: (await page.locator(LIVE).innerText()).replace(/\s+/g, " "),
     calls: calls.length,
-    status: `${real.status}, Retry-After: ${real.retryAfter ?? "—"}`,
+    status: `${real.status}, Retry-After: ${real.retryAfter ?? "none"}`,
     file: await shot(page, "rate-limited"),
   };
 }
@@ -169,7 +169,7 @@ function report(records) {
     "sending large ones.",
     "",
     "The limiter is in-memory and per instance, which makes it a cost guard rather",
-    "than a security control — the comment above each route handler says so, and says",
+    "than a security control: the comment above each route handler says so, and says",
     "that the handler is public and unauthenticated.",
     "",
   ];

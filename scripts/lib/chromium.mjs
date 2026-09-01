@@ -1,5 +1,5 @@
 /**
- * Playwright is not a dependency of this app — see scripts/lib/borrowed.mjs for why,
+ * Playwright is not a dependency of this app. See scripts/lib/borrowed.mjs for why,
  * and where it is looked for.
  */
 import { borrow } from "./borrowed.mjs";

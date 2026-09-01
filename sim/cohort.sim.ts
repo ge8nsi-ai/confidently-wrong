@@ -5,8 +5,8 @@
  *
  * Free and offline. No model is called: every question already exists in the three
  * built-in packs, and a refutation's effect is a number from sim/personas.ts rather
- * than text from Mistral. What is exercised is the engine — information-gain
- * ordering, the posterior, the gating rule, the recheck builder, CBM scoring — over
+ * than text from Mistral. What is exercised is the engine (information-gain
+ * ordering, the posterior, the gating rule, the recheck builder, CBM scoring) over
  * 36 complete runs, which is more paths through it than a person will click in a
  * week.
  *
@@ -49,7 +49,7 @@ function one(n: number): string {
  * One cohort: every persona through every pack, seeded on the repeat index.
  *
  * Deliberately not seeded on the lift assumption. The probe round and the repair
- * set do not depend on it — only whether a correction sticks does — so the sweep
+ * set do not depend on it (only whether a correction sticks does), so the sweep
  * varies the assumption over one fixed set of learners and misses. Reseeding per
  * row was the first version of this, and it made the table non-monotone by changing
  * the cohort underneath the thing being measured.

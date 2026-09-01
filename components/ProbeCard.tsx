@@ -10,7 +10,7 @@ const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
 /**
  * One question. Options first, then certainty. No correctness feedback is shown
- * here — that is the whole point of the probe round.
+ * here: that is the whole point of the probe round.
  */
 export default function ProbeCard({
   item,

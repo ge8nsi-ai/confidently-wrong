@@ -2,7 +2,7 @@
  * Runs axe-core over the production build and writes docs/accessibility.md.
  *
  * Three things make this more than `axe --url`. It drives the study flow, so the
- * REVEAL, REPAIR and RECHECK phases are audited too — they are the screens the
+ * REVEAL, REPAIR and RECHECK phases are audited too: they are the screens the
  * whole app exists for and they never appear at a URL of their own. It runs
  * every target at both a phone and a laptop viewport, because the navigation is
  * a bottom tab bar at one and a drawer at the other, so a single width leaves
@@ -14,7 +14,7 @@
  *
  * One scan costs money. Reaching the repair screen asks /api/refute for the four
  * refutations the seasons pack's confidently-wrong answers earn, twice over for the
- * two viewports, which is the only model call in this file — and the point of the
+ * two viewports, which is the only model call in this file, and the point of the
  * scan, because a refutation is the longest text the app renders and the screen it
  * sits on is the darkest.
  */
@@ -88,7 +88,7 @@ function parseRgb(value) {
   return { rgb: nums.slice(0, 3), alpha: nums.length > 3 ? nums[3] : 1 };
 }
 
-/** 1.4.3: 4.5:1, or 3:1 for large text — 24px, or 18.66px at weight 700+. */
+/** 1.4.3: 4.5:1, or 3:1 for large text (24px, or 18.66px at weight 700+). */
 function required(fontSize, fontWeight) {
   const large = fontSize >= 24 || (fontWeight >= 700 && fontSize >= 18.66);
   return large ? 3 : 4.5;
@@ -104,7 +104,7 @@ const MIN_SHARE = 0.02;
  * pseudo-element, an image, an overlap. The painted pixels are not ambiguous, so
  * read those instead. The element's own glyphs are made transparent first, which
  * leaves its box showing exactly what is behind the text, and the ratio is then
- * computed against every colour covering at least 2% of that box — the worst one
+ * computed against every colour covering at least 2% of that box, and the worst one
  * wins, so a gradient is judged at its least legible end.
  */
 async function settle(page, nodes) {
@@ -118,8 +118,8 @@ async function settle(page, nodes) {
   );
   const out = targets.map((t, i) => ({ ...t, ...meta[i], measured: null }));
   // An element with no text node of its own has no glyph box to sample. Its box
-  // is whatever its children and pseudo-elements paint — the file input's box is
-  // mostly its dark "Choose file" button — so measuring it would compare this
+  // is whatever its children and pseudo-elements paint (the file input's box is
+  // mostly its dark "Choose file" button), so measuring it would compare this
   // element's colour against another element's background. Where the text is
   // real, axe listed the element that actually holds it too, and that one is
   // measured.
@@ -269,7 +269,7 @@ async function sample(page, nodes) {
  *
  * A box is only worth sampling if the element is what is painted there. With the
  * navigation drawer open, axe still evaluates the page behind it, and reading
- * those pixels measures the text against the scrim that hides it — a number
+ * those pixels measures the text against the scrim that hides it, a number
  * about nothing. The hit test at each box's centre is what separates the two.
  */
 function measureBoxes(indices) {
@@ -430,7 +430,7 @@ async function scan(page, axeSource, label, viewport, results) {
       `${(weight.bytes / 1024).toFixed(0)}KB\n`,
   );
   // axe scrolls the window to reach what is below the fold and does not always
-  // put it back, and the next click then lands on whatever moved under it — the
+  // put it back, and the next click then lands on whatever moved under it: the
   // hero image, in the case of the navigation toggle.
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(80);
@@ -459,7 +459,7 @@ async function runViewport(browser, viewport, axeSource, results, noise) {
     await page.waitForTimeout(250);
     if (broken.length > 0) {
       throw new Error(
-        `${broken[0]} did not load — restart the server, it is serving a build that is no longer on disk`,
+        `${broken[0]} did not load: restart the server, it is serving a build that is no longer on disk`,
       );
     }
   };
@@ -505,7 +505,7 @@ async function runViewport(browser, viewport, axeSource, results, noise) {
   await page.getByRole("button", { name: /Repair|Nothing to repair/ }).click();
   // The refutations are fetched when this screen mounts, and until they land each
   // beat is a pulsing skeleton with no text in it. A fixed wait measured skeletons
-  // on some runs and paragraphs on others — four elements' difference, and they are
+  // on some runs and paragraphs on others: four elements' difference, and they are
   // the four that matter here. "Read this aloud" appears only with a refutation
   // behind it, so it is the thing to wait for.
   await page
@@ -545,7 +545,7 @@ function table(results) {
     );
     return (
       `| ${r.label} | ${r.viewport} | ${r.violations.length} | ${r.passes} | ` +
-      `${r.undecided.length} | ${worst === null ? "—" : `${worst.toFixed(2)}:1`} | ` +
+      `${r.undecided.length} | ${worst === null ? "n/a" : `${worst.toFixed(2)}:1`} | ` +
       `${(r.weight.bytes / 1024).toFixed(0)} KB | ${r.weight.requests} |`
     );
   });
@@ -564,11 +564,11 @@ function detail(results) {
   return failing
     .map((r) =>
       [
-        `### ${r.label} — ${r.viewport}`,
+        `### ${r.label}, ${r.viewport}`,
         ...r.violations.map((v) =>
           [
             `- **${v.id}** (${v.impact}): ${v.help}`,
-            ...v.nodes.slice(0, 4).map((n) => `  - \`${n.target}\` — ${n.summary}`),
+            ...v.nodes.slice(0, 4).map((n) => `  - \`${n.target}\`: ${n.summary}`),
           ].join("\n"),
         ),
       ].join("\n"),
@@ -612,13 +612,13 @@ function undecidedSection(results) {
       const m = node.measured;
       return (
         `| ${reason} | ${count} | ${m.ratio.toFixed(2)}:1 | ${m.need}:1 | ` +
-        `${node.text ? `“${node.text}”` : "—"} on ${node.screen}, ` +
+        `${node.text ? `“${node.text}”` : "no text"} on ${node.screen}, ` +
         `${node.color} on ${rgb(m.bg)} |`
       );
     });
   return [
     "axe returns an element as incomplete when it cannot work the background out",
-    "from the CSS — a gradient, a pseudo-element, an image, an overlap. The painted",
+    "from the CSS: a gradient, a pseudo-element, an image, an overlap. The painted",
     "pixels are not ambiguous, so this audit reads those: it makes the element's own",
     "glyphs transparent, captures the box, and takes the worst contrast against every",
     "colour covering 2% or more of it. A gradient is therefore judged at its least",
@@ -640,7 +640,7 @@ function undecidedSection(results) {
   ].join("\n");
 }
 
-/** "12 covered by the drawer, 3 off screen" — a count per distinct reason. */
+/** "12 covered by the drawer, 3 off screen", a count per distinct reason. */
 function tally(reasons) {
   const counts = new Map();
   for (const reason of reasons) counts.set(reason, (counts.get(reason) ?? 0) + 1);
@@ -652,7 +652,7 @@ function tally(reasons) {
 
 /**
  * 1.4.3 is about text. A mark that is `aria-hidden` and made of no letters or
- * digits — the arrow on a button, the ✓ ~ ? ! in the quadrant grid — carries
+ * digits (the arrow on a button, the ✓ ~ ? ! in the quadrant grid) carries
  * nothing that the label beside it does not already say, and the audit hides
  * glyphs to sample the background, which leaves such a box holding only
  * background. Measured and reported, but not counted as a failure. An
@@ -686,7 +686,7 @@ function shortfalls(results) {
     short
       .map(
         (n) =>
-          `- ${n.measured.ratio.toFixed(2)}:1 against ${n.measured.need}:1 — ` +
+          `- ${n.measured.ratio.toFixed(2)}:1 against ${n.measured.need}:1, ` +
           `${n.text ? `“${n.text}”` : n.target} on ${n.screen}, ` +
           `${n.color} on ${rgb(n.measured.bg)} (\`${n.target}\`)`,
       )

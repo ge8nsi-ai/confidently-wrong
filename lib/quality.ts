@@ -97,7 +97,7 @@ const LEAK_CLAUSE_CHARS = 20;
  *
  * Three ways it happens: the answer appears whole inside the question, one of its
  * clauses does, or the question is the answer reworded. The clause case is the one
- * a small model actually falls into — it sets the scene with the very fact being
+ * a small model actually falls into: it sets the scene with the very fact being
  * asked about ("Given light is absorbed in the thylakoid membrane, where...") and
  * a whole-string check waves it through. Overlap catches the rewording.
  */

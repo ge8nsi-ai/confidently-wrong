@@ -30,8 +30,8 @@
  *
  * The one place the sequence is broken is the wait: the next question is asked
  * while the current one is being verified. Those two calls have nothing to say to
- * each other — verification judges a finished question, and the next prompt only
- * needs the ground already covered, which is known before either runs — so paying
+ * each other (verification judges a finished question, and the next prompt only
+ * needs the ground already covered, which is known before either runs), so paying
  * for them one after the other bought nothing but latency.
  */
 
@@ -101,7 +101,7 @@ const SPARE_ATTEMPTS = 8;
  * How long the whole loop may spend before it stops starting new work.
  *
  * The route it runs in is capped at 60s on Vercel, and a killed function returns
- * nothing at all — a short pack beats a 504. Three gates and eleven possible
+ * nothing at all: a short pack beats a 504. Three gates and eleven possible
  * attempts can outlast that, so the loop watches the clock rather than assuming
  * it will finish.
  */
@@ -113,15 +113,15 @@ const RESERVE_FOR_ATTEMPT_MS = 14_000;
 /**
  * Room for the two verification calls, which run together.
  *
- * They are independent judgements of the same finished question — one answers it
- * again, the other makes it cite the material — so neither waits for the other.
+ * They are independent judgements of the same finished question (one answers it
+ * again, the other makes it cite the material), so neither waits for the other.
  * Sequentially they cost an attempt's worth of clock: the first eval with the
  * citation gate in had two of three sources stopping on the time budget rather
  * than on the question count, which is a worse pack than either check prevents.
  */
 const RESERVE_FOR_VERIFY_MS = 9_000;
 
-/** Room for one embedding of one stem — the cheapest of the three calls. */
+/** Room for one embedding of one stem, the cheapest of the three calls. */
 const RESERVE_FOR_EMBED_MS = 3_000;
 
 export type RejectionStage =
@@ -160,7 +160,7 @@ export interface GenerationOutcome {
   /** Kept items carrying a verified span from the learner's own material. */
   cited: number;
   /**
-   * Items kept without a span because the reply's shape was unusable — too thin
+   * Items kept without a span because the reply's shape was unusable: too thin
    * to show, or a paste rather than a located sentence. Not a fault of the item.
    */
   unusableCitations: number;
@@ -186,8 +186,8 @@ export interface GenerateOptions {
    * Endless mode calls this loop several times over one piece of material, and each
    * call starts with an empty memory of what it has covered. Seeding that memory is
    * what keeps batch four off the ground batch one already took. Only the two
-   * free repetition layers are seeded — the prompt's covered-ground list and the
-   * word-overlap check — because the embeddings of earlier stems are not kept
+   * free repetition layers are seeded (the prompt's covered-ground list and the
+   * word-overlap check), because the embeddings of earlier stems are not kept
    * anywhere, so the paid paraphrase gate still only sees the current batch.
    */
   avoid?: { topic: string; stem: string }[];
@@ -203,7 +203,7 @@ export interface GenerateOptions {
 /**
  * Asks only for the misconceptions a reply left out, and returns the reply with
  * them filled in. Returns null if the reply is not worth a second call or the
- * second call does not come back usable — the caller then rejects as before.
+ * second call does not come back usable; the caller then rejects as before.
  */
 async function repairMisconceptions(raw: unknown): Promise<unknown | null> {
   const target = repairTarget(raw);
@@ -227,7 +227,7 @@ async function repairMisconceptions(raw: unknown): Promise<unknown | null> {
 
 /**
  * Answers the assembled question again, blind to which option is marked correct,
- * and returns why the item should be dropped — or null to keep it.
+ * and returns why the item should be dropped, or null to keep it.
  *
  * Temperature 0: this is a fact check, and a sampled second opinion would make
  * whether an item ships depend on the dice.
@@ -252,7 +252,7 @@ async function challenge(item: Item): Promise<string | null> {
  *
  * Temperature 0 for the same reason as the challenge above: whether an item ships
  * should not depend on the dice. The verdict carries the span when it passes,
- * because a verified quote is worth more than a verdict — it becomes the line the
+ * because a verified quote is worth more than a verdict: it becomes the line the
  * learner is shown.
  */
 async function ground(item: Item, material: string): Promise<GroundingVerdict> {
@@ -342,7 +342,7 @@ export async function generateItems({
 
   const reject = (attempt: number, stage: RejectionStage, reason: string) => {
     rejections.push({ attempt, stage, reason });
-    onWarn?.(`attempt ${attempt} rejected at ${stage} — ${reason}`);
+    onWarn?.(`attempt ${attempt} rejected at ${stage}: ${reason}`);
   };
 
   /**
@@ -363,7 +363,7 @@ export async function generateItems({
     if (timeLeft() < RESERVE_FOR_ATTEMPT_MS) {
       stoppedEarly = true;
       onWarn?.(
-        `stopped after ${items.length} of ${count} questions — ${Math.round((Date.now() - startedAt) / 1000)}s of the time budget used`,
+        `stopped after ${items.length} of ${count} questions, ${Math.round((Date.now() - startedAt) / 1000)}s of the time budget used`,
       );
       break;
     }
@@ -469,7 +469,7 @@ export async function generateItems({
 
       // The last two gates, run together: one answers the question again blind to
       // the key, the other makes it cite the material. Worth paying for only when
-      // the answer could change the outcome — at the floor the item ships either
+      // the answer could change the outcome: at the floor the item ships either
       // way, so the calls would buy nothing.
       let sourceNote: string | undefined;
       if (canAffordToSkip && timeLeft() > RESERVE_FOR_VERIFY_MS) {
@@ -520,7 +520,7 @@ export async function generateItems({
           // silent, because a run where most replies are pastes is a prompt to fix
           // and would otherwise look like a run where the material had no spans.
           unusableCitations += 1;
-          onWarn?.(`attempt ${attempt} kept without a citation — ${cite.unusable}`);
+          onWarn?.(`attempt ${attempt} kept without a citation: ${cite.unusable}`);
         }
       }
 

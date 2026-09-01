@@ -58,8 +58,8 @@ function placed(dx: number, deg: number): CSSProperties {
 /**
  * Decorative. One SVG rather than a stack of absolutely-positioned divs: the
  * hills are ellipses far larger than the frame, and as divs their layout boxes
- * reached down over the card's text. Nothing showed — overflow-hidden clipped
- * the paint — but axe measures contrast from rectangles, not from what is
+ * reached down over the card's text. Nothing showed, since overflow-hidden clipped
+ * the paint, but axe measures contrast from rectangles, not from what is
  * painted, so it read the meta line as grey-on-navy and failed it at 1.78:1.
  * A shape inside an SVG has no background colour to be mistaken for one.
  */

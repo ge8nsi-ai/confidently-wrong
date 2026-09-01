@@ -1,7 +1,7 @@
 /**
  * The third gate: a second opinion on whether the marked answer is actually right.
  *
- * lib/quality.ts can only judge the *form* of a question — leakage, length tells,
+ * lib/quality.ts can only judge the *form* of a question: leakage, length tells,
  * duplicate options. It passed both of these, from real runs:
  *
  *   "Which compounding frequency yields the highest return after 10 years?"
@@ -14,8 +14,8 @@
  *
  * So the question is answered again, by a fresh call that never sees which option
  * the author marked. Agreement is weak evidence the key is right; disagreement is
- * strong evidence something is wrong — either the key is false or two options are
- * defensible — and either way the item is not safe to put in front of a learner
+ * strong evidence something is wrong: either the key is false or two options are
+ * defensible, and either way the item is not safe to put in front of a learner
  * who will be told they were confidently wrong. Disputed items are dropped.
  *
  * Deliberately not a critique prompt. Asking a 3B model to "find the flaw" gets a
@@ -55,7 +55,7 @@ export interface Challenge {
 /**
  * Reads a challenge reply, and returns null if it is not usable as a vote.
  *
- * An unparseable reply is not evidence against the item — it is a wasted call —
+ * An unparseable reply is not evidence against the item; it is a wasted call,
  * so the caller keeps the item rather than dropping it on a malformed vote.
  */
 export function parseChallenge(value: unknown, item: Item): Challenge | null {
@@ -88,9 +88,9 @@ export function disputeReason(item: Item, challenge: Challenge): string | null {
   const key = item.options.find((o) => o.correct);
   if (!key) return "no option is marked correct";
   if (challenge.answer === null) {
-    return `no single answer is defensible — ${challenge.why}`;
+    return `no single answer is defensible: ${challenge.why}`;
   }
   if (challenge.answer === key.id) return null;
   const picked = item.options.find((o) => o.id === challenge.answer);
-  return `answered ${challenge.answer}, not ${key.id} — ${picked?.text ?? "?"}`;
+  return `answered ${challenge.answer}, not ${key.id}: ${picked?.text ?? "?"}`;
 }

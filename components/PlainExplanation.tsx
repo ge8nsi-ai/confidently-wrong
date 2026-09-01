@@ -2,7 +2,7 @@ import type { Item } from "@/lib/types";
 
 /**
  * The non-refutation path. Used for answers that were wrong but only guessed: no
- * belief was held, so there is nothing to refute — just state the answer plainly.
+ * belief was held, so there is nothing to refute, so state the answer plainly.
  */
 export default function PlainExplanation({ item }: { item: Item }) {
   const correct = item.options.find((o) => o.correct);
@@ -10,7 +10,7 @@ export default function PlainExplanation({ item }: { item: Item }) {
   return (
     <article className="fade-in glass rounded-3xl px-5 py-5 sm:px-7 sm:py-6">
       <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-400">
-        You marked this “Guessing” — here is the answer
+        You marked this “Guessing”, so here is the answer
       </p>
       <h2 className="mt-2 text-base font-semibold leading-snug text-ink-100 sm:text-lg">
         {item.stem}

@@ -44,5 +44,5 @@ export async function borrow(name) {
     }
     return await import(pathToFileURL(entry).href);
   }
-  throw new Error(`${name} not found — npm i -D ${name}, or run it once with npx`);
+  throw new Error(`${name} not found: npm i -D ${name}, or run it once with npx`);
 }

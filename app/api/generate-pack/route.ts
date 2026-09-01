@@ -31,7 +31,7 @@ const MAX_TEXT_BODY_BYTES = 200 * 1024;
  *
  * One request runs an OCR pass over an uploaded PDF and then up to four paid calls
  * per question: one to write it, one to embed its stem against the ones already
- * kept, and two to verify it — a blind re-answer and a citation from the source.
+ * kept, and two to verify it: a blind re-answer and a citation from the source.
  * Guards: an 8MB upload cap, a 200KB cap on pasted text, material truncated before
  * it reaches the model, a hard max_tokens on every call, a hard cap on the number
  * of items, a wall-clock budget inside the loop, and a per-IP fixed-window limit of

@@ -2,7 +2,7 @@
  * Explain-it-out-loud mode: prompts, validation, and the bridge to a quiz.
  *
  * The learner explains a topic in their own words. Ministral 3B returns a flat
- * critique — what was right, what was missing, and each wrong claim paired with a
+ * critique: what was right, what was missing, and each wrong claim paired with a
  * correction. That critique is then turned into quiz material by hand, in
  * `quizMaterial`, which keeps the learner's wrong claims strictly in a
  * misconceptions section. The question writer may only draw correct answers from

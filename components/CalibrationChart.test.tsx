@@ -1,7 +1,7 @@
 /**
  * The per-band breakdown under the calibration chart is the only place the
  * numbers behind the curve are written out in words, and on the recheck view it
- * used to print the *probe* counts twice — the chart showed two rounds while the
+ * used to print the *probe* counts twice: the chart showed two rounds while the
  * text below described one. Rendering the component is the only way to catch
  * that; lib/scoring.test.ts proves the arithmetic, not what reaches the screen.
  */

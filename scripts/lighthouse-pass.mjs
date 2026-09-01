@@ -8,7 +8,7 @@
  * from here is a number about this laptop and this build, not about the deployment.
  *
  * Nothing here spends money. Every screen is measured on load, and no screen calls
- * a model on load — the study route opens in its pick phase, /packs/new with an
+ * a model on load: the study route opens in its pick phase, /packs/new with an
  * empty box, /explain before microphone permission is asked for.
  *
  * Usage: PORT=3100 npm start, then `npm run perf`.
@@ -57,11 +57,11 @@ const median = (numbers) => {
   return sorted[Math.floor((sorted.length - 1) / 2)];
 };
 
-/** "79–90", or just "86" when every run agreed. */
+/** "79 to 90", or just "86" when every run agreed. */
 const extent = (numbers, format) => {
   const low = Math.min(...numbers);
   const high = Math.max(...numbers);
-  return low === high ? format(low) : `${format(low)}–${format(high)}`;
+  return low === high ? format(low) : `${format(low)} to ${format(high)}`;
 };
 
 async function measure(lighthouse, url, port) {
@@ -116,7 +116,7 @@ function report(rows, benchmarks) {
   const spread = (values) =>
     Math.min(...values) === Math.max(...values)
       ? `${values[0]}`
-      : `${Math.min(...values)}–${Math.max(...values)}`;
+      : `${Math.min(...values)} to ${Math.max(...values)}`;
   return [
     "# Lighthouse",
     "",
@@ -139,7 +139,7 @@ function report(rows, benchmarks) {
     "",
     "## What these numbers are, and are not",
     "",
-    `Lighthouse throttles the CPU 4x on top of the host's own speed, and this host benchmarked at ${median(benchmarks)} — its \`benchmarkIndex\`, measured on every run, ranging ${Math.round(Math.min(...benchmarks))}–${Math.round(Math.max(...benchmarks))} across the ${rows.length * RUNS} runs — while also serving the build being measured. That spread is the story of this table.`,
+    `Lighthouse throttles the CPU 4x on top of the host's own speed, and this host benchmarked at ${median(benchmarks)} (its \`benchmarkIndex\`, measured on every run, ranging ${Math.round(Math.min(...benchmarks))} to ${Math.round(Math.max(...benchmarks))} across the ${rows.length * RUNS} runs) while also serving the build being measured. That spread is the story of this table.`,
     "",
     "First contentful paint, largest contentful paint and layout shift repeat closely:",
     "the same screen measured minutes apart lands within a tenth of a second, and no",
@@ -159,8 +159,8 @@ function report(rows, benchmarks) {
     "## The one thing this measured that is worth knowing",
     "",
     "Every screen carries a link to the dashboard, and the App Router prefetches it,",
-    "so every screen fetches and registers the chart library — 104 KB and around 70 ms",
-    "of parse — for a chart only the dashboard and the reveal step draw. It is left in",
+    "so every screen fetches and registers the chart library (104 KB and around 70 ms",
+    "of parse) for a chart only the dashboard and the reveal step draw. It is left in",
     "place on purpose: the chart is server-rendered, its markup is what the",
     "accessibility pass measures and what CalibrationChart's tests assert, and moving",
     "it behind a dynamic import to save bytes on four screens would trade that away for",

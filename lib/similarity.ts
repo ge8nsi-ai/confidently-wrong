@@ -40,13 +40,13 @@ export function cosine(a: number[], b: number[]): number {
  * guessed.
  *
  * `scripts/measure-similarity.mjs` embeds eighteen pairs of stems that real eval
- * runs produced, hand-labelled same or distinct — including every pair this
- * check itself called a reword, so it is swept against its own output — and
+ * runs produced, hand-labelled same or distinct (including every pair this
+ * check itself called a reword, so it is swept against its own output), and
  * tries every threshold. The classes overlap: same-question pairs run 0.872 to
  * 0.919, distinct pairs 0.719 to 0.877. There is no clean gap, so the sweep
  * picks the least-wrong line instead of a perfect one.
  *
- * 0.88 misfiles one pair of the eighteen — "why is high tide every 12h 25min"
+ * 0.88 misfiles one pair of the eighteen: "why is high tide every 12h 25min"
  * against "why two high tides a day", at 0.872, which slips through as distinct.
  * 0.87 would catch it and lose two good questions instead. That trade is the
  * reason for the higher number: a missed paraphrase costs one slot in a pack, a
@@ -63,7 +63,7 @@ export const NEAR_DUPLICATE_COSINE = 0.88;
  * Index of the first stored vector this one is a paraphrase of, or null.
  *
  * The index rather than a boolean, so the caller can name which earlier question
- * the rejected one repeats — a rejection reason that does not say what was
+ * the rejected one repeats, a rejection reason that does not say what was
  * repeated cannot be checked by whoever reads the eval report.
  */
 export function findNearDuplicate(

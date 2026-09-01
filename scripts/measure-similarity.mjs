@@ -3,7 +3,7 @@
  *
  * Prints cosines for hand-labelled pairs of real generated stems so
  * lib/similarity.ts can carry a threshold read off data rather than guessed.
- * Not part of npm test — it spends money. The number it produced is documented
+ * Not part of npm test: it spends money. The number it produced is documented
  * at the use site.
  */
 
@@ -106,5 +106,5 @@ for (let t = 0.7; t <= 0.99; t += 0.005) {
   if (wrong < best.wrong) best = { t, wrong };
 }
 console.log(
-  `best threshold ${best.t.toFixed(3)} — ${best.wrong} of ${PAIRS.length} labelled pairs wrong`,
+  `best threshold ${best.t.toFixed(3)}, ${best.wrong} of ${PAIRS.length} labelled pairs wrong`,
 );

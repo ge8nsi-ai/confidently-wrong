@@ -5,7 +5,7 @@
  * against the actual evals/sources/tides.md the item was generated from.
  *
  * The rest guards the two ways a gate like this fails in production. It must not
- * accept a fabricated quote — that would make it theatre — and it must not throw
+ * accept a fabricated quote (that would make it theatre) and it must not throw
  * out a good question because a call failed, because a check that discards work
  * on its own malfunction is worse than no check. The second of those is why two
  * cases below assert that an item is *kept*: a reply too thin to show or long
@@ -63,7 +63,7 @@ function item(stem: string, answer: string): Item {
 /**
  * The item that motivated the file. Every earlier gate passed it: one correct
  * option, no answer leak, no length tell, and a second opinion that agreed with
- * the key — because the key reasons soundly from a premise nobody had checked.
+ * the key, because the key reasons soundly from a premise nobody had checked.
  */
 const FALSE_PREMISE = item(
   "Why does high tide arrive about 50 minutes later each day?",
@@ -269,7 +269,7 @@ describe("verifyGrounding", () => {
 
   it("keeps an item whose reply pasted the whole document", () => {
     // The case this split was built for. A real eval run threw out a tides
-    // question about the Sun's 45 per cent — a figure the source states outright —
+    // question about the Sun's 45 per cent, a figure the source states outright,
     // because the reply pasted 78 words instead of locating one sentence. A paste
     // is the model failing to find the span, not the source failing to contain it.
     const verdict = verifyGrounding(TRUE_PREMISE, TIDES, {

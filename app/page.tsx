@@ -25,7 +25,7 @@ export default function Home() {
           <div className="rise order-2 lg:order-1">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay-300">A gentler way to learn</p>
             <h1 className="mt-4 max-w-2xl text-[3.2rem] font-semibold leading-[0.96] tracking-[-0.06em] text-ink-50 sm:text-6xl lg:text-[5.2rem]">Study the things you&apos;re <span className="text-ember-300">sure</span> about.</h1>
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-300 sm:text-lg">A short, private learning loop that finds the ideas you missed with confidence — then helps them stick.</p>
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-300 sm:text-lg">A short, private learning loop that finds the ideas you missed with confidence, then helps them stick.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/study/seasons" className="inline-flex min-h-14 items-center justify-between rounded-2xl bg-ink-50 px-5 text-sm font-bold text-ink-950 shadow-[0_5px_0_#c2bcb0] transition hover:-translate-y-0.5 hover:bg-[#30384a] hover:text-ink-950">Try a sample pack <span aria-hidden>→</span></Link><Link href="/packs/new" className="inline-flex min-h-14 items-center justify-center rounded-2xl border border-ink-600 bg-white/45 px-5 text-sm font-semibold text-ink-200 transition hover:border-ink-300 hover:bg-white">Make your own</Link></div>
             <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-ink-400"><span>Private by default</span><span>•</span><span>No account needed</span><span>•</span><span>AI optional</span></div>
           </div>
