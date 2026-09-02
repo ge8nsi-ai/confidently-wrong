@@ -15,6 +15,7 @@
 
 import { SOUND, hypothesisKeys } from "@/lib/belief";
 import { selectNextItem } from "@/lib/belief";
+import { beliefNotes } from "@/lib/memory";
 import { needsRefutation } from "@/lib/scoring";
 import { missedItems, probeResponses, recheckItems } from "@/lib/store";
 import { baseItemId, itemMetaFor } from "@/lib/topics";
@@ -294,6 +295,10 @@ export function runSession(
       probe,
       recheck,
       itemMeta: itemMetaFor(pack.items),
+      // Written by the same function the store writes it with, because the point of
+      // this record is to be the shape localStorage holds. Leaving it off made the
+      // fixture look complete while missing the one field a later session reads.
+      beliefs: beliefNotes(pack.items, probe),
     },
   };
 }

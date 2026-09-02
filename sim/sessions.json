@@ -103,7 +103,44 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "Closest approach to the Sun lines up with northern summer.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-marcus-selection",
@@ -223,7 +260,44 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "Traits acquired during life are passed to offspring.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "fitness",
+        "key": "Fitness is an absolute quality rather than relative to a context.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "Mutations are the beneficial upgrades that drive improvement.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-marcus-chance",
@@ -343,7 +417,34 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "If the causal direction is unclear, reversing it resolves the puzzle.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "The comparison could reverse given the right ownership rate.",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-priya-seasons",
@@ -456,7 +557,44 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "Equinoxes mark the points of closest approach.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "Seasons only exist in the northern hemisphere.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-priya-selection",
@@ -562,7 +700,24 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "fitness",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-priya-chance",
@@ -668,7 +823,34 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-dan-seasons",
@@ -788,7 +970,44 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "Closest approach to the Sun lines up with northern summer.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "The equator is warm because it is physically closer to the Sun.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "The noon Sun is directly overhead everywhere, at least in summer.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-dan-selection",
@@ -908,7 +1127,44 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "fitness",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "Mutations are the beneficial upgrades that drive improvement.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "Acquired traits are inherited when both parents acquire them.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "Adaptations appear because an ecological role needs filling.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-dan-chance",
@@ -1028,7 +1284,34 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "An intervention only works if it fully closes the gap.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-aisha-seasons",
@@ -1148,7 +1431,39 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "Closest approach to the Sun lines up with northern summer.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "The noon Sun is directly overhead everywhere, at least in summer.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "The lag is a measurement artefact, not physical.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-aisha-selection",
@@ -1261,7 +1576,39 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "fitness",
+        "key": "Fitness is an absolute quality rather than relative to a context.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-aisha-chance",
@@ -1388,7 +1735,34 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "A strong correlation implies a causal link.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Sample size is a budget question, not a precision one.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "Extreme rates come from real differences in case mix rather than from sample size.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-tom-seasons",
@@ -1522,7 +1896,34 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "perihelion",
+        "key": "Earth's orbit is a perfect circle.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "Seasons only exist in the northern hemisphere.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "equator",
+        "key": "Only the equator has daylight all year; elsewhere the Sun disappears in winter.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "Earth's axial tilt changes over the course of a year.",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-tom-selection",
@@ -1663,7 +2064,24 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "not-goal-directed",
+        "key": "Selection anticipates future needs of the species.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "Characteristics built up through use are inherited by offspring.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "Species make adaptive decisions as a group.",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-tom-chance",
@@ -1797,7 +2215,29 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Sample size is a budget question, not a precision one.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "Variability peaks at intermediate sample sizes.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "An intervention only works if it fully closes the gap.",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-leyla-seasons",
@@ -1910,7 +2350,44 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "Low-angle sunlight is intrinsically weaker radiation.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "The lag is a measurement artefact, not physical.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-leyla-selection",
@@ -2016,7 +2493,39 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "Resistance is a property of the drug degrading, not of the population changing.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "fitness",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-leyla-chance",
@@ -2122,7 +2631,44 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Random selection makes small samples as reliable as large ones.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-sam-seasons",
@@ -2235,7 +2781,39 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "Equinoxes mark the points of closest approach.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "In the northern hemisphere the noon Sun appears to the north.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-sam-selection",
@@ -2355,7 +2933,44 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "fitness",
+        "key": "'Survival of the fittest' means the strongest individual wins.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "The environment steers which mutations occur.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "Adaptations appear because an ecological role needs filling.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-sam-chance",
@@ -2496,7 +3111,44 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "Because correlation is not causation, correlation is worthless.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "Streaks are self-sustaining in fair random processes.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "Test accuracy is the probability of disease given a positive result; base rates can be ignored.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Random selection makes small samples as reliable as large ones.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "Variability peaks at intermediate sample sizes.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "Before-and-after comparisons are inherently uninformative.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-nadia-seasons",
@@ -2616,7 +3268,34 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "Seasons are caused by Earth's changing distance from the Sun.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "The noon Sun is directly overhead everywhere, at least in summer.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-nadia-selection",
@@ -2743,7 +3422,34 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "fitness",
+        "key": "Fitness is an absolute quality rather than relative to a context.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "Acquired traits are inherited when both parents acquire them.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "Adaptations appear because an ecological role needs filling.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-nadia-chance",
@@ -2863,7 +3569,44 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "Test accuracy is the probability of disease given a positive result; base rates can be ignored.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Sample size is a budget question, not a precision one.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "Extreme rates come from real differences in case mix rather than from sample size.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-george-seasons",
@@ -2976,7 +3719,29 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-george-selection",
@@ -3089,7 +3854,39 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "Traits appear because the organism needs them.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "Mutations are the beneficial upgrades that drive improvement.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-george-chance",
@@ -3216,7 +4013,19 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-yuki-seasons",
@@ -3322,7 +4131,39 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "Day length changes because Earth's spin rate changes.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-yuki-selection",
@@ -3428,7 +4269,34 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "Individual organisms adapt their own bodies during their lifetime to suit the environment.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "fitness",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-yuki-chance",
@@ -3541,7 +4409,39 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Smaller datasets are cleaner and therefore better.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "Observed rates reflect quality alone, with no statistical noise.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.778
+      }
+    ]
   },
   {
     "id": "sim-ben-seasons",
@@ -3661,7 +4561,39 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "equator",
+        "key": "Only the equator has daylight all year; elsewhere the Sun disappears in winter.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "The angle of incidence is irrelevant to warming.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "lag",
+        "key": "Earth's axial tilt changes over the course of a year.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-ben-selection",
@@ -3781,7 +4713,39 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "Resistance is a property of the drug degrading, not of the population changing.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "The environment steers which mutations occur.",
+        "p": 0.778
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "Species make adaptive decisions as a group.",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-ben-chance",
@@ -3908,7 +4872,39 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "A strong correlation implies a causal link.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "gamblers-fallacy",
+        "key": "Streaks are self-sustaining in fair random processes.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "Random selection makes small samples as reliable as large ones.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "regression-to-mean",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-irina-seasons",
@@ -4006,7 +5002,44 @@
         "topic": "Seasonal lag",
         "stem": "The longest day in the northern hemisphere is around 21 June, yet the hottest weeks usually come in late July. Why?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "cause-of-seasons",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "perihelion",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "hemispheres",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "equator",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sun-overhead",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sunlight-angle",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "lag",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-irina-selection",
@@ -4104,7 +5137,44 @@
         "topic": "Species do not intend",
         "stem": "Giraffes have long necks. Which explanation matches how selection actually works?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "individual-vs-population",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "not-goal-directed",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "variation-precedes-need",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "fitness",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "mutation-randomness",
+        "key": "sound",
+        "p": 0.909
+      },
+      {
+        "conceptId": "use-disuse",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "species-intent",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   },
   {
     "id": "sim-irina-chance",
@@ -4210,6 +5280,33 @@
         "topic": "The conjunction fallacy",
         "stem": "Which is more probable for a randomly chosen adult: (i) they cycle to work, or (ii) they cycle to work and own a road bike?"
       }
-    }
+    },
+    "beliefs": [
+      {
+        "conceptId": "correlation-causation",
+        "key": "A strong correlation implies a causal link.",
+        "p": 0.909
+      },
+      {
+        "conceptId": "base-rate",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "sample-size",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "small-sample-extremes",
+        "key": "sound",
+        "p": 0.778
+      },
+      {
+        "conceptId": "conjunction",
+        "key": "sound",
+        "p": 0.909
+      }
+    ]
   }
 ]
