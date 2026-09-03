@@ -12,6 +12,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local working directories, none of them committed: recording scripts, video
+    // projects with vendored tarballs unpacked inside them, and generated images.
+    // `npm run lint` is a bare `eslint`, so without these it walks whatever a
+    // previous session happened to leave on disk and reports on someone else's code.
+    "demo/**",
+    "videos/**",
+    "shots/**",
+    "submission/**",
   ]),
 ]);
 
